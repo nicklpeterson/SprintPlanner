@@ -1,0 +1,25 @@
+## --------------------------------------------------
+## | Properties that are the same across DEV & PROD |
+## --------------------------------------------------
+
+spring:
+  application.name: Sprint Planner Server
+  profiles.active: ${spring.profile.active:dev}
+  hateoas.use-hal-as-default-json-media-type: false
+  jpa:
+    generate-ddl: true
+    properties.hibernate:
+      dialect: org.hibernate.dialect.PostgreSQL10Dialect
+      temp.use_jdbc_metadata_defaults: false
+      ddl-auto: none
+
+# Enable GZIP compression
+server.compression:
+    enabled: true
+    min-response-size: 10240
+    mime-types:
+      - application/json
+      - text/html
+      - text/plain
+      - application/javascript
+      - text/css

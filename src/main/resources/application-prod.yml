@@ -1,0 +1,8 @@
+## --------------------------------------------------
+## | TODO: Add production properties here |
+## --------------------------------------------------
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
