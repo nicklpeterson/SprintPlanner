@@ -30,16 +30,16 @@ We don't need to use flyway, but I think it's a nice way to keep our schema in o
 something like this is used in most Java database applications.
 
 ### JPA
-We are using Hibernate and implementation of the Java Persistence API (JPA). It maps Java objects to the relational
-database tables. A nice feature of JPA is that it can generate SQL, but we aren't allowed to use tools that generate
-SQL for us. Instead we can use CrudRepositories with @Query annotation to write our own SQL.
+This application is using Hibernate, an implementation of the Java Persistence API (JPA). It maps Java objects to the
+relational database tables. A nice feature of JPA is that it can generate SQL, but we aren't allowed to use tools
+that generate SQL for us. That's okay because we can use CrudRepositories with @Query annotation to write our own
+ SQL.
 
 I added a mock entity based on some examples I found online. The Ticket object maps directly to the Tickets table and
 the TicketRepository can be used to query the table and save to the table. Check out the TicketRepository and
 TicketServiceImpl classes to see how this works.
 
-Again, we don't need to use jpa. In fact it's kind of convoluted since we have to write all of our own SQL. But I
-still think it's pretty nice.
+Again, we don't need to use jpa. In fact, it's kind of convoluted since we have to write all of our own SQL.
 
 ### Server (Spring Boot)
 The server runs on port 8080. There are a couple mock endpoints to test things out:
