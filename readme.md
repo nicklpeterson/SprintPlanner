@@ -6,7 +6,7 @@ We are using [docker](https://docs.docker.com/install/) to pull up a local Postg
 - `docker-compose stop && docker-compose rm` to delete the containers and their data.
 
 Once the DB is running you can inspect it via the following URL. [http://localhost:5401/?pgsql=db&username=dev&db
-=sprintplanner&ns=public](http://localhost:5401/?pgsql=db&username=dev&db=sp&ns=public)
+=sprintplanner&ns=public](http://localhost:5401/?pgsql=db&username=dev&db=sprintplanner&ns=public)
 You might need to login with user `dev` and password `123`.
 
 ### FLYWAY
@@ -29,17 +29,17 @@ a new migration. This table should have a single entry, because only one migrati
 We don't need to use flyway, but I think it's a nice way to keep our schema in one place. And I would guess that
 something like this is used in most Java database applications.
 
-### Hibernate
-Hibernate is an implementation of Java Persistence API (JPA). It maps Java objects to the relational database tables.
-This allows us to work with Java objects and write less SQL.  
+### JPA
+We are using Hibernate and implementation of the Java Persistence API (JPA). It maps Java objects to the relational
+database tables. A nice feature of JPA is that it can generate SQL, but we aren't allowed to use tools that generate
+SQL for us. Instead we can use CrudRepositories with @Query annotation to write our own SQL.
 
 I added a mock entity based on some examples I found online. The Ticket object maps directly to the Tickets table and
-the TicketRepository can be used to query the table and save to the table without writing any SQL (you can write custom
-sql queries if you need to). Check out the TicketServiceImpl class to see an example of how this works.
+the TicketRepository can be used to query the table and save to the table. Check out the TicketRepository and
+TicketServiceImpl classes to see how this works.
 
-Again, we don't need to use hibernate. The course profs said there won't be TA support, if we go rogue and use
-tools like hibernate. That said, there is a ton of information online and hibernate is another tool that we may actually
-see outside of academia.
+Again, we don't need to use jpa. In fact it's kind of convoluted since we have to write all of our own SQL. But I
+still think it's pretty nice.
 
 ### Server (Spring Boot)
 The server runs on port 8080. There are a couple mock endpoints to test things out:

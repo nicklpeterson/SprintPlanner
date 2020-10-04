@@ -19,7 +19,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketDto> getAllTickets() {
-        final Iterable<Ticket> ticketIterable = ticketRepository.findAll();
+        final Iterable<Ticket> ticketIterable = ticketRepository.selectAllTickets();
         final List<TicketDto> ticketDtoList = new ArrayList<>();
         for (Ticket ticket : ticketIterable) {
             ticketDtoList.add(newTicketDtoFromTicket(ticket));
@@ -29,7 +29,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void storeTicket(TicketDto ticketDto) {
-        ticketRepository.save(newTicketFromTicketDto(ticketDto));
+        ticketRepository.insertIntoTickets(ticketDto.getId(), ticketDto.getTicketName(), ticketDto.getCreator());
     }
 
     private TicketDto newTicketDtoFromTicket(Ticket ticket) {
@@ -37,14 +37,6 @@ public class TicketServiceImpl implements TicketService {
                 .id(ticket.getId())
                 .ticketName(ticket.getTicketName())
                 .creator(ticket.getCreator())
-                .build();
-    }
-
-    private Ticket newTicketFromTicketDto(TicketDto ticketDto) {
-        return Ticket.builder()
-                .id(ticketDto.getId())
-                .ticketName(ticketDto.getTicketName())
-                .creator(ticketDto.getCreator())
                 .build();
     }
 }
