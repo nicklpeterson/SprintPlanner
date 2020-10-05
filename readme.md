@@ -49,16 +49,19 @@ The server runs on port 8080. There are a couple mock endpoints to test things o
  
 */rest/hello* will respond with "Hello World", I was just making sure spring was properly doing its black magic.
 
-### Ngrok
-At some point we may want to test our server on a publicly available URL.
-This is easy with ngrok [which you might need to install first](https://ngrok.com/).
+- `mvn clean package`: creates an executable jar
 
-- Run `ngrok http 8080` to stark ngrok and get a public URL.
-- Set the env var `BASE_URL` to your ngrok URL in your IntelliJ run configuration.
-
-You can monitor all requests coming through ngrok at `http://localhost:4040`.
+or just run main.
 
 ### Frontend
 
-No development on this yet. As a group we have talked about doing the frontend in react. Need more discussion on how
- we want to do that.
+This project uses a react frontend that communicates with the backend via rest.
+
+Run the following commands from ./client:
+
+- `yarn install` to install dependencies
+- `yarn start` to start the webpack dev server on port 9000
+
+Alternatively use from root:
+
+- `yarn --cwd ./client start`

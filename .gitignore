@@ -4,3 +4,8 @@ target
 .idea/
 *.iml
 *.iws
+
+#frontend
+node_modules
+.DS_Store
+dist
