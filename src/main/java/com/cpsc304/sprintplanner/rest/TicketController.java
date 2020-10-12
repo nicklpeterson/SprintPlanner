@@ -16,12 +16,12 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/rest")
-public class SprintPlannerResource {
+@RequestMapping(path = "/ticket")
+public class TicketController {
     private final TicketService ticketService;
 
     @Autowired
-    public SprintPlannerResource(TicketService ticketService) {
+    public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
 
@@ -36,7 +36,7 @@ public class SprintPlannerResource {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path="/tickets")
+    @GetMapping(path="/")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getTickets() {
         // FIXME: This is just an example endpoint

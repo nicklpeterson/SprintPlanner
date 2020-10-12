@@ -24,6 +24,7 @@
         <hibernate.version>3.2.6.ga</hibernate.version>
         <junit.version>4.13</junit.version>
         <flyway.version>7.0.0</flyway.version>
+        <auth0.version>3.11.0</auth0.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${spring-boot.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
         <!-- / SPRING -->
 
@@ -120,12 +126,21 @@
         </dependency>
         <!-- / Junit -->
 
+        <!-- FLYWAY for db schema-->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>5.2.1</version>
         </dependency>
+        <!-- / FLYWAY -->
 
+        <!-- AUTHO for jwt authentication-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${auth0.version}</version>
+        </dependency>
+        <!-- / AUTHO-->
     </dependencies>
 
     <profiles>

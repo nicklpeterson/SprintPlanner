@@ -42,16 +42,31 @@ TicketServiceImpl classes to see how this works.
 Again, we don't need to use jpa. In fact, it's kind of convoluted since we have to write all of our own SQL.
 
 ### Server (Spring Boot)
-The server runs on port 8080. There are a couple mock endpoints to test things out:
+The server runs on port 8080. There are a couple mock endpoints to test things out. Note that you must create a user
+ and login to get the jwt or all endpoints will be forbidden.
 
-*/rest/tickets* will respond with all the tickets in tickets table. (Make sure to spin upo the db before hitting that
+GET */ticket* will respond with all the tickets in tickets table. (Make sure to spin upo the db before hitting that
  endpoint)
  
-*/rest/hello* will respond with "Hello World", I was just making sure spring was properly doing its black magic.
+GET */ticket/hello* will respond with "Hello World", I was just making sure spring was properly doing its black magic.
 
-- `mvn clean package`: creates an executable jar
+POST */users/login* Body '{"username": "username", "password": "password"}' authenticates this user and responds with
+ a jwt
+ 
+POST */users/signup* Body '{"username": "username", "password": "password"}' creates a new user and saves to the db
 
-or just run main.
+- `mvn clean package` to create an executable jar or just run main.
+
+### Auth0 Authentication
+This is probably overkill for the project, but to me an app with users doesn't make sense without user authentication.
+ We are using Auth0 to handle user authentication and authorization. When the user signs up they create an entry in the
+ USERS table with their username and hashed password. Once they
+ have done that users can log in to receive a jwt that is used to authorize subsequent requests and identify the user. 
+ 
+ All endpoints require the following header:
+ "Authorization: Bearer xxx.yyy.zzz" where xxx.yyy.zzz is the jwt.
+ 
+ I followed instructions and used some code from https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
 
 ### Frontend
 
@@ -64,4 +79,4 @@ Run the following commands from ./client:
 
 Alternatively use from root:
 
-- `yarn --cwd ./client start`
+- `yarn --cwd ./client install && yarn --cwd ./client start`
