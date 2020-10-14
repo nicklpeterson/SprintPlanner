@@ -1,6 +1,5 @@
 ### Database
 We are using [docker](https://docs.docker.com/install/) to pull up a local PostgreSQL 10 database.
-*Warning*: If you are using Windows, docker is only available for windows pro, which costs ~ $100. 
 
 - `docker-compose up` to start postgres + adminer via Docker.
 - `docker-compose stop && docker-compose rm` to delete the containers and their data.
@@ -66,7 +65,7 @@ This is probably overkill for the project, but to me an app with users doesn't m
  All endpoints require the following header:
  "Authorization: Bearer xxx.yyy.zzz" where xxx.yyy.zzz is the jwt.
  
- I used instructions and code from [https://auth0.com/blog/implementing-jwt-authentication-on -spring-boot/](https
+ I used instructions and code from [https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/](https
  ://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/)
 
 ### Frontend
