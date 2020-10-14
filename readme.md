@@ -66,7 +66,8 @@ This is probably overkill for the project, but to me an app with users doesn't m
  All endpoints require the following header:
  "Authorization: Bearer xxx.yyy.zzz" where xxx.yyy.zzz is the jwt.
  
- I followed instructions and used some code from https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
+ I used instructions and code from [https://auth0.com/blog/implementing-jwt-authentication-on -spring-boot/](https
+ ://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/)
 
 ### Frontend
 
