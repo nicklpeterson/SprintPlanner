@@ -8,6 +8,9 @@ Once the DB is running you can inspect it via the following URL. [http://localho
 =sprintplanner&ns=public](http://localhost:5401/?pgsql=db&username=dev&db=sprintplanner&ns=public)
 You might need to login with user `dev` and password `123`.
 
+This is really nice for development because we can see the tables and data added by our SQL and it's super easy to just
+nuke the container and create a new db. And adminer has an SQL portal for testing commands.
+
 ### FLYWAY
 Flyway is one of two open source schema management tools for Java, the other is liquibase. I haven't used flyway
 before, but I chose it because I think it looks a little easier to use than liquibase and it's SQL based, which seems
@@ -65,8 +68,7 @@ This is probably overkill for the project, but to me an app with users doesn't m
  All endpoints require the following header:
  "Authorization: Bearer xxx.yyy.zzz" where xxx.yyy.zzz is the jwt.
  
- I used instructions and code from [https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/](https
- ://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/)
+ I used instructions and code from [https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot](https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot)
 
 ### Frontend
 

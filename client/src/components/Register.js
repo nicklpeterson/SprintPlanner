@@ -44,7 +44,6 @@ export default function Register() {
         dispatch(registerUser(email, username, password));
     }
 
-
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />

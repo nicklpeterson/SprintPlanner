@@ -15,7 +15,6 @@ module.exports = {
             {test: /\.css$/, use: ['style-loader', 'css-loader']}
         ]
     },
-    mode: 'development',
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {

@@ -7,6 +7,7 @@ spring:
     properties.hibernate:
       show_sql: true
       ddl-auto: none
+      hbm2ddl.auto: none
   flyway:
     url: jdbc:postgresql://localhost:5400/sprintplanner
     schemas: public

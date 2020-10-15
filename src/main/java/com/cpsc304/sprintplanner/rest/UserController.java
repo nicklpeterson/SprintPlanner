@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
+import java.util.UUID;
+
 @Slf4j
 @AllArgsConstructor
 @RestController
@@ -21,6 +23,7 @@ public class UserController {
     @PostMapping(path = "/signup", consumes = "application/json")
     public void signUp(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setDisplayPicture(new UUID( 0 , 0 ));
         userRepository.save(user);
     }
 

@@ -29,7 +29,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void storeTicket(TicketDto ticketDto) {
-        ticketRepository.insertIntoTickets(ticketDto.getId(), ticketDto.getTicketName(), ticketDto.getCreator());
+        // TODO
     }
 
     private TicketDto newTicketDtoFromTicket(Ticket ticket) {
