@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --port 9000 --open",
     "dev": "webpack --env.API_URL=http://localhost:8000 --config webpack.config.dev.js",
-    "build": "webpack --env.API_URL=https://www.myapi.com --config webpack.config.build.js"
+    "build": "webpack --env.API_URL=https://localhost:8000 --config webpack.config.build.js"
   },
   "author": "",
   "license": "ISC",

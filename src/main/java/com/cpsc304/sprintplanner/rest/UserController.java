@@ -4,11 +4,9 @@ import com.cpsc304.sprintplanner.persistence.entities.User;
 import com.cpsc304.sprintplanner.persistence.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.Consumes;
 import java.util.UUID;
 
 @Slf4j
