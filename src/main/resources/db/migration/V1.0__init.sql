@@ -3,7 +3,7 @@ CREATE TYPE STATUS AS ENUM ('backlog', 'paused', 'inProgress', 'inReview', 'done
 
 CREATE TABLE ORGANIZATION (
     orgId UUID PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR
 );
 
 CREATE TABLE PICTURE (
@@ -13,10 +13,10 @@ CREATE TABLE PICTURE (
 
 CREATE TABLE USERS (
     userId UUID PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    emailDomain VARCHAR(255),
-    emailUser VARCHAR(255),
+    username VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    emailDomain VARCHAR,
+    emailUser VARCHAR,
     organization UUID,
     displayPicture UUID,
     FOREIGN KEY (organization) REFERENCES ORGANIZATION(orgId),
@@ -38,7 +38,7 @@ CREATE TABLE TEAM (
     orgId UUID NOT NULL,
     manager UUID,
     logo BYTEA,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR NOT NULL,
     FOREIGN KEY (orgId) REFERENCES ORGANIZATION(orgId),
     FOREIGN KEY (manager) REFERENCES MANAGER(userId)
 );
@@ -53,7 +53,7 @@ CREATE TABLE TEAM_MEMBERS (
 
 CREATE TABLE SKILL (
     skillId SERIAL PRIMARY KEY,
-    skillDescription VARCHAR(255)
+    skillDescription VARCHAR
 );
 
 CREATE TABLE USER_SKILL (
@@ -75,14 +75,14 @@ CREATE TABLE SPRINTS (
 
 CREATE TABLE PROJECTS (
     projectId UUID PRIMARY KEY,
-    projectName VARCHAR(255),
+    projectName VARCHAR,
     createdBy UUID,
     FOREIGN KEY (createdBy) REFERENCES TEAM(teamId)
 );
 
 CREATE TABLE TICKETS (
     ticketId UUID NOT NULL PRIMARY KEY,
-    ticketTitle VARCHAR(255),
+    ticketTitle VARCHAR,
     severity SEVERITY,
     status STATUS,
     projectId UUID,
@@ -97,7 +97,7 @@ CREATE TABLE TICKETS (
 
 CREATE TABLE COMMENTS (
     commentId UUID PRIMARY KEY,
-    commentText VARCHAR(255),
+    commentText VARCHAR,
     commentDate TIMESTAMP,
     ticketId UUID,
     FOREIGN KEY (ticketId) REFERENCES TICKETS(ticketId)
