@@ -11,6 +11,10 @@ CREATE TABLE PICTURE (
     img BYTEA
 );
 
+CREATE TABLE EMPLOYER (
+    emailDomain VARCHAR PRIMARY KEY
+);
+
 CREATE TABLE USERS (
     userId UUID PRIMARY KEY,
     username VARCHAR NOT NULL,
@@ -20,27 +24,37 @@ CREATE TABLE USERS (
     organization UUID,
     displayPicture UUID,
     FOREIGN KEY (organization) REFERENCES ORGANIZATION(orgId),
-    FOREIGN KEY (displayPicture) REFERENCES PICTURE(pictureId)
-);
-
-CREATE TABLE MANAGER (
-    userId UUID NOT NULL PRIMARY KEY,
-    FOREIGN KEY (userId) REFERENCES USERS(userId)
-);
-
-CREATE TABLE DEVELOPER (
-    userId UUID NOT NULL PRIMARY KEY,
-    FOREIGN KEY (userId) REFERENCES USERS(userId)
+    FOREIGN KEY (displayPicture) REFERENCES PICTURE(pictureId),
+    FOREIGN KEY (emailDomain) REFERENCES EMPLOYER(emailDomain)
 );
 
 CREATE TABLE TEAM (
     teamId UUID PRIMARY KEY,
     orgId UUID NOT NULL,
-    manager UUID,
     logo BYTEA,
     name VARCHAR NOT NULL,
-    FOREIGN KEY (orgId) REFERENCES ORGANIZATION(orgId),
-    FOREIGN KEY (manager) REFERENCES MANAGER(userId)
+    FOREIGN KEY (orgId) REFERENCES ORGANIZATION(orgId)
+);
+
+CREATE TABLE MANAGER (
+ 	userId UUID NOT NULL PRIMARY KEY,
+ 	manages UUID,
+ 	FOREIGN KEY (userId) REFERENCES USERS(userId),
+    FOREIGN KEY (manages) REFERENCES TEAM(teamId)
+);
+
+
+CREATE TABLE SKILL (
+    skillId SERIAL PRIMARY KEY,
+    skillDescription VARCHAR
+);
+
+CREATE TABLE DEVELOPER (
+    userId UUID NOT NULL,
+    skillId INT,
+    PRIMARY KEY (userId, skillId),
+    FOREIGN KEY (userId) REFERENCES USERS(userId),
+    FOREIGN KEY (skillId) REFERENCES SKILL(skillId)
 );
 
 CREATE TABLE TEAM_MEMBERS (
@@ -49,11 +63,6 @@ CREATE TABLE TEAM_MEMBERS (
     PRIMARY KEY (userId, teamId),
     FOREIGN KEY (userId) REFERENCES USERS(userId),
     FOREIGN KEY (teamId) REFERENCES TEAM(teamId)
-);
-
-CREATE TABLE SKILL (
-    skillId SERIAL PRIMARY KEY,
-    skillDescription VARCHAR
 );
 
 CREATE TABLE USER_SKILL (
