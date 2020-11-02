@@ -21,7 +21,9 @@ public class UserController {
     @PostMapping(path = "/signup", consumes = "application/json")
     public void signUp(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        // Set display picture to generic avatar
         user.setDisplayPicture(new UUID( 0 , 0 ));
+        log.info("Saving User: {}", user.toString());
         userRepository.save(user);
     }
 

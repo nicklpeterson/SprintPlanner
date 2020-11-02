@@ -11,14 +11,14 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "DISPLAY_PICTURE")
-public class DisplayPicture {
+@Table(name = "ORGANIZATION")
+public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "orgId")
     private UUID id;
 
-    @Column(name = "img")
-    private byte[] img;
+    @Column(name = "name")
+    private String name;
 }
