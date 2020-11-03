@@ -35,12 +35,12 @@ export const login = (username, password) => {
     return dispatch => {
         axios.post(API_URL + "/login", JSON.stringify(data), {headers})
             .then(res => {
-                console.log("Success");
                 console.log(res.headers);
+                localStorage.setItem('token', res.headers.authorization);
                 // TODO: Send user to dashboard
             })
             .catch(err => {
-                console.log("failed");
+                console.error(err);
                 // TODO: Notify User of error
             })
     }
