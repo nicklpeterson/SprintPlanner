@@ -68,6 +68,16 @@ This is probably overkill for the project, but to me an app with users doesn't m
  All endpoints require the following header:
  "Authorization: Bearer xxx.yyy.zzz" where xxx.yyy.zzz is the jwt.
  
+ Add a new user:
+ curl -H "Content-Type: application/json" -X POST -d '{
+ "username": "test",
+ "password": "123","email": 
+ "nick@test.com","organizationName": "ubc"
+ }' http://localhost:8080/users/signup
+ 
+ Get a User JWT:
+ curl -i -H "Content-Type: application/json" -X POST -d '{"username": "nick", "password": "123"}' http://localhost:8080/login
+ 
  I used instructions and code from [https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot](https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot)
 
 ### Frontend
