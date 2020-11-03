@@ -11,12 +11,12 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "USERS")
+@Table(name = "USERS", schema= "public")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "userId")
+    @Column(name = "userid")
     private UUID id;
 
     @Column(name = "username")
@@ -25,15 +25,12 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column (name = "emailDomain")
-    private String emailDomain;
-
-    @Column (name = "emailUser")
-    private String emailUser;
+    @Column(name = "email")
+    private String email;
 
     @Column (name = "organization")
     private UUID organization;
 
-    @Column(name = "displayPicture")
+    @Column(name = "displaypicture")
     private UUID displayPicture;
 }

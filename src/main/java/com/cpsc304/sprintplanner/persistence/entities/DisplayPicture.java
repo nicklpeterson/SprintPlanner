@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "DISPLAY_PICTURE")
+@Table(name = "DISPLAY_PICTURE", schema="public")
 public class DisplayPicture {
 
     @Id

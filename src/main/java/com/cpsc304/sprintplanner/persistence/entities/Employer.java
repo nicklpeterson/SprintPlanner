@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "EMPLOYER")
+@Table(name = "EMPLOYER", schema="public")
 public class Employer {
 
     @Id

@@ -1,6 +1,6 @@
 package com.cpsc304.sprintplanner.rest;
 
-import com.cpsc304.sprintplanner.exceptions.OrganizationServiceException;
+import com.cpsc304.sprintplanner.exceptions.FailedToSaveOrgException;
 import com.cpsc304.sprintplanner.persistence.entities.Organization;
 import com.cpsc304.sprintplanner.services.OrganizationService;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class OrganizationController {
             Organization org = organizationService.getOrganizationByName(name);
             response.put("organization", org);
             response.put("success", true);
-        } catch (OrganizationServiceException e) {
+        } catch (FailedToSaveOrgException e) {
             response.put("error", e.getMessage());
             response.put("success", false);
             log.error("Error while retrieving organization!", e);
@@ -42,7 +42,7 @@ public class OrganizationController {
             List<Organization> orgs = organizationService.getAllOrganizations();
             response.put("organizations", orgs);
             response.put("success", true);
-        } catch (OrganizationServiceException e) {
+        } catch (FailedToSaveOrgException e) {
             response.put("error", e.getMessage());
             response.put("success", false);
             log.error("Error while retrieving all organizations!", e);
@@ -57,7 +57,7 @@ public class OrganizationController {
         try {
             organizationService.saveOrganization(organization);
             response.put("success", true);
-        } catch (OrganizationServiceException e) {
+        } catch (FailedToSaveOrgException e) {
             response.put("success", false);
             response.put("error", e.getMessage());
         }

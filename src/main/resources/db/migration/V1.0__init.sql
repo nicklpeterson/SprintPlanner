@@ -12,22 +12,15 @@ CREATE TABLE PICTURE (
     img BYTEA
 );
 
-CREATE TABLE EMPLOYER (
-    emailDomain VARCHAR PRIMARY KEY,
-    employerName VARCHAR
-);
-
 CREATE TABLE USERS (
     userId UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    username VARCHAR NOT NULL,
+    username VARCHAR NOT NULL UNIQUE,
     password VARCHAR NOT NULL,
-    emailDomain VARCHAR,
-    emailUser VARCHAR,
-    organization UUID,
+    email VARCHAR,
+    organization UUID NOT NULL,
     displayPicture UUID DEFAULT uuid_nil(),
     FOREIGN KEY (organization) REFERENCES ORGANIZATION(orgId),
-    FOREIGN KEY (displayPicture) REFERENCES PICTURE(pictureId),
-    FOREIGN KEY (emailDomain) REFERENCES EMPLOYER(emailDomain)
+    FOREIGN KEY (displayPicture) REFERENCES PICTURE(pictureId)
 );
 
 CREATE TABLE TEAM (

@@ -11,12 +11,12 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ORGANIZATION")
+@Table(name = "ORGANIZATION", schema="public")
 public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "orgId")
+    @Column(name = "orgid")
     private UUID id;
 
     @Column(name = "name")

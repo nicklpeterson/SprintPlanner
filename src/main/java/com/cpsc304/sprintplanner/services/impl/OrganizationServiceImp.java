@@ -1,6 +1,6 @@
 package com.cpsc304.sprintplanner.services.impl;
 
-import com.cpsc304.sprintplanner.exceptions.OrganizationServiceException;
+import com.cpsc304.sprintplanner.exceptions.FailedToSaveOrgException;
 import com.cpsc304.sprintplanner.persistence.entities.Organization;
 import com.cpsc304.sprintplanner.persistence.repositories.OrganizationRepository;
 import com.cpsc304.sprintplanner.services.OrganizationService;
@@ -17,29 +17,29 @@ public class OrganizationServiceImp implements OrganizationService {
     OrganizationRepository organizationRepository;
 
     @Override
-    public Organization getOrganizationByName(String name) throws OrganizationServiceException {
+    public Organization getOrganizationByName(String name) throws FailedToSaveOrgException {
         try {
             return organizationRepository.findOrganizationByName(name);
         } catch (Exception e) {
-            throw new OrganizationServiceException(e.getMessage(), e);
+            throw new FailedToSaveOrgException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Organization> getAllOrganizations() throws OrganizationServiceException {
+    public List<Organization> getAllOrganizations() throws FailedToSaveOrgException {
         try {
             return organizationRepository.findAllOrganizations();
         } catch (Exception e) {
-            throw new OrganizationServiceException(e.getMessage(), e);
+            throw new FailedToSaveOrgException(e.getMessage(), e);
         }
     }
 
     @Override
-    public void saveOrganization(Organization organization) throws OrganizationServiceException {
+    public void saveOrganization(Organization organization) throws FailedToSaveOrgException {
         try {
-            organizationRepository.save(organization);
+            organizationRepository.saveOrganization(organization.getId(), organization.getName());
         } catch (Exception e) {
-            throw new OrganizationServiceException(e.getMessage(), e);
+            throw new FailedToSaveOrgException(e.getMessage(), e);
         }
     }
 }
