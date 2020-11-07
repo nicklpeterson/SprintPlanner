@@ -1,6 +1,8 @@
 package com.cpsc304.sprintplanner.services.impl;
 
 import com.cpsc304.sprintplanner.dto.TicketDto;
+import com.cpsc304.sprintplanner.exceptions.FailedToFetchTickets;
+import com.cpsc304.sprintplanner.exceptions.FailedToUpdateTicket;
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
 import com.cpsc304.sprintplanner.persistence.repositories.TicketRepository;
 import com.cpsc304.sprintplanner.services.TicketService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -38,5 +41,25 @@ public class TicketServiceImpl implements TicketService {
                 .ticketName(ticket.getTicketName())
                 .creator(ticket.getCreator())
                 .build();
+    }
+
+    @Override
+    public List<Ticket> getAllTicketsByStatus(UUID userId, UUID sprintId, String status) throws FailedToFetchTickets {
+        try {
+            return ticketRepository.findAllTicketsWithStatus(userId, sprintId, status);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            log.info(e.toString());
+            throw new FailedToFetchTickets(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateTicketStatus(UUID ticketId, String newStatus) throws FailedToUpdateTicket {
+        try {
+            ticketRepository.updateTicketProgressStatus(newStatus, ticketId);
+        } catch (Exception e) {
+            throw new FailedToUpdateTicket(e.getMessage(), e);
+        }
     }
 }
