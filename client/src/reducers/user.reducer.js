@@ -1,6 +1,13 @@
-const userReducer = (user = {registrationSuccessFlag: false, registrationFailedFlag: false}, action) => {
+const initialUser = {
+    registrationSuccessFlag: false,
+    registrationFailedFlag: false,
+    loginSuccessFlag: false,
+    loginFailedFlag: false
+}
+
+const userReducer = (user = initialUser, action) => {
     if (action.type === 'UPDATE_USER') {
-        return action.user;
+        return Object.assign({}, user, action.user);
     }
     return user;
 }

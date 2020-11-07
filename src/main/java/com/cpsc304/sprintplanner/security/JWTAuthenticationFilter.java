@@ -2,6 +2,7 @@ package com.cpsc304.sprintplanner.security;
 
 import com.auth0.jwt.JWT;
 import com.cpsc304.sprintplanner.persistence.entities.User;
+import com.cpsc304.sprintplanner.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,7 @@ import static com.cpsc304.sprintplanner.security.SecurityConstants.*;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     // JWT tokens will expire after 15 minutes
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
         try {

@@ -22,7 +22,7 @@ export const registerUser = (email, username, password, organizationName) => {
             .catch(err => {
                 console.error(err);
                 dispatch(updateUser({registrationSuccessFlag: false, registrationFailedFlag: true}));
-            })
+            });
     }
 }
 
@@ -37,12 +37,18 @@ export const login = (username, password) => {
             .then(res => {
                 console.log(res.headers);
                 localStorage.setItem('token', res.headers.authorization);
+                const flags = {loginSuccessFlag: true, loginFailedFlag: false};
+                if (res.data.error) {
+                    flags.loginFailedFlag = true;
+                    flags.loginSuccessFlag = false;
+                }
+                dispatch(updateUser(flags));
                 // TODO: Send user to dashboard
             })
             .catch(err => {
                 console.error(err);
-                // TODO: Notify User of error
-            })
+                dispatch(updateUser({loginSuccessFlag: false, loginFailedFlag: true}));
+            });
     }
 }
 
