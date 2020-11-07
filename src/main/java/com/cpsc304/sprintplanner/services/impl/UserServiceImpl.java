@@ -1,6 +1,7 @@
 package com.cpsc304.sprintplanner.services.impl;
 
 import com.cpsc304.sprintplanner.dto.UserDto;
+import com.cpsc304.sprintplanner.exceptions.FailedToFindUserException;
 import com.cpsc304.sprintplanner.exceptions.FailedToSaveOrgException;
 import com.cpsc304.sprintplanner.exceptions.FailedToSaveUserException;
 import com.cpsc304.sprintplanner.persistence.entities.Organization;
@@ -42,6 +43,15 @@ public class UserServiceImpl implements UserService {
             log.error(e.getMessage());
             throw new FailedToSaveUserException("User already exists", e);
         }
+    }
+
+    @Override
+    public User getUserByUsername(String username) throws FailedToFindUserException {
+        final User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new FailedToFindUserException("User with username " + username + " was not found.");
+        }
+        return user;
     }
 
     private UUID getOrganizationUUID(String orgName) throws FailedToSaveOrgException {
