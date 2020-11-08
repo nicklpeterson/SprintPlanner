@@ -1,24 +1,28 @@
 import axios from 'axios';
 const API_URL = process.env.API_URL;
 
-export const registerUser = (email, username, password) => {
+export const registerUser = (email, username, password, organizationName) => {
     const data = {
         username: username,
         password: password,
-        email: email
+        email: email,
+        organizationName: organizationName
     }
     const headers = {"Content-Type" : "application/json"}
     return dispatch => {
         axios.post(API_URL + "/users/signup", JSON.stringify(data), {headers})
             .then(res => {
-                console.log("Success");
-                // TODO: Login user
+                const flags = {registrationSuccessFlag: true, registrationFailedFlag: false};
+                if (res.data.error) {
+                    flags.registrationFailedFlag = true;
+                    flags.registrationSuccessFlag = false;
+                }
+                dispatch(updateUser(flags));
             })
             .catch(err => {
-                console.log("failed");
-                console.log(err);
-                // TODO: Notify User of error
-            })
+                console.error(err);
+                dispatch(updateUser({registrationSuccessFlag: false, registrationFailedFlag: true}));
+            });
     }
 }
 
@@ -31,13 +35,26 @@ export const login = (username, password) => {
     return dispatch => {
         axios.post(API_URL + "/login", JSON.stringify(data), {headers})
             .then(res => {
-                console.log("Success");
                 console.log(res.headers);
+                localStorage.setItem('token', res.headers.authorization);
+                const flags = {loginSuccessFlag: true, loginFailedFlag: false};
+                if (res.data.error) {
+                    flags.loginFailedFlag = true;
+                    flags.loginSuccessFlag = false;
+                }
+                dispatch(updateUser(flags));
                 // TODO: Send user to dashboard
             })
             .catch(err => {
-                console.log("failed");
-                // TODO: Notify User of error
-            })
+                console.error(err);
+                dispatch(updateUser({loginSuccessFlag: false, loginFailedFlag: true}));
+            });
+    }
+}
+
+export const updateUser = user => {
+    return {
+        type: 'UPDATE_USER',
+        user: user
     }
 }

@@ -1,8 +1,11 @@
 package com.cpsc304.sprintplanner.security;
 
 import com.auth0.jwt.JWT;
+import com.cpsc304.sprintplanner.exceptions.FailedToFindUserException;
 import com.cpsc304.sprintplanner.persistence.entities.User;
+import com.cpsc304.sprintplanner.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.cpsc304.sprintplanner.security.SecurityConstants.*;
@@ -26,6 +28,7 @@ import static com.cpsc304.sprintplanner.security.SecurityConstants.*;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     // JWT tokens will expire after 15 minutes
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
         try {
@@ -41,11 +44,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException, ServletException {
         final String username = ((org.springframework.security.core.userdetails.User)  auth.getPrincipal()).getUsername();
-        final String token = JWT.create()
-                .withSubject(username)
-                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(HMAC512(SECRET.getBytes()));
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-        res.setHeader(ACCESS_CONTROL_HEADER, HEADER_STRING);
+        try {
+            final User user = userService.getUserByUsername(username);
+            final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            final String token = JWT.create()
+                    .withSubject(objectWriter.writeValueAsString(user))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                    .sign(HMAC512(SECRET.getBytes()));
+            res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+            res.setHeader(ACCESS_CONTROL_HEADER, HEADER_STRING);
+        } catch (FailedToFindUserException e) {
+            throw new ServletException("Failed to load user after a successful authentication");
+        }
     }
 }

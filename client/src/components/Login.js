@@ -9,8 +9,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {useDispatch} from "react-redux";
-import {login} from "../actions/user.actions";
+import {useDispatch, useSelector} from "react-redux";
+import {login, updateUser} from "../actions/user.actions";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -37,6 +43,17 @@ export default function Login() {
     const dispatch = useDispatch();
     const [password, setPassword] = React.useState('');
     const [username, setUsername] = React.useState('');
+    const user = useSelector(state => state.user);
+
+    const setLoginSuccessFlag = bool => {
+        user.registrationSuccessFlag = bool;
+        dispatch(updateUser(Object.assign({}, user, {loginSuccessFlag: bool})));
+    }
+
+    const setLoginFailFlag = bool => {
+        user.registrationFailedFlag = bool;
+        dispatch(updateUser(Object.assign({}, user, {loginFailedFlag: bool})));
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -100,6 +117,16 @@ export default function Login() {
                         </Grid>
                     </Grid>
                 </form>
+                <Snackbar open={user.loginSuccessFlag} autoHideDuration={6000} onClose={() => setLoginSuccessFlag(false)}>
+                    <Alert onClose={() => setLoginSuccessFlag(false)} severity="success">
+                        Login was successful!
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={user.loginFailedFlag} autoHideDuration={6000} onClose={() => setLoginFailFlag(false)}>
+                    <Alert onClose={() => setLoginFailFlag(false)} severity="error">
+                        Wrong username or password. Please try again.
+                    </Alert>
+                </Snackbar>
             </div>
         </Container>
     );

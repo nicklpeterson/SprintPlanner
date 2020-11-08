@@ -3,14 +3,20 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {useDispatch} from "react-redux";
-import {registerUser} from "../actions/user.actions";
+import {useDispatch, useSelector} from "react-redux";
+import {registerUser, updateUser} from "../actions/user.actions";
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,10 +44,22 @@ export default function Register() {
     const [password, setPassword] = React.useState('');
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
+    const [organizationName, setOrganizationName] = React.useState('');
+    const user = useSelector(state => state.user);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(registerUser(email, username, password));
+        dispatch(registerUser(email, username, password, organizationName));
+    }
+
+    const setRegisterSuccessFlag = bool => {
+        user.registrationSuccessFlag = bool;
+        dispatch(updateUser(Object.assign({}, user, {registrationSuccessFlag: bool})));
+    }
+
+    const setRegisterFailWarning = bool => {
+        user.registrationFailedFlag = bool;
+        dispatch(updateUser(Object.assign({}, user, {registrationFailedFlag: bool})));
     }
 
     return (
@@ -56,18 +74,6 @@ export default function Register() {
                 </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -93,6 +99,30 @@ export default function Register() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="organizationName"
+                                label="Organization Name"
+                                name="email"
+                                autoComplete="email"
+                                onChange={(e) => setOrganizationName(e.target.value)}
+                            />
+                        </Grid>
                     </Grid>
                     <Button
                         type="submit"
@@ -112,6 +142,16 @@ export default function Register() {
                         </Grid>
                     </Grid>
                 </form>
+                <Snackbar open={user.registrationSuccessFlag} autoHideDuration={6000} onClose={() => setRegisterSuccessFlag(false)}>
+                    <Alert onClose={() => setRegisterSuccessFlag(false)} severity="success">
+                        Registration was successful!
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={user.registrationFailedFlag} autoHideDuration={6000} onClose={() => setRegisterFailWarning(false)}>
+                    <Alert onClose={() => setRegisterFailWarning(false)} severity="error">
+                        Oops, looks like you're already registered.
+                    </Alert>
+                </Snackbar>
             </div>
         </Container>
     );

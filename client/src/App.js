@@ -4,6 +4,17 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Home from "./components/Home";
+import axios from 'axios';
+
+axios.interceptors.request.use(
+    config => {
+        config.headers.authorization = `${localStorage.getItem('token')}`;
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
 
 function App() {
     return (

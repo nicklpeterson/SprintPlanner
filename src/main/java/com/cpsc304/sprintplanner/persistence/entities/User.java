@@ -1,7 +1,6 @@
 package com.cpsc304.sprintplanner.persistence.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -9,13 +8,15 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "USERS")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "USERS", schema= "public")
 public class User {
-    //TODO: This entity needs to contain a profile picture (type ByteArray?)
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "userid")
     private UUID id;
 
     @Column(name = "username")
@@ -27,6 +28,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "display_picture_id")
+    @Column (name = "organization")
+    private UUID organization;
+
+    @Column(name = "displaypicture")
     private UUID displayPicture;
 }
