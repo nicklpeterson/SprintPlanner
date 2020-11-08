@@ -35,10 +35,6 @@ export default function UserBoard({userId, sprintId, username, points}) {
     useEffect(() => {
         const fetchTickets = () => {
             try {
-                console.log(localStorage);
-                userId = "3d66f3a6-f540-4bf3-b4b0-43b4b5bc6624";
-                sprintId = "3d66f3a6-f540-4bf3-b4b0-43b4b5bc6624";
-
                 dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.BACKLOG));
                 dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.PAUSED));
                 dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.IN_PROGRESS));
@@ -84,9 +80,7 @@ export default function UserBoard({userId, sprintId, username, points}) {
         }
 
     };
-
-    username ="BOB";
-    points = 11;
+    
     return (
         <div>
             <Grid container direction="row">
