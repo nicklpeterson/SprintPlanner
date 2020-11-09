@@ -1,48 +1,61 @@
 package com.cpsc304.sprintplanner.persistence.entities;
 
+import com.cpsc304.sprintplanner.persistence.entities.enums.PostgreSQLEnumType;
 import com.cpsc304.sprintplanner.persistence.entities.enums.Severity;
 import com.cpsc304.sprintplanner.persistence.entities.enums.Status;
 import lombok.*;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Getter
 @Setter
+@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
-@EqualsAndHashCode
-
-@Entity
-@Table(name = "TICKETS")
+@Table(name = "TICKETS", schema="public")
+@TypeDef(
+        name = "pgsql_enum",
+        typeClass = PostgreSQLEnumType.class
+)
 public class Ticket {
     @Id
-    @Column(name = "id")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ticketid")
+    private UUID ticketId;
 
-    @Column(name = "ticket_name")
-    private String ticketName;
+    @Column(name = "tickettitle")
+    private String ticketTitle;
 
-    @Column(name = "creator")
-    private String creator;
+    @Column(name = "creatorid")
+    private UUID creatorId;
 
-    @Column(name = "status_change_date")
-    private Timestamp statusChangeDate;
+    @Column(name = "projectid")
+    private UUID projectId;
 
-    @Column(name = "ticket_description")
-    private String ticketDescription;
+    @Column(name = "sprintId")
+    private UUID sprintId;
+
+    @Column(name = "assigneeid")
+    private UUID assigneeId;
+
+    @Column(name = "points")
+    private Integer points;
 
     @Column(name = "severity")
     private Severity severity;
 
+    // followed: https://stackoverflow.com/questions/27804069/hibernate-mapping-between-postgresql-enum-and-java-enum/27807765
+    // in order to use enum type with postgres
+    @Enumerated(EnumType.STRING)
+    @Type( type = "pgsql_enum" )
     @Column(name = "status")
     private Status status;
 
-    @Column(name = "dateIssue")
+    @Column(name = "dateissue")
     private Timestamp dateIssue;
 }

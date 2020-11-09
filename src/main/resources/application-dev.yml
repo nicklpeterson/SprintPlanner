@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5400/sprintplanner
+    url: jdbc:postgresql://localhost:5400/sprintplanner?stringtype=unspecified
     username: dev
     password: 123
   jpa:
@@ -9,10 +9,12 @@ spring:
       ddl-auto: none
       hbm2ddl.auto: none
   flyway:
-    url: jdbc:postgresql://localhost:5400/sprintplanner
+    url: jdbc:postgresql://localhost:5400/sprintplanner?stringtype=unspecified
     schemas: public
     user: "dev"
     password: "123"
+    baselineOnMigrate: true
+    validateOnMigrate: false
 
 server.error:
   include-exception: true

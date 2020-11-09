@@ -33,10 +33,12 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private TicketDto newTicketDtoFromTicket(Ticket ticket) {
-        return TicketDto.builder()
-                .id(ticket.getId())
-                .ticketName(ticket.getTicketName())
-                .creator(ticket.getCreator())
-                .build();
+        return null;
+        // TODO: REFACTOR, THE BUILDER CAN'T HANDLE A UUID
+//        return TicketDto.builder()
+//                .id(ticket.getId())
+//                .ticketName(ticket.getTicketName())
+//                .creator(ticket.getCreator())
+//                .build();
     }
 }
