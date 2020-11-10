@@ -37,6 +37,9 @@ public class Ticket {
     @Column(name = "projectid")
     private UUID projectId;
 
+    @Column(name = "sprintnumber")
+    private Integer sprintNumber;
+
     @Column(name = "assigneeid")
     private UUID assigneeId;
 
