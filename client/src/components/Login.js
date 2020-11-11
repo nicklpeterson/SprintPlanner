@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {login, updateUser} from "../actions/user.actions";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import {Redirect} from "react-router-dom";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -58,6 +59,10 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(login(username, password));
+    }
+
+    if (user.loginSuccessFlag) {
+        return <Redirect to="/profile" />
     }
 
     return (

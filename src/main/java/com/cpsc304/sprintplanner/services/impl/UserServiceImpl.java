@@ -15,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -43,6 +44,31 @@ public class UserServiceImpl implements UserService {
             log.error(e.getMessage());
             throw new FailedToSaveUserException("User already exists", e);
         }
+    }
+
+    @Override
+    public void addSkill(UUID userId, String skill) {
+        userRepository.addSkill(userId, skill);
+    }
+
+    @Override
+    public void removeSkill(UUID userId, String skill) {
+        userRepository.removeSkill(userId, skill);
+    }
+
+    @Override
+    public List<String> getSkills(UUID userId) {
+       return userRepository.getUserSkills(userId);
+    }
+
+    @Override
+    public User getUserDetails(UUID userId) {
+        return userRepository.findByUserId(userId);
+    }
+
+    @Override
+    public byte[] getProfilePic(String username) {
+        return userRepository.getProfilePic(username);
     }
 
     @Override

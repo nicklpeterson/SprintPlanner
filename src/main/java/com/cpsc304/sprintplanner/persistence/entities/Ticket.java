@@ -46,6 +46,10 @@ public class Ticket {
     @Column(name = "points")
     private Integer points;
 
+    // followed: https://stackoverflow.com/questions/27804069/hibernate-mapping-between-postgresql-enum-and-java-enum/27807765
+    // in order to use enum type with postgres
+    @Enumerated(EnumType.STRING)
+    @Type( type = "pgsql_enum" )
     @Column(name = "severity")
     private Severity severity;
 

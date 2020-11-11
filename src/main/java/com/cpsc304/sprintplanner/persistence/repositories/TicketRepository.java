@@ -20,6 +20,8 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Query(value = "SELECT * FROM TICKETS t1 WHERE NOT EXISTS (SELECT t2.assigneeId FROM TICKETS T2 WHERE assigneeId = :userId AND projectId = :sprintId AND NOT EXISTS (SELECT t3.assigneeId, t3.status FROM TICKETS t3 WHERE t2.assigneeId = t3.assigneeId AND t3.status = :status))", nativeQuery=true)
     List<Ticket> findAllTicketsWithStatus(@Param("userId") UUID userId, @Param("sprintId") UUID sprintId, @Param("status") String status);
 
+    @Query(value = "SELECT * FROM TICKETS WHERE assigneeid = (SELECT userid FROM USERS WHERE username = :username)", nativeQuery=true)
+    List<Ticket> findAllTicketsByUserName(@Param("username") String username);
 
     @Modifying
     @Transactional

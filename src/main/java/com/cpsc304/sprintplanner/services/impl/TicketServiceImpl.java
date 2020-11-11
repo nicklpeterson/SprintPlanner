@@ -57,6 +57,17 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<Ticket> getAllTicketsByUserName(String username) throws FailedToFetchTickets {
+        try {
+            return ticketRepository.findAllTicketsByUserName(username);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            log.info(e.toString());
+            throw new FailedToFetchTickets(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public void updateTicketStatus(UUID ticketId, String newStatus) throws FailedToUpdateTicket {
         try {
             ticketRepository.updateTicketProgressStatus(newStatus, ticketId);

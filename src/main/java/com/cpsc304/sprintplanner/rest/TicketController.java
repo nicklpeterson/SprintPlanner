@@ -5,10 +5,7 @@ import com.cpsc304.sprintplanner.services.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +42,20 @@ public class TicketController {
         List<TicketDto> ticketDtoList = ticketService.getAllTickets();
         response.put("tickets", ticketDtoList);
         response.put("success", true);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/assigned/{username}")
+    public ResponseEntity<Map<String, Object>> getAssignedTickets(@PathVariable String username)  {
+        log.info("Getting {}'s assigned tickets", username);
+        final Map<String, Object> response = new HashMap<>();
+        try {
+            response.put("tickets", ticketService.getAllTicketsByUserName(username));
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("success", false);
+        }
         return ResponseEntity.ok(response);
     }
 }
