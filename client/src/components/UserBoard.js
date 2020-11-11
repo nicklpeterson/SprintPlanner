@@ -67,9 +67,6 @@ export default function UserBoard({userId, sprintId, username}) {
             "done": doneItems[userId]?.doneTickets ?? []
         };
 
-        console.log("MAPPING");
-        console.log(idMappedToList);
-
         // if it's dropped outside a list
         if (!destination || source.droppableId === destination.droppableId) {
             return;

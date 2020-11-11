@@ -100,9 +100,6 @@ public class BoardController {
             response.put("sum", sum);
             response.put("success", true);
         } catch (Exception e) {
-            log.info("I got an error");
-            log.info(e.getMessage());
-            log.info(e.toString());
             response.put("error", e.getMessage());
             response.put("success", false);
         }
@@ -131,11 +128,13 @@ public class BoardController {
 
         try {
             Double sum = sprintService.getAvgPoints(Integer.parseInt(sprintNumber));
-            log.info(sum.toString());
             response.put("sum", sum);
             response.put("success", true);
-        } catch (Exception e) {
-            log.info("ERROR ERROR ERROR");
+        } catch (NullPointerException e) {
+            Integer sum = 0;
+            response.put("sum", sum);
+            response.put("success", true);
+        }catch (Exception e) {
             response.put("error", e.getMessage());
             response.put("success", false);
         }
@@ -151,7 +150,6 @@ public class BoardController {
             response.put("teams", teams);
             response.put("success", true);
         } catch (Exception e) {
-            log.info("ERROR ERROR ERROR");
             response.put("error", e.getMessage());
             response.put("success", false);
         }
