@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Home from "./components/Home";
+import SelectTeamBoard from "./components/SelectTeamBoard";
+
 import axios from 'axios';
 
 axios.interceptors.request.use(
@@ -24,6 +26,7 @@ function App() {
                     <Route path="/" component={Home} exact/>
                     <Route path="/login" component={Login} exact/>
                     <Route path="/register" component={Register} exact/>
+                    <Route path="/board" component={SelectTeamBoard} exact/>
                 </Switch>
             </div>
         </BrowserRouter>

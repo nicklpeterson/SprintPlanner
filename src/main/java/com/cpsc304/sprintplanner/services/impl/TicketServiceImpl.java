@@ -46,12 +46,10 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> getAllTicketsByStatus(UUID userId, UUID sprintId, String status) throws FailedToFetchTickets {
+    public List<Ticket> getAllTicketsByStatus(UUID userId, Integer sprintId, String status) throws FailedToFetchTickets {
         try {
             return ticketRepository.findAllTicketsWithStatus(userId, sprintId, status);
         } catch (Exception e) {
-            log.info(e.getMessage());
-            log.info(e.toString());
             throw new FailedToFetchTickets(e.getMessage(), e);
         }
     }
@@ -62,6 +60,15 @@ public class TicketServiceImpl implements TicketService {
             ticketRepository.updateTicketProgressStatus(newStatus, ticketId);
         } catch (Exception e) {
             throw new FailedToUpdateTicket(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Integer getUsersPoints(UUID userId, Integer sprintNumber) throws Exception {
+        try {
+            return ticketRepository.getUsersPoints(userId, sprintNumber);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage(), e);
         }
     }
 }

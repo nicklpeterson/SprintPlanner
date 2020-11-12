@@ -46,6 +46,8 @@ public class Ticket {
     @Column(name = "points")
     private Integer points;
 
+    @Enumerated(EnumType.STRING)
+    @Type( type = "pgsql_enum" )
     @Column(name = "severity")
     private Severity severity;
 

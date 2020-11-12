@@ -3,6 +3,8 @@ package com.cpsc304.sprintplanner.persistence.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -13,18 +15,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "TEAM", schema="public")
 public class Team {
+    @ManyToMany
+    @JoinTable(name="TEAM_MEMBERS",
+            joinColumns = { @JoinColumn(name = "teamid") },
+            inverseJoinColumns = { @JoinColumn(name = "userid") })
+    Set<User> users = new HashSet<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "projectid")
+    @Column(name = "teamid")
     private UUID teamId;
 
     @Column(name = "orgid")
     private UUID orgId;
 
-    @Column(name="manager")
-    private UUID manager;
-
-    @Column(name="log")
+    @Column(name="logo")
     private byte[] logo;
 
     @Column(name="name")

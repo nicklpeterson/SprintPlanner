@@ -16,7 +16,7 @@ export default function BoardColumn({ colName, items, colId }) {
         padding: GRID_WIDTH,
         marginLeft: 5,
         marginRight: 5,
-        width: 225,
+        width: 200,
         minHeight: 200,
         borderRadius: 5
     });
