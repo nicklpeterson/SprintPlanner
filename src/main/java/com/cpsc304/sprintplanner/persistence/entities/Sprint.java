@@ -1,12 +1,9 @@
 package com.cpsc304.sprintplanner.persistence.entities;
 
 import lombok.*;
-import javax.persistence.Id;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
+import javax.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
@@ -18,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "SPRINTS", schema="public")
-public class Sprint implements Serializable {
+public class Sprint {
     @Id
     @Column(name="sprintnumber")
     Integer sprintNumber;
@@ -35,7 +32,6 @@ public class Sprint implements Serializable {
     @Column(name="sprintload")
     Integer sprintLoad;
 
-    @Id
     @Column(name="belongsto")
     UUID belongsTo;
 
