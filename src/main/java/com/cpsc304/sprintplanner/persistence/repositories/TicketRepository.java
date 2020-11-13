@@ -23,6 +23,8 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Query(value="SELECT coalesce(SUM(points)) FROM tickets WHERE sprintnumber=:sprintId AND assigneeid=:userId", nativeQuery=true)
     Integer getUsersPoints(@Param("userId") UUID userId, @Param("sprintId") Integer sprintId);
 
+    @Query(value = "SELECT * FROM TICKETS WHERE assigneeid = (SELECT userid FROM USERS WHERE username = :username)", nativeQuery=true)
+    List<Ticket> findAllTicketsByUserName(@Param("username") String username);
 
     @Modifying
     @Transactional

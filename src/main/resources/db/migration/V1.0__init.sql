@@ -38,17 +38,9 @@ CREATE TABLE MANAGER (
                          FOREIGN KEY (manages) REFERENCES TEAM(teamId)
 );
 
-CREATE TABLE SKILL (
-                       skillId SERIAL PRIMARY KEY,
-                       skillDescription VARCHAR
-);
-
 CREATE TABLE DEVELOPER (
-                           userId UUID NOT NULL,
-                           skillId INT,
-                           PRIMARY KEY (userId, skillId),
-                           FOREIGN KEY (userId) REFERENCES USERS(userId),
-                           FOREIGN KEY (skillId) REFERENCES SKILL(skillId)
+                           userId UUID NOT NULL PRIMARY KEY,
+                           FOREIGN KEY (userId) REFERENCES USERS(userId)
 );
 
 CREATE TABLE TEAM_MEMBERS (
@@ -61,10 +53,9 @@ CREATE TABLE TEAM_MEMBERS (
 
 CREATE TABLE USER_SKILL (
                             userId UUID,
-                            skillId INT,
-                            PRIMARY KEY (userId, skillId),
-                            FOREIGN KEY (userId) REFERENCES USERS(userId),
-                            FOREIGN KEY (skillId) REFERENCES SKILL(skillId)
+                            skillDescription VARCHAR,
+                            PRIMARY KEY (userId, skillDescription),
+                            FOREIGN KEY (userId) REFERENCES USERS(userId)
 );
 
 CREATE TABLE PROJECTS (

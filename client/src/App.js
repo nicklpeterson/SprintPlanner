@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import SelectTeamBoard from "./components/SelectTeamBoard";
 
 import axios from 'axios';
+import Profile from "./components/Profile";
 
 axios.interceptors.request.use(
     config => {
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/" component={Home} exact/>
                     <Route path="/login" component={Login} exact/>
                     <Route path="/register" component={Register} exact/>
+                    <Route path="/profile" component={Profile} exact/>
                     <Route path="/board" component={SelectTeamBoard} exact/>
                 </Switch>
             </div>

@@ -43,7 +43,6 @@ export const login = (username, password) => {
                     flags.loginSuccessFlag = false;
                 }
                 dispatch(updateUser(flags));
-                // TODO: Send user to dashboard
             })
             .catch(err => {
                 console.error(err);
