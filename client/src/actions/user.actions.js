@@ -10,7 +10,8 @@ export const registerUser = (email, username, password, organizationName) => {
     }
     const headers = {"Content-Type" : "application/json"}
     return dispatch => {
-        axios.post(API_URL + "/users/signup", JSON.stringify(data), {headers})
+        // create() makes this request bypass the axios interceptor
+        axios.create().post(API_URL + "/users/signup", JSON.stringify(data), {headers})
             .then(res => {
                 const flags = {registrationSuccessFlag: true, registrationFailedFlag: false};
                 if (res.data.error) {
