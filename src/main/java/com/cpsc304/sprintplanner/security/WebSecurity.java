@@ -2,7 +2,6 @@ package com.cpsc304.sprintplanner.security;
 
 import com.cpsc304.sprintplanner.services.UserService;
 import com.cpsc304.sprintplanner.services.impl.UserDetailsServiceImpl;
-import com.cpsc304.sprintplanner.services.impl.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

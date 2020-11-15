@@ -1,4 +1,4 @@
-const initialState = { username: undefined, name: undefined, skills: [], tickets: [] };
+const initialState = { username: undefined, name: undefined, manager: false, manages: [], teams: [], skills: [], tickets: [] };
 
 const profileReducer = (state = initialState, action) => {
     if (action.type === 'ADD_SKILL') {
@@ -11,9 +11,17 @@ const profileReducer = (state = initialState, action) => {
             return {key: index, description: skill};
             })}
     } else if (action.type === 'GET_USER_DETAILS') {
-        return {...state, username: action.payload.username, name: action.payload.name};
+        return {...state, username: action.payload.user.username, name: action.payload.user.name, manager: action.payload.user.manager};
     } else if (action.type === 'GET_ASSIGNED_TICKETS') {
         return {...state, tickets: action.payload ? action.payload : []};
+    } else if (action.type === 'ADD_TEAM') {
+        return {...state, manages: [...state.manages, action.payload.team]}
+    } else if (action.type === 'JOIN_TEAM') {
+        return {...state, teams: [...state.teams, action.payload.team]}
+    } else if (action.type === 'GET_TEAMS') {
+        return {...state, teams: [...state.teams, ...action.payload]}
+    } else if (action.type === 'GET_MANAGED_TEAMS') {
+        return {...state, manages: [...state.manages, ...action.payload]}
     }
     return state;
 };

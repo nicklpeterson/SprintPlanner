@@ -21,6 +21,10 @@ public class Team {
             inverseJoinColumns = { @JoinColumn(name = "userid") })
     Set<User> users = new HashSet<>();
 
+    @ManyToOne
+    @JoinTable(name="ORGANIZATION", joinColumns = { @JoinColumn(name = "orgid") })
+    Organization organization;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "teamid")

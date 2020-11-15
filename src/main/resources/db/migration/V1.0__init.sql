@@ -19,28 +19,26 @@ CREATE TABLE USERS (
                        email VARCHAR,
                        organization UUID NOT NULL,
                        displayPicture UUID DEFAULT uuid_nil(),
+                       isManager BOOLEAN NOT NULL DEFAULT false,
                        FOREIGN KEY (organization) REFERENCES ORGANIZATION(orgId),
                        FOREIGN KEY (displayPicture) REFERENCES PICTURE(pictureId)
 );
 
 CREATE TABLE TEAM (
-                      teamId UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                      teamId UUID UNIQUE DEFAULT uuid_generate_v4(),
                       orgId UUID NOT NULL,
                       logo BYTEA,
                       name VARCHAR NOT NULL,
-                      FOREIGN KEY (orgId) REFERENCES ORGANIZATION(orgId)
+                      FOREIGN KEY (orgId) REFERENCES ORGANIZATION(orgId),
+                      PRIMARY KEY (orgid, name)
 );
 
 CREATE TABLE MANAGER (
-                         userId UUID NOT NULL PRIMARY KEY,
+                         userId UUID NOT NULL,
                          manages UUID,
                          FOREIGN KEY (userId) REFERENCES USERS(userId),
-                         FOREIGN KEY (manages) REFERENCES TEAM(teamId)
-);
-
-CREATE TABLE DEVELOPER (
-                           userId UUID NOT NULL PRIMARY KEY,
-                           FOREIGN KEY (userId) REFERENCES USERS(userId)
+                         FOREIGN KEY (manages) REFERENCES TEAM(teamId),
+                         PRIMARY KEY (userId, manages)
 );
 
 CREATE TABLE TEAM_MEMBERS (
