@@ -29,8 +29,6 @@ export const getTicketsByProgress = (userId, sprintId, status) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getStatus/${userId}/${sprintId}/${status}`, {headers})
             .then(res => {
-                console.log("Successfully got tickets");
-                console.log(res.data.tickets);
                 dispatch(updateTicketByProgress(res.data.tickets, status, userId));
             })
             .catch(err => {
@@ -49,8 +47,6 @@ export const getAllTeamMembers = (teamId) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getTeamMembers/${teamId}`, {headers})
             .then(res => {
-                console.log("Success");
-                console.log(res);
                 dispatch(getTeamMembers(res.data.tickets));
             })
             .catch(err => {
@@ -67,8 +63,6 @@ export const getAllSprints = (teamId) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getAllSprints/${teamId}`, {headers})
             .then(res => {
-                console.log("Successfully got sprints");
-                console.log(res.data.tickets);
                 dispatch(getSprints(res.data.tickets));
             })
             .catch(err => {
@@ -87,8 +81,6 @@ export const getTotalPointsForUser = (userId, sprintNumber) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getTotalPointsForUser/${userId}/${sprintNumber}`, {headers})
             .then(res => {
-                console.log("Successfully got points");
-                console.log(res);
                 dispatch(getUserPoints(res.data.sum, userId));
             })
             .catch(err => {
@@ -106,8 +98,6 @@ export const getNumOfUserWithTickets = (sprintNumber) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getNumOfUsersWithTickets/${sprintNumber}`, {headers})
             .then(res => {
-                console.log("Successfully got num og users");
-                console.log(res);
                 dispatch(updateNumOfUsers(res.data.sum));
             })
             .catch(err => {
@@ -125,8 +115,6 @@ export const getAvgPoints = (sprintNumber) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getAvgPoints/${sprintNumber}`, {headers})
             .then(res => {
-                console.log("Successfully got avg. points");
-                console.log(res);
                 dispatch(updateUserPoints(res.data.sum));
             })
             .catch(err => {
@@ -143,8 +131,6 @@ export const getAllTeams = (userId) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getAllTeams/${userId}`, {headers})
             .then(res => {
-                console.log("Successfully got all teams");
-                console.log(res);
                 dispatch(updateAllTeams(res.data.teams));
             })
             .catch(err => {
@@ -199,9 +185,6 @@ export const getSprints = (sprints) => {
 };
 
 export const updateTicketByProgress = (tickets, status, userId) => {
-    if (status === 'backlog') {
-        console.log(tickets);
-    }
     if (status === idMappedToStatus.BACKLOG) {
         return {
             type: 'GET_BACKLOG_TICKETS',
