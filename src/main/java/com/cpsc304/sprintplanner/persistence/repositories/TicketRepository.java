@@ -20,11 +20,14 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Query(value = "SELECT * FROM TICKETS t1 WHERE assigneeId =:userId AND NOT EXISTS (SELECT t2.assigneeId FROM TICKETS T2 WHERE NOT EXISTS (SELECT t3.assigneeId, t3.status FROM TICKETS t3 WHERE t2.assigneeId = t3.assigneeId AND t3.status =:status AND sprintnumber =:sprintId))", nativeQuery=true)
     List<Ticket> findAllTicketsWithStatus(@Param("userId") UUID userId, @Param("sprintId") Integer sprintId, @Param("status") String status);
 
-    @Query(value="SELECT coalesce(SUM(points)) FROM tickets WHERE sprintnumber=:sprintId AND assigneeid=:userId", nativeQuery=true)
+    @Query(value="SELECT coalesce(SUM(points), 0) FROM tickets WHERE sprintnumber=:sprintId AND assigneeid=:userId", nativeQuery=true)
     Integer getUsersPoints(@Param("userId") UUID userId, @Param("sprintId") Integer sprintId);
 
     @Query(value = "SELECT * FROM TICKETS WHERE assigneeid = (SELECT userid FROM USERS WHERE username = :username)", nativeQuery=true)
     List<Ticket> findAllTicketsByUserName(@Param("username") String username);
+
+    @Query(value="SELECT * FROM tickets WHERE ticketid=:ticketId", nativeQuery=true)
+    Ticket getTicketById(@Param("ticketId") UUID ticketId);
 
     @Modifying
     @Transactional

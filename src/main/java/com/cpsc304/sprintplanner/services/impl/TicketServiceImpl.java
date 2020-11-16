@@ -82,4 +82,13 @@ public class TicketServiceImpl implements TicketService {
             throw new Exception(e.getMessage(), e);
         }
     }
+
+    @Override
+    public Ticket getTicketById(UUID ticketId) throws FailedToFetchTickets {
+        try {
+            return ticketRepository.getTicketById(ticketId);
+        } catch (Exception e) {
+            throw new FailedToFetchTickets(e.getMessage(), e);
+        }
+    }
 }
