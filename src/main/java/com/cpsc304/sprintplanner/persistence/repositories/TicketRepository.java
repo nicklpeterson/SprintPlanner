@@ -17,7 +17,7 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     Iterable<Ticket> selectAllTickets();
 
     // TODO: REFACTOR TO INCLUDE THE PROJECT NAME AS WELL, WILL HAVE TO DO A JOIN
-    @Query(value = "SELECT * FROM TICKETS t1 WHERE assigneeId =:userId AND NOT EXISTS (SELECT t2.assigneeId FROM TICKETS T2 WHERE NOT EXISTS (SELECT t3.assigneeId, t3.status FROM TICKETS t3 WHERE t2.assigneeId = t3.assigneeId AND t3.status =:status AND sprintnumber =:sprintId))", nativeQuery=true)
+    @Query(value = "SELECT * FROM TICKETS t1 WHERE assigneeId =:userId AND status=:status AND NOT EXISTS (SELECT t2.assigneeId FROM TICKETS T2 WHERE NOT EXISTS (SELECT t3.assigneeId, t3.status FROM TICKETS t3 WHERE t2.assigneeId = t3.assigneeId AND t3.status =:status AND sprintnumber =:sprintId))", nativeQuery=true)
     List<Ticket> findAllTicketsWithStatus(@Param("userId") UUID userId, @Param("sprintId") Integer sprintId, @Param("status") String status);
 
     @Query(value="SELECT coalesce(SUM(points), 0) FROM tickets WHERE sprintnumber=:sprintId AND assigneeid=:userId", nativeQuery=true)
