@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useReducer} from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
 import BoardColumn from "./BoardColumn";
 import Grid from '@material-ui/core/Grid';
@@ -16,33 +16,14 @@ import Typography from '@material-ui/core/Typography';
 // I moved up the groupby query for points to the team user board in order for it to have more significance
 export default function UserBoard({userId, sprintId, username}) {
     const dispatch = useDispatch();
-    const backlogItems = useSelector(state => state.board);
-    const pausedItems = useSelector(state => state.board);
-    const inProgressItems = useSelector(state => state.board);
-    const inReviewItems = useSelector(state => state.board);
-    const doneItems = useSelector(state => state.board);
+    const backlogItems = useSelector(state => state.board[userId]?.backlogTickets);
+    const pausedItems = useSelector(state =>state.board[userId]?.pausedTickets);
+    const inProgressItems = useSelector(state => state.board[userId]?.inProgressTickets);
+    const inReviewItems = useSelector(state => state.board[userId]?.inReviewTickets);
+    const doneItems = useSelector(state => state.board[userId]?.doneTickets);
     const points = useSelector(state => state.board);
     const [updateSuccess, setUpdateSuccess] = React.useState(false);
     const [hasError, setHasError] = React.useState(false);
-
-    useEffect(() => {
-        const fetchTickets = () => {
-            try {
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.BACKLOG));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.PAUSED));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.IN_PROGRESS));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.IN_REVIEW));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.DONE));
-                dispatch(getTotalPointsForUser(userId, sprintId));
-
-            } catch (e) {
-                setHasError(true);
-                console.log(e);
-                console.log("Unable to load tickets");
-            }
-        };
-        fetchTickets();
-    }, []);
 
     const move = (source, destination, droppableSource, droppableDestination, ticketId) => {
         const [removed] = source.splice(droppableSource.index, 1);
@@ -60,11 +41,11 @@ export default function UserBoard({userId, sprintId, username}) {
     const onDragEnd = (result) => {
         const { source, destination } = result;
         const idMappedToList = {
-            "backlog": backlogItems[userId]?.backlogTickets ?? [],
-            "paused": pausedItems[userId]?.pausedTickets ?? [],
-            "inProgress": inProgressItems[userId]?.inProgressTickets ?? [],
-            "inReview": inReviewItems[userId]?.inReviewTickets ?? [],
-            "done": doneItems[userId]?.doneTickets ?? []
+            "backlog": backlogItems ?? [],
+            "paused": pausedItems ?? [],
+            "inProgress": inProgressItems ?? [],
+            "inReview": inReviewItems ?? [],
+            "done": doneItems ?? []
         };
 
         // if it's dropped outside a list
@@ -91,19 +72,19 @@ export default function UserBoard({userId, sprintId, username}) {
             <DragDropContext onDragEnd={onDragEnd}>
                 <Grid container direction="row">
                     <Grid item>
-                        <BoardColumn colName={BACKLOG} items={backlogItems[userId]?.backlogTickets ?? []} colId={idMappedToStatus.BACKLOG}/>
+                        <BoardColumn colName={BACKLOG} items={backlogItems ?? []} colId={idMappedToStatus.BACKLOG}/>
                     </Grid>
                     <Grid item>
-                        <BoardColumn colName={PAUSED} items={pausedItems[userId]?.pausedTickets ?? []} colId={idMappedToStatus.PAUSED}/>
+                        <BoardColumn colName={PAUSED} items={pausedItems ?? []} colId={idMappedToStatus.PAUSED}/>
                     </Grid>
                     <Grid item>
-                        <BoardColumn colName={IN_PROGRESS} items={inProgressItems[userId]?.inProgressTickets ?? []} colId={idMappedToStatus.IN_PROGRESS}/>
+                        <BoardColumn colName={IN_PROGRESS} items={inProgressItems ?? []} colId={idMappedToStatus.IN_PROGRESS}/>
                     </Grid>
                     <Grid item>
-                        <BoardColumn colName={IN_REVIEW} items={inReviewItems[userId]?.inReviewTickets ?? []} colId={idMappedToStatus.IN_REVIEW}/>
+                        <BoardColumn colName={IN_REVIEW} items={inReviewItems ?? []} colId={idMappedToStatus.IN_REVIEW}/>
                     </Grid>
                     <Grid item>
-                        <BoardColumn colName={DONE} items={doneItems[userId]?.doneTickets ?? []} colId={idMappedToStatus.DONE}/>
+                        <BoardColumn colName={DONE} items={doneItems ?? []} colId={idMappedToStatus.DONE}/>
                     </Grid>
                 </Grid>
                 <Snackbar open={updateSuccess} onClose={() => setUpdateSuccess(false)} autoHideDuration={3000}>

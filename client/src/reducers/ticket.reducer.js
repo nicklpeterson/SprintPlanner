@@ -12,9 +12,7 @@ const initialTicket = {
 };
 
 const ticketReducer = (state = initialTicket, action) => {
-    console.log(action);
     if (action.type === 'GET_TICKET_BY_ID') {
-        console.log(action.state);
         return action.state;
     } else {
         return {...state}

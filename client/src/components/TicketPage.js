@@ -9,19 +9,20 @@ import Button from '@material-ui/core/Button';
 import {useDispatch, useSelector} from "react-redux";
 import { useParams } from "react-router";
 import { getTicketInfo } from "../actions/ticket.actions";
+import { statuses} from "../constants";
 
 
 export default function TicketPage() {
-    const { ticketId } = useParams();
+    const { id } = useParams();
     const dispatch = useDispatch();
-    const currentTicket = useSelector(state => state);
+    const currentTicket = useSelector(state => state.ticket);
 
     useEffect(() => {
         const fetchTicketInfo = () => {
             console.log("USE PARAMS");
-            console.log(ticketId);
+            console.log(id);
             try {
-                dispatch(getTicketInfo(ticketId));
+                dispatch(getTicketInfo(id));
             } catch (e) {
                 console.log(e);
                 console.log("Unable to load ticket information");
@@ -31,12 +32,9 @@ export default function TicketPage() {
     }, []);
 
 
-    console.log(currentTicket);
-
-
     return (
         <Container>
-                <Typography component="h4" variant="h4" gutterBottom> TITLE </Typography>
+                <Typography component="h4" variant="h4" gutterBottom> {currentTicket.ticketTitle} </Typography>
 
             <Grid container direction="row">
                 <Grid item xs={9} style={{paddingRight: 60}}>
@@ -48,13 +46,13 @@ export default function TicketPage() {
                             </Grid>
                             <Grid item item xs={6}>
                                 <Typography style={{fontWeight:'bold'}}>Status:</Typography>
-                                <Typography>STATUS</Typography>
+                                <Typography>{statuses[currentTicket.status]}</Typography>
                             </Grid>
                         </Grid>
                         <Grid container direction="row">
                             <Grid item xs={6}>
-                                <Typography style={{fontWeight:'bold'}}>Priority:</Typography>
-                                <Typography gutterBottom>PRIORITY</Typography>
+                                <Typography style={{fontWeight:'bold'}}>Severity:</Typography>
+                                <Typography gutterBottom>{currentTicket.severity}</Typography>
                             </Grid>
                             <Grid item item xs={6}>
                                 <Typography style={{fontWeight:'bold'}}>References:</Typography>
@@ -99,7 +97,7 @@ export default function TicketPage() {
                             <Typography style={{fontWeight:'bold'}}>Points: </Typography>
                         </Grid>
                         <Grid item>
-                            <Typography>POINTS</Typography>
+                            <Typography>{currentTicket.points}</Typography>
                             <Button color="primary" style={{paddingLeft: 0}}>Update points</Button>
                         </Grid>
                     </Grid>
