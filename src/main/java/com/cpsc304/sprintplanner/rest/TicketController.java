@@ -1,6 +1,7 @@
 package com.cpsc304.sprintplanner.rest;
 
 import com.cpsc304.sprintplanner.dto.TicketDto;
+import com.cpsc304.sprintplanner.persistence.entities.Ticket;
 import com.cpsc304.sprintplanner.services.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -46,13 +48,31 @@ public class TicketController {
     }
 
     @GetMapping(path = "/assigned/{username}")
-    public ResponseEntity<Map<String, Object>> getAssignedTickets(@PathVariable String username)  {
+    public ResponseEntity<Map<String, Object>> getAssignedTickets(@PathVariable String username) {
         log.info("Getting {}'s assigned tickets", username);
         final Map<String, Object> response = new HashMap<>();
         try {
             response.put("tickets", ticketService.getAllTicketsByUserName(username));
             response.put("success", true);
         } catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("success", false);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping(path = "/{ticketId}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getTicketInfo(@PathVariable String ticketId) {
+        final Map<String, Object> response = new HashMap<>();
+        log.info(ticketId);
+        log.info(UUID.fromString(ticketId).toString());
+        try {
+            Ticket ticket = ticketService.getTicketById(UUID.fromString(ticketId));
+            response.put("ticket", ticket);
+            response.put("success", true);
+        }catch (Exception e) {
             response.put("error", e.getMessage());
             response.put("success", false);
         }

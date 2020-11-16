@@ -8,6 +8,7 @@ import SelectTeamBoard from "./components/SelectTeamBoard";
 
 import axios from 'axios';
 import Profile from "./components/Profile";
+import TicketPage from "./components/TicketPage";
 
 axios.interceptors.request.use(
     config => {
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/register" component={Register} exact/>
                     <Route path="/profile" component={Profile} exact/>
                     <Route path="/board" component={SelectTeamBoard} exact/>
+                    <Route path='/ticket/:id' component={TicketPage} exact/>
                 </Switch>
             </div>
         </BrowserRouter>
