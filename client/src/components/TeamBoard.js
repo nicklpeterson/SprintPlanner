@@ -31,6 +31,7 @@ export default function TeamBoard({ teamId, teamName }) {
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
+            setCurrentSprint("");
             try {
                 dispatch(getAllTeamMembers(teamId));
                 dispatch(getAllSprints(teamId));
