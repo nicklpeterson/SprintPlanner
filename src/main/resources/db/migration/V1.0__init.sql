@@ -25,12 +25,12 @@ CREATE TABLE USERS (
 );
 
 CREATE TABLE TEAM (
-                      teamId UUID UNIQUE DEFAULT uuid_generate_v4(),
+                      teamId UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
                       orgId UUID NOT NULL,
                       logo BYTEA,
                       name VARCHAR NOT NULL,
                       FOREIGN KEY (orgId) REFERENCES ORGANIZATION(orgId),
-                      PRIMARY KEY (orgid, name)
+                      UNIQUE (orgid, name)
 );
 
 CREATE TABLE MANAGER (

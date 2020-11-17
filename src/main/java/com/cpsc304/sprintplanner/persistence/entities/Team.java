@@ -37,5 +37,5 @@ public class Team {
     private byte[] logo;
 
     @Column(name="name")
-    String name;
+    private String name;
 }
