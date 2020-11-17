@@ -40,7 +40,7 @@ export default function TeamBoard({ teamId, teamName }) {
             }
         };
         fetchTeamMembersAndSprints();
-    }, []);
+    }, [teamId]);
 
     const handleChange = (event) => {
         setCurrentSprint(event.target.value);
