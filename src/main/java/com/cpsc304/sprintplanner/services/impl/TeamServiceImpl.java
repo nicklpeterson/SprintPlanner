@@ -17,9 +17,9 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     @Override
-    public List<Team> getAllTeams(UUID userId) throws Exception {
+    public List<Team> getAllTeams(UUID userId, UUID orgId) throws Exception {
         try {
-            return teamRepository.getAllTeams(userId);
+            return teamRepository.getAllTeams(userId, orgId);
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());

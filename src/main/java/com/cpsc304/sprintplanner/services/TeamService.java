@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TeamService {
-    List<Team> getAllTeams(UUID userId) throws Exception;
+    List<Team> getAllTeams(UUID userId, UUID orgId) throws Exception;
 }

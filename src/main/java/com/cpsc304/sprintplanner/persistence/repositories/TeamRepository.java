@@ -11,9 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface TeamRepository extends CrudRepository<Team, String> {
-    @Query(value="SELECT t.teamid,t.orgid,t.logo, t.name FROM TEAM_MEMBERS tm, TEAM t WHERE tm.userid=:userId AND tm.teamid = t.teamid", nativeQuery = true)
-    List<Team> getAllTeams(@Param("userId") UUID userId);
-
-
+    @Query(value="SELECT t.teamid, t.orgid, t.logo, t.name FROM TEAM_MEMBERS tm, TEAM t WHERE tm.userid=:userId AND tm.teamid = t.teamid AND t.orgid =:orgId", nativeQuery = true)
+    List<Team> getAllTeams(@Param("userId") UUID userId, @Param("orgId") UUID orgId);
 }
 

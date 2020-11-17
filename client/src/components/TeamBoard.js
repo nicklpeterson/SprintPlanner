@@ -11,14 +11,11 @@ import {
     getAllTeamMembers,
     getNumOfUserWithTickets,
     getAvgPoints,
-    getTicketsByProgress, getTotalPointsForUser
 } from "../actions/userBoard.actions";
 import UserBoard from "./UserBoard";
-import {idMappedToStatus} from "../constants";
 
 
-// TODO: CREATE HOC TO PASS THE TEAM ID, BECAUSE IT'S POSSIBLE TO HAVE MULTIPLE TEAMS
-
+// TODO: MEMBERS WITH TICKETS IS WRONG!!!
 
 export default function TeamBoard({ teamId, teamName }) {
     const dispatch = useDispatch();
@@ -57,20 +54,6 @@ export default function TeamBoard({ teamId, teamName }) {
         return usersWithTickets;
     };
 
-    const renderUserBoards = (sprintId, teamMembers) => {
-        return teamMembers.map((tm) => {
-            dispatch(getTicketsByProgress(tm.id, sprintId, idMappedToStatus.BACKLOG));
-            dispatch(getTicketsByProgress(tm.id, sprintId, idMappedToStatus.PAUSED));
-            dispatch(getTicketsByProgress(tm.id, sprintId, idMappedToStatus.IN_PROGRESS));
-            dispatch(getTicketsByProgress(tm.id, sprintId, idMappedToStatus.IN_REVIEW));
-            dispatch(getTicketsByProgress(tm.id, sprintId, idMappedToStatus.DONE));
-            dispatch(getTotalPointsForUser(tm.id, sprintId));
-
-            return <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />
-
-        })
-    };
-
     return (
         <div style={{marginBottom: 100}}>
             <Typography align="left" component="h4" variant="h4" gutterBottom={true}>Team {teamName}</Typography>
@@ -97,7 +80,7 @@ export default function TeamBoard({ teamId, teamName }) {
                 </Grid>
                 }
             </Grid>
-            {currentSprint && renderUserBoards(currentSprint, teamMembers)}
+            {currentSprint && teamMembers.map((tm) => <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />)}
         </div>
     )
 
