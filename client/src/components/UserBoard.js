@@ -25,6 +25,26 @@ export default function UserBoard({userId, sprintId, username}) {
     const [updateSuccess, setUpdateSuccess] = React.useState(false);
     const [hasError, setHasError] = React.useState(false);
 
+
+    useEffect(() => {
+        const fetchTickets = () => {
+            try {
+                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.BACKLOG));
+                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.PAUSED));
+                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.IN_PROGRESS));
+                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.IN_REVIEW));
+                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.DONE));
+                dispatch(getTotalPointsForUser(userId, sprintId));
+
+            } catch (e) {
+                setHasError(true);
+                console.log(e);
+                console.log("Unable to load tickets");
+            }
+        };
+        fetchTickets();
+    }, [sprintId]);
+
     const move = (source, destination, droppableSource, droppableDestination, ticketId) => {
         const [removed] = source.splice(droppableSource.index, 1);
 

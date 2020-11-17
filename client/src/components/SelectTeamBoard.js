@@ -7,11 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import {useDispatch, useSelector} from "react-redux";
 import {getAllTeams} from "../actions/userBoard.actions";
 import TeamBoard from "./TeamBoard";
-import { getCurrentUserId  } from "./utilities";
-
-
-// TODO: CREATE HOC TO PASS THE TEAM ID, BECAUSE IT'S POSSIBLE TO HAVE MULTIPLE TEAMS
-
+import { getCurrentUserId, getCurrentOrg  } from "./utilities";
 
 export default function SelectTeamBoard() {
     const dispatch = useDispatch();
@@ -24,7 +20,9 @@ export default function SelectTeamBoard() {
         const fetchAllTeams = () => {
             try {
                 const userId = getCurrentUserId();
-                dispatch(getAllTeams(userId));
+                const orgId = getCurrentOrg();
+                console.log(orgId);
+                dispatch(getAllTeams(userId, orgId));
             } catch (e) {
                 console.log(e);
                 console.log("Unable to load teams");
@@ -32,6 +30,7 @@ export default function SelectTeamBoard() {
         };
         fetchAllTeams();
     }, []);
+
 
 
     const handleChange = (event) => {
