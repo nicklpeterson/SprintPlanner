@@ -151,6 +151,7 @@ export const getAllTeams = (userId) => {
                 console.log("Failed to get get all teams");
                 console.log(err);
                 console.log(err.toString());
+                dispatch(failedToLoadTeams(err))
             });
     }
 };
@@ -161,6 +162,13 @@ export const updateAllTeams = (teams) => {
         state: teams
     }
 };
+
+export const failedToLoadTeams = (error) => {
+    return {
+        type: 'FAILED_TO_LOAD_TEAMS',
+        state: error
+    }
+}
 
 export const updateUserPoints = (num) => {
     return {

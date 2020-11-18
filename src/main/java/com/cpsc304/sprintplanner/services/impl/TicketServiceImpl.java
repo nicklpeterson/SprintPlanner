@@ -1,6 +1,7 @@
 package com.cpsc304.sprintplanner.services.impl;
 
 import com.cpsc304.sprintplanner.dto.TicketDto;
+import com.cpsc304.sprintplanner.exceptions.FailedToDeleteDataException;
 import com.cpsc304.sprintplanner.exceptions.FailedToFetchTickets;
 import com.cpsc304.sprintplanner.exceptions.FailedToUpdateTicket;
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
@@ -80,6 +81,15 @@ public class TicketServiceImpl implements TicketService {
             return ticketRepository.getUsersPoints(userId, sprintNumber);
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void deleteTicket(UUID ticketId) throws FailedToDeleteDataException {
+        try {
+            ticketRepository.deleteTicketById(ticketId);
+        } catch (Exception e) {
+            throw new FailedToDeleteDataException(e.getMessage(), e);
         }
     }
 }

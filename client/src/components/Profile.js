@@ -15,6 +15,8 @@ import IconButton from "@material-ui/core/IconButton";
 import {useDispatch, useSelector} from "react-redux";
 import {addSkill, removeSkill} from "../actions/profile.actions";
 import axios from "axios";
+import NavBar from "./NavBar";
+import Redirect from "react-router-dom/es/Redirect";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -56,6 +58,7 @@ export default function Profile() {
 
     const [newChip, setNewChip] = React.useState('');
     const [profilePic, setProfilePic] = React.useState('');
+    const [redirect, setRedirect] = React.useState(null);
     const profile = useSelector(state => state.profile);
 
     const createSkill = () => {
@@ -86,7 +89,7 @@ export default function Profile() {
             .then(res => {
                 axios.get(API_URL + "/users/profilepic/" + res.data.user.username, {headers})
                     .then(resolve => {
-                        setProfilePic("data:image/png;base64,"+ resolve.data.pic)
+                        setProfilePic("data:image/png;base64," + resolve.data.pic)
                     })
                 axios.get(API_URL + "/ticket/assigned/" + res.data.user.username, {headers})
                     .then(res => {
@@ -96,86 +99,100 @@ export default function Profile() {
             })
             .catch(err => {
                 console.error(err);
+                setRedirect('/');
             });
     }, []);
 
+    // Redirect if the user is not logged in
+    if (redirect) {
+        return <Redirect to={redirect}/>
+    }
+
+    // Wait until the user has loaded to display the profile page (in case the
+    if (!profile.username) {
+        return <div/>;
+    }
+
     return (
-        <Container component="main" maxWidth="sm" className="Profile">
-            <CssBaseline/>
-            <div className={classes.paper}>
-                <Avatar alt="profile pic" className={classes.large} src={profilePic}/>
-                <Typography variant="h3">
-                    {profile.username}
-                </Typography>
-                <Typography variant="h6">
-                    {profile.name}
-                </Typography>
-            </div>
-            <Card className={classes.profileDetails}>
-                <CardContent>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <Typography gutterBottom variant="h6">
-                                Tickets
-                            </Typography>
-                        </Grid>
-                        {profile.tickets.map((ticket) => {
-                            const severityClass = classes[ticket.severity]
-                            return (
-                                <Grid item>
-                                    <Card>
-                                        <CardContent className={severityClass}>
-                                            <Typography gutterBottom>
-                                                {ticket.ticketTitle + " (" + ticket.severity + ")"}
-                                            </Typography>
-                                            <Typography>
-                                                {"Status: " + ticket.status}
-                                            </Typography>
-                                            <Typography>
-                                                {"Date Issued: " + ticket.dateIssue}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            );
-                        })}
-                    </Grid>
-                </CardContent>
-            </Card>
-            <Card className={classes.profileDetails}>
-                <CardContent>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <Typography gutterBottom variant="h6">
-                                Skills
-                            </Typography>
-                        </Grid>
-                        <Grid item className={classes.skills}>
-                            {profile.skills.map((skill) => {
+        <div>
+            <NavBar text={profile.username}/>
+            <Container component="main" maxWidth="sm" className="Profile">
+                <CssBaseline/>
+                <div className={classes.paper}>
+                    <Avatar alt="profile pic" className={classes.large} src={profilePic}/>
+                    <Typography variant="h3">
+                        {profile.username}
+                    </Typography>
+                    <Typography variant="h6">
+                        {profile.name}
+                    </Typography>
+                </div>
+                <Card className={classes.profileDetails}>
+                    <CardContent>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <Typography gutterBottom variant="h6">
+                                    Tickets
+                                </Typography>
+                            </Grid>
+                            {profile.tickets.map((ticket) => {
+                                const severityClass = classes[ticket.severity]
                                 return (
-                                    <Chip key={skill.key} label={skill.description} onDelete={deleteSkill(skill)}
-                                          color="primary"/>
+                                    <Grid item>
+                                        <Card>
+                                            <CardContent className={severityClass}>
+                                                <Typography gutterBottom>
+                                                    {ticket.ticketTitle + " (" + ticket.severity + ")"}
+                                                </Typography>
+                                                <Typography>
+                                                    {"Status: " + ticket.status}
+                                                </Typography>
+                                                <Typography>
+                                                    {"Date Issued: " + ticket.dateIssue}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
                                 );
                             })}
                         </Grid>
-                        <Grid item xs={12}>
-                            <form className={classes.root} noValidate autoComplete="off" onSubmit={createSkill}>
-                                <TextField
-                                    id="filled-basic"
-                                    label="Add a skill"
-                                    onChange={(event) => setNewChip(event.target.value)}
-                                />
-                                <IconButton
-                                    type="button"
-                                    onClick={createSkill}
-                                >
-                                    <AddIcon/>
-                                </IconButton>
-                            </form>
+                    </CardContent>
+                </Card>
+                <Card className={classes.profileDetails}>
+                    <CardContent>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <Typography gutterBottom variant="h6">
+                                    Skills
+                                </Typography>
+                            </Grid>
+                            <Grid item className={classes.skills}>
+                                {profile.skills.map((skill) => {
+                                    return (
+                                        <Chip key={skill.key} label={skill.description} onDelete={deleteSkill(skill)}
+                                              color="primary"/>
+                                    );
+                                })}
+                            </Grid>
+                            <Grid item xs={12}>
+                                <form className={classes.root} noValidate autoComplete="off" onSubmit={createSkill}>
+                                    <TextField
+                                        id="filled-basic"
+                                        label="Add a skill"
+                                        onChange={(event) => setNewChip(event.target.value)}
+                                    />
+                                    <IconButton
+                                        type="button"
+                                        onClick={createSkill}
+                                    >
+                                        <AddIcon/>
+                                    </IconButton>
+                                </form>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </CardContent>
-            </Card>
-        </Container>
+                    </CardContent>
+                </Card>
+            </Container>
+        </div>
     );
 }

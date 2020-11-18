@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -54,6 +55,20 @@ public class TicketController {
             response.put("success", true);
         } catch (Exception e) {
             response.put("error", e.getMessage());
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<Map<String, Object>> deleteTicket(@RequestParam UUID ticketId) {
+        log.info("Deleting ticket {}", ticketId.toString());
+        final Map<String, Object> response = new HashMap<>();
+        try {
+            ticketService.deleteTicket(ticketId);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("error", e);
             response.put("success", false);
         }
         return ResponseEntity.ok(response);

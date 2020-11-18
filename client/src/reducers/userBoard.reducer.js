@@ -1,11 +1,11 @@
-const initialState = { teamMembers: [], sprints: [], usersWithTickets: 0, avgPoints: 0, allTeams:[]};
+const initialState = { teamMembers: [], sprints: [], usersWithTickets: 0, avgPoints: 0, allTeams:[], error: null, loading: true};
 
 const boardReducer = (state = initialState, action) => {
     if (!!action.userId && !state[action.userId]) {
         state[action.userId] = {backlogTickets: [], pausedTickets: [], doneTickets: [], inProgressTickets: [], inReviewTickets: [], points: 0};
     }
 
-    // TODO: Refactor to swicth
+    // TODO: Refactor to switch
     if (action.type === 'GET_BACKLOG_TICKETS') {
         return {...state, [action.userId] : { ... state[action.userId], backlogTickets: action.state}};
     } else if (action.type === 'GET_DONE_TICKETS') {
@@ -27,7 +27,9 @@ const boardReducer = (state = initialState, action) => {
     } else if (action.type === 'GET_NUM_MEMBERS') {
         return {...state, usersWithTickets: action.state};
     } else if (action.type === 'GET_ALL_TEAMS') {
-        return {...state, allTeams: action.state};
+        return {...state, allTeams: action.state, loading: false};
+    } else if (action.type === 'FAILED_TO_LOAD_TEAMS') {
+        return {...state, error: action.state};
     }
 
     return state;

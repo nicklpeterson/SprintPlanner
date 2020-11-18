@@ -30,4 +30,9 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Transactional
     @Query(value="UPDATE tickets SET STATUS=:newStatus WHERE ticketId=:ticketId", nativeQuery = true)
     void updateTicketProgressStatus(@Param("newStatus") String newStatus, @Param("ticketId")UUID ticketId);
+
+    @Modifying
+    @Transactional
+    @Query(value="DELETE FROM tickets WHERE ticketId=:ticketId", nativeQuery= true)
+    void deleteTicketById(@Param("ticketId") UUID ticketId);
 }

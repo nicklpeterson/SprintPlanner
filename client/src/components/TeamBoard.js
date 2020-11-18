@@ -52,7 +52,6 @@ export default function TeamBoard({ teamId, teamName }) {
 
     return (
         <div style={{marginBottom: 100}}>
-            <Typography align="left" component="h4" variant="h4" gutterBottom={true}>Team {teamName}</Typography>
             <FormControl>
                 <InputLabel>Sprint Number</InputLabel>
                 <Select
