@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface TeamService {
     List<Team> getAllTeams(UUID userId) throws Exception;
 
-    List<Team> getManagedTeams(UUID userId);
+    List<Team> getManagedTeams(UUID userId) throws Exception;
 
     Team addTeam(TeamDto team, UUID userId);
 

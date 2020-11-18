@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Tuple;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +42,17 @@ public interface TeamRepository extends CrudRepository<Team, String> {
             "FROM TEAM t, ORGANIZATION o " +
             "WHERE t.teamid = :id AND t.orgid = o.orgid", nativeQuery = true)
     Team selectTeam(@Param("id") String id);
+
+    @Query(value="SELECT SUM(s.sprintLoad), CAST(p.createdby as VARCHAR) " +
+            "FROM SPRINTS s, PROJECTS p " +
+            "WHERE p.createdby IN (:teams) AND s.belongsto = p.projectid " +
+            "GROUP BY p.createdby", nativeQuery = true)
+    List<Tuple> teamSprintLoad(@Param("teams") List<UUID> teams);
+
+    @Query(value="SELECT SUM(s.sprintLoad) " +
+            "FROM SPRINTS s, PROJECTS p " +
+            "WHERE p.createdby = :team AND s.belongsto = p.projectId", nativeQuery = true)
+    BigInteger singleTeamSprintLoad(@Param("team") UUID team);
 
     @Modifying
     @Transactional

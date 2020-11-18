@@ -175,11 +175,14 @@ export default function Profile() {
                                     <Grid item>
                                         <Card>
                                             <CardContent>
-                                                <Typography gutterBottom>
+                                                <Typography gutterBottom variant="h6">
                                                     {team.organization.name}
                                                 </Typography>
-                                                <Typography>
+                                                <Typography gutterBottom>
                                                     {team.name /* TODO: add team logo */}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    Total sprint load: {team.sprintLoad}
                                                 </Typography>
                                             </CardContent>
                                         </Card>
@@ -251,11 +254,14 @@ export default function Profile() {
                                 <Grid item>
                                     <Card>
                                         <CardContent>
-                                            <Typography gutterBottom>
+                                            <Typography gutterBottom variant="h6">
                                                 {team.organization.name}
                                             </Typography>
-                                            <Typography>
+                                            <Typography gutterBottom>
                                                 {team.name /* TODO: add team logo */}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Total sprint load: {team.sprintLoad}
                                             </Typography>
                                         </CardContent>
                                     </Card>
@@ -267,7 +273,7 @@ export default function Profile() {
                           onSubmit={joinTeam}>
                         <TextField
                             id="filled-basic"
-                            label="Join a new Team"
+                            label="Join an existing team"
                             onChange={(event) => setNewJoinTeam(event.target.value)}
                         />
                         <IconButton

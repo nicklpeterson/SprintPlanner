@@ -15,7 +15,7 @@ const profileReducer = (state = initialState, action) => {
     } else if (action.type === 'GET_ASSIGNED_TICKETS') {
         return {...state, tickets: action.payload ? action.payload : []};
     } else if (action.type === 'ADD_TEAM') {
-        return {...state, manages: [...state.manages, action.payload.team]}
+        return {...state, manages: [...state.manages, Object.assign(action.payload.team, { sprintLoad: 0 })]}
     } else if (action.type === 'JOIN_TEAM') {
         return {...state, teams: [...state.teams, action.payload.team]}
     } else if (action.type === 'GET_TEAMS') {

@@ -3,6 +3,7 @@ package com.cpsc304.sprintplanner.persistence.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -38,4 +39,7 @@ public class Team {
 
     @Column(name="name")
     private String name;
+
+    @Transient
+    private BigInteger sprintLoad;
 }
