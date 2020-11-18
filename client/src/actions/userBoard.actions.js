@@ -246,3 +246,11 @@ export const updateTicketByProgress = (tickets, status, userId) => {
 
     }
 }
+
+export const setSprint = sprintNumber => {
+    console.log(sprintNumber);
+    return {
+        type: 'SET_SPRINT',
+        sprintNumber: sprintNumber
+    }
+}

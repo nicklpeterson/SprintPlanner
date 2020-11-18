@@ -1,13 +1,11 @@
 package com.cpsc304.sprintplanner.rest;
 
+import com.cpsc304.sprintplanner.exceptions.FailedToFetchProjectsException;
 import com.cpsc304.sprintplanner.persistence.entities.Sprint;
 import com.cpsc304.sprintplanner.persistence.entities.Team;
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
 import com.cpsc304.sprintplanner.persistence.entities.User;
-import com.cpsc304.sprintplanner.services.SprintService;
-import com.cpsc304.sprintplanner.services.TeamMemberService;
-import com.cpsc304.sprintplanner.services.TeamService;
-import com.cpsc304.sprintplanner.services.TicketService;
+import com.cpsc304.sprintplanner.services.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +26,7 @@ public class BoardController {
     private final TeamMemberService teamMemberService;
     private final SprintService sprintService;
     private final TeamService teamService;
+    private final ProjectService projectService;
 
     @GetMapping(path = "/getStatus/{userId}/{sprintId}/{status}", produces = "application/json")
     public ResponseEntity<Map<String, Object>> getAllOrganizations(@PathVariable UUID userId, @PathVariable String status, @PathVariable String sprintId) {
@@ -150,6 +149,18 @@ public class BoardController {
             response.put("teams", teams);
             response.put("success", true);
         } catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/projects/{userId}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getProjectsByUserId(@PathVariable UUID userId) {
+        final Map<String, Object> response = new HashMap<>();
+        try {
+            response.put("projects", projectService.getProjectsByUserId(userId));
+        } catch(FailedToFetchProjectsException e) {
             response.put("error", e.getMessage());
             response.put("success", false);
         }

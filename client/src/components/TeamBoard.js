@@ -3,11 +3,10 @@ import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import {useDispatch, useSelector} from "react-redux";
-import {getAllSprints, getAllTeamMembers, getNumOfUserWithTickets, getAvgPoints} from "../actions/userBoard.actions";
+import {getAllSprints, getAllTeamMembers, getNumOfUserWithTickets, getAvgPoints, setSprint} from "../actions/userBoard.actions";
 import UserBoard from "./UserBoard";
 
 
@@ -20,8 +19,7 @@ export default function TeamBoard({ teamId, teamName }) {
     const sprints = useSelector(state => state.board.sprints);
     const avgPoints = useSelector(state => state.board.avgPoints);
     const usersWithTickets = useSelector(state => state.board.usersWithTickets);
-    const [currentSprint, setCurrentSprint] = React.useState('');
-
+    const currentSprint = useSelector(state => state.sprint.sprintNumber);
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
@@ -37,7 +35,7 @@ export default function TeamBoard({ teamId, teamName }) {
     }, []);
 
     const handleChange = (event) => {
-        setCurrentSprint(event.target.value);
+        dispatch(setSprint(event.target.value));
     };
 
     const getAveragePoints = () => {

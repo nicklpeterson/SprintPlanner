@@ -3,7 +3,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
-import DeleteIcon from "@material-ui/icons/Delete";
 
 
 // followed the react-beautiful-dnd example to create the board:
@@ -50,8 +49,7 @@ export default function BoardColumn({ colName, items, colId }) {
                                          )}>
                                         <Grid container direction="column">
                                             <Grid item><Typography component="overline" gutterBottom={true}> {item.ticketTitle} </Typography></Grid>
-                                            <Grid item xs={3} align="left"><DeleteIcon/></Grid>
-                                            <Grid item xs={3} align="right"><Chip size="small" label={item.points} /></Grid>
+                                            <Grid item align="right"><Chip size="small" label={item.points} /></Grid>
                                         </Grid>
                                     </div>
                                 )}

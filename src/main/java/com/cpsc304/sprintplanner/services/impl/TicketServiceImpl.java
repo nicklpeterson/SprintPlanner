@@ -3,6 +3,7 @@ package com.cpsc304.sprintplanner.services.impl;
 import com.cpsc304.sprintplanner.dto.TicketDto;
 import com.cpsc304.sprintplanner.exceptions.FailedToDeleteDataException;
 import com.cpsc304.sprintplanner.exceptions.FailedToFetchTickets;
+import com.cpsc304.sprintplanner.exceptions.FailedToSaveTicketException;
 import com.cpsc304.sprintplanner.exceptions.FailedToUpdateTicket;
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
 import com.cpsc304.sprintplanner.persistence.repositories.TicketRepository;
@@ -32,8 +33,19 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void storeTicket(TicketDto ticketDto) {
-        // TODO
+    public void storeTicket(TicketDto ticketDto) throws FailedToSaveTicketException {
+        try {
+            ticketRepository.insertTicket(ticketDto.getTicketTitle(),
+                    ticketDto.getSeverity().toString(),
+                    ticketDto.getStatus().toString(),
+                    ticketDto.getProjectId(),
+                    ticketDto.getSprintNumber(),
+                    ticketDto.getDateIssue(),
+                    ticketDto.getCreatorId(),
+                    ticketDto.getAssigneeId());
+        } catch (Exception e) {
+            throw new FailedToSaveTicketException(e.getMessage(), e);
+        }
     }
 
     private TicketDto newTicketDtoFromTicket(Ticket ticket) {

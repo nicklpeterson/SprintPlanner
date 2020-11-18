@@ -1,6 +1,7 @@
 package com.cpsc304.sprintplanner.persistence.repositories;
 
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
+import com.cpsc304.sprintplanner.persistence.entities.enums.Severity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,4 +37,16 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Transactional
     @Query(value="DELETE FROM tickets WHERE ticketId=:ticketId", nativeQuery= true)
     void deleteTicketById(@Param("ticketId") UUID ticketId);
+
+    @Modifying
+    @Transactional
+    @Query(value= "INSERT INTO tickets VALUES (DEFAULT, :title, :severity, :status, :projectId, :sprintNumber,:date, :creatorId, :assigneeId, 10)", nativeQuery = true)
+    void insertTicket(@Param("title") String title,
+                      @Param("severity") String severity,
+                      @Param("status") String status,
+                      @Param("projectId") UUID projectId,
+                      @Param("sprintNumber") int sprintNumber,
+                      @Param("date") Timestamp date,
+                      @Param("creatorId") UUID creatorId,
+                      @Param("assigneeId") UUID assigneeId);
 }

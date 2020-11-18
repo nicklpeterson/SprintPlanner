@@ -114,7 +114,7 @@ export default function Profile() {
     }
 
     return (
-        <div>
+        <React.Fragment>
             <NavBar text={profile.username}/>
             <Container component="main" maxWidth="sm" className="Profile">
                 <CssBaseline/>
@@ -193,6 +193,6 @@ export default function Profile() {
                     </CardContent>
                 </Card>
             </Container>
-        </div>
+        </React.Fragment>
     );
 }
