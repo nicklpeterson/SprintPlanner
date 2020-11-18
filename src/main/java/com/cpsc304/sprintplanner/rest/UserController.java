@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.cpsc304.sprintplanner.dto.SkillDto;
 import com.cpsc304.sprintplanner.dto.UserDto;
 import com.cpsc304.sprintplanner.dto.UserTokenDto;
+import com.cpsc304.sprintplanner.persistence.entities.User;
+import com.cpsc304.sprintplanner.services.TeamService;
 import com.cpsc304.sprintplanner.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +30,8 @@ import static com.cpsc304.sprintplanner.security.SecurityConstants.TOKEN_PREFIX;
 public class UserController {
 
     private final UserService userService;
+    private final TeamService teamService;
+
 
     @PostMapping(path = "/signup", consumes = "application/json")
     public ResponseEntity<Map<String, Object>> signUp(@RequestBody UserDto user) {
@@ -90,7 +94,8 @@ public class UserController {
         log.info("Getting user details");
         final Map<String, Object> response = new HashMap<>();
         try {
-            response.put("user", userService.getUserDetails(getUserId(jwt)));
+            User user = userService.getUserDetails(getUserId(jwt));
+            response.put("user", user);
             response.put("success", true);
         } catch (Exception e) {
             response.put("error", e.getMessage());

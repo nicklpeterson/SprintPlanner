@@ -3,6 +3,7 @@ package com.cpsc304.sprintplanner.persistence.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +22,10 @@ public class Team {
             inverseJoinColumns = { @JoinColumn(name = "userid") })
     Set<User> users = new HashSet<>();
 
+    @ManyToOne
+    @JoinTable(name="ORGANIZATION", joinColumns = { @JoinColumn(name = "orgid") })
+    Organization organization;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "teamid")
@@ -33,5 +38,8 @@ public class Team {
     private byte[] logo;
 
     @Column(name="name")
-    String name;
+    private String name;
+
+    @Transient
+    private BigInteger sprintLoad;
 }

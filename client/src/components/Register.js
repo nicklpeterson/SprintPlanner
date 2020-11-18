@@ -13,6 +13,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useDispatch, useSelector} from "react-redux";
 import {registerUser, updateUser} from "../actions/user.actions";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Redirect from "react-router-dom/es/Redirect";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -45,11 +48,12 @@ export default function Register() {
     const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [organizationName, setOrganizationName] = React.useState('');
+    const [isManager, setIsManager] = React.useState(false);
     const user = useSelector(state => state.user);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(registerUser(email, username, password, organizationName));
+        dispatch(registerUser(email, username, password, organizationName, isManager));
     }
 
     const setRegisterSuccessFlag = bool => {
@@ -60,6 +64,10 @@ export default function Register() {
     const setRegisterFailWarning = bool => {
         user.registrationFailedFlag = bool;
         dispatch(updateUser(Object.assign({}, user, {registrationFailedFlag: bool})));
+    }
+
+    if (user.registrationSuccessFlag) {
+        return <Redirect to="/login" />
     }
 
     return (
@@ -121,6 +129,18 @@ export default function Register() {
                                 name="email"
                                 autoComplete="email"
                                 onChange={(e) => setOrganizationName(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        required
+                                        name="isManager"
+                                        onChange={(e) => setIsManager(e.target.checked)}
+                                    />
+                                }
+                                label="I am a manager"
                             />
                         </Grid>
                     </Grid>

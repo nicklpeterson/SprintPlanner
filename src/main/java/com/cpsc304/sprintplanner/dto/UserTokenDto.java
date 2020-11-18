@@ -17,4 +17,5 @@ public class UserTokenDto {
     private String email;
     private UUID organization;
     private UUID displayPicture;
+    private Boolean manager;
 }

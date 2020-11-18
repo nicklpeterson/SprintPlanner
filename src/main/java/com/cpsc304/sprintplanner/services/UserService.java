@@ -15,6 +15,5 @@ public interface UserService {
     List<String> getSkills(UUID userId);
     User getUserDetails(UUID userId);
     byte[] getProfilePic(String username);
-
     User getUserByUsername(String username) throws FailedToFindUserException;
 }

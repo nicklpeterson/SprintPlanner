@@ -20,14 +20,15 @@ public interface UserRepository extends CrudRepository<User, UUID> {
     @Modifying
     @Transactional
     @Query(value=
-            "INSERT INTO USERS (userId, username, password, email, organization) " +
-            "VALUES (:id, :username, :password, :email, :organization);"
+            "INSERT INTO USERS (userId, username, password, email, organization, isManager) " +
+            "VALUES (:id, :username, :password, :email, :organization, :isManager);"
     , nativeQuery=true)
     void saveUser(@Param("id") UUID id,
                   @Param("username") String username,
                   @Param("password") String password,
                   @Param("email") String email,
-                  @Param("organization") UUID organization);
+                  @Param("organization") UUID organization,
+                  @Param("isManager") boolean isManager);
 
     @Modifying
     @Transactional

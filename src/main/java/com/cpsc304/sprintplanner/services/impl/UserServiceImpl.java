@@ -35,8 +35,9 @@ public class UserServiceImpl implements UserService {
                     .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
                     .email(userDto.getEmail())
                     .organization(getOrganizationUUID(userDto.getOrganizationName()))
+                    .isManager(userDto.getIsManager())
                     .build();
-            userRepository.saveUser(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getOrganization());
+            userRepository.saveUser(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getOrganization(), user.isManager());
         } catch (FailedToSaveOrgException e) {
             log.error(e.getMessage());
             throw new FailedToSaveUserException("Failed to save User's org.", e);
