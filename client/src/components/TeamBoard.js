@@ -15,8 +15,7 @@ import {
 import UserBoard from "./UserBoard";
 
 
-// TODO: CREATE HOC TO PASS THE TEAM ID, BECAUSE IT'S POSSIBLE TO HAVE MULTIPLE TEAMS
-
+// TODO: MEMBERS WITH TICKETS IS WRONG!!!
 
 export default function TeamBoard({ teamId, teamName }) {
     const dispatch = useDispatch();
@@ -29,6 +28,7 @@ export default function TeamBoard({ teamId, teamName }) {
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
+            setCurrentSprint("");
             try {
                 dispatch(getAllTeamMembers(teamId));
                 dispatch(getAllSprints(teamId));
@@ -38,7 +38,7 @@ export default function TeamBoard({ teamId, teamName }) {
             }
         };
         fetchTeamMembersAndSprints();
-    }, []);
+    }, [teamId]);
 
     const handleChange = (event) => {
         setCurrentSprint(event.target.value);
@@ -76,11 +76,11 @@ export default function TeamBoard({ teamId, teamName }) {
                 </Grid>}
                 {currentSprint &&
                 <Grid item>
-                    <Typography style={{marginLeft: 30}} component="h6" variant="button">Number of Members with Tickets: {getNumberOfUsersWithTickets()} </Typography>
+                    <Typography style={{marginLeft: 30}} component="h6" variant="button">Number of Members with Tickets: {getNumberOfUsersWithTickets() ?? 0} </Typography>
                 </Grid>
                 }
             </Grid>
-            {currentSprint && teamMembers.map((tm) =>  <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />  )}
+            {currentSprint && teamMembers.map((tm) => <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />)}
         </div>
     )
 

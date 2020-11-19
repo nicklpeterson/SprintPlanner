@@ -7,30 +7,20 @@ import InputLabel from '@material-ui/core/InputLabel';
 import {useDispatch, useSelector} from "react-redux";
 import {getAllTeams} from "../actions/userBoard.actions";
 import TeamBoard from "./TeamBoard";
-
-
-// TODO: CREATE HOC TO PASS THE TEAM ID, BECAUSE IT'S POSSIBLE TO HAVE MULTIPLE TEAMS
-
+import { getCurrentUserId  } from "./utilities";
 
 export default function SelectTeamBoard() {
     const dispatch = useDispatch();
     const allTeams = useSelector(state => state.board.allTeams);
     const [team, setTeam] = React.useState('');
 
-    // used: https://stackoverflow.com/questions/47240564/node-js-jwt-get-current-user to figure out how to decode jwt tokens
-    function getCurrentUserId (){
-        const tokenParts = localStorage.token.split('.');
-        const encodedPayload = tokenParts[1];
-        const rawPayload = atob(encodedPayload);
-        const user = JSON.parse(rawPayload);
-        return JSON.parse(user.sub).id;
-    }
 
 
     useEffect(() => {
         const fetchAllTeams = () => {
             try {
                 const userId = getCurrentUserId();
+                console.log(orgId);
                 dispatch(getAllTeams(userId));
             } catch (e) {
                 console.log(e);
@@ -39,6 +29,7 @@ export default function SelectTeamBoard() {
         };
         fetchAllTeams();
     }, []);
+
 
 
     const handleChange = (event) => {

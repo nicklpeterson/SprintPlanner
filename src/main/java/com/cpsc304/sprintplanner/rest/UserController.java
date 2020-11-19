@@ -119,6 +119,19 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(path = "/getUsername/{userId}")
+    public ResponseEntity<Map<String, Object>> getUsername(@PathVariable UUID userId) {
+        final Map<String, Object> response = new HashMap<>();
+        try {
+            response.put("username", userService.getUsername(userId));
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
+
     private static UUID getUserId(String jwt) throws JsonProcessingException {
         String userString = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
                 .build()
@@ -128,5 +141,7 @@ public class UserController {
         UserTokenDto user = mapper.readValue(userString, UserTokenDto.class);
         return user.getId();
     }
+
+
 
 }
