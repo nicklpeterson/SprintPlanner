@@ -30,4 +30,6 @@ public class TicketDto {
     private UUID assigneeId;
 
     private UUID projectId;
+
+    private int points;
 }

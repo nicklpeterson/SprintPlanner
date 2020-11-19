@@ -40,7 +40,7 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
 
     @Modifying
     @Transactional
-    @Query(value= "INSERT INTO tickets VALUES (DEFAULT, :title, :severity, :status, :projectId, :sprintNumber,:date, :creatorId, :assigneeId, 10)", nativeQuery = true)
+    @Query(value= "INSERT INTO tickets VALUES (DEFAULT, :title, :severity, :status, :projectId, :sprintNumber,:date, :creatorId, :assigneeId, :points)", nativeQuery = true)
     void insertTicket(@Param("title") String title,
                       @Param("severity") String severity,
                       @Param("status") String status,
@@ -48,5 +48,6 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
                       @Param("sprintNumber") int sprintNumber,
                       @Param("date") Timestamp date,
                       @Param("creatorId") UUID creatorId,
-                      @Param("assigneeId") UUID assigneeId);
+                      @Param("assigneeId") UUID assigneeId,
+                      @Param("points") int points);
 }

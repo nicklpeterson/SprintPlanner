@@ -15,17 +15,29 @@ import {closeTicketDialog, saveTicket} from "../actions/ticketDialog.actions";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import *  as JwtParser from "../util/JwtParser";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',
         flexDirection: 'column',
         margin: 'auto',
+    },
+    input: {
+        width: 'full-width',
+        margin: 20,
+    },
+    points: {
+        marginTop: theme.spacing(10),
+        minWidth: 120,
         width: 'fit-content',
+        margin: 'auto'
     },
     formControl: {
         marginTop: theme.spacing(2),
         minWidth: 120,
+        width: 'fit-content',
+        margin: 'auto'
     },
     formControlLabel: {
         marginTop: theme.spacing(1),
@@ -44,6 +56,7 @@ export default function AddTicketDialog() {
     const [severity, setSeverity] = React.useState('');
     const [assignee, setAssignee] = React.useState('');
     const [title, setTitle] = React.useState('');
+    const [points, setPoints] = React.useState(0);
 
     useEffect(() => {
         const headers = {"Content-Type": "application/json"};
@@ -71,7 +84,8 @@ export default function AddTicketDialog() {
             dateIssue: Date.now(),
             creatorId: JwtParser.getUserId(),
             assigneeId: assignee,
-            projectId: selectedProject
+            projectId: selectedProject,
+            points: points
         }));
         handleClose();
     }
@@ -92,6 +106,10 @@ export default function AddTicketDialog() {
         setSelectedProject(event.target.value);
     }
 
+    const handleChangePoints = event => {
+        setPoints(event.target.value);
+    }
+
     console.log(teamMembers);
 
     return (
@@ -108,59 +126,77 @@ export default function AddTicketDialog() {
                     You can set my maximum width and whether to adapt or not.
                 </DialogContentText>
                 <form className={classes.form} noValidate>
-                    <TextField required id="standard-required" label="Title" value={title}
-                               onChange={handleChangeTitle}/>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel>Severity</InputLabel>
-                        <Select
-                            autoFocus
-                            onChange={handleChangeSeverity}
-                            inputProps={{
-                                name: 'Severity',
-                                id: 'severity',
-                            }}
-                        >
-                            <MenuItem value="high">high</MenuItem>
-                            <MenuItem value="medium">medium</MenuItem>
-                            <MenuItem value="low">low</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel>Assign To</InputLabel>
-                        <Select
-                            autoFocus
-                            onChange={handleChangeAssignee}
-                            inputProps={{
-                                name: 'Assignee',
-                                id: 'assignee',
-                            }}
-                        >
-                            {teamMembers.map(tm => <MenuItem value={tm.id}>{tm.username}</MenuItem>)}
-                        </Select>
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel>Project</InputLabel>
-                        <Select
-                            autoFocus
-                            onChange={handleChangeProject}
-                            inputProps={{
-                                name: 'Severity',
-                                id: 'severity',
-                            }}
-                        >
-                            {projects.map(p => <MenuItem value={p.projectId}>{p.projectName}</MenuItem>)}
-                        </Select>
-                    </FormControl>
+                    <TextField
+                        id='outlined-basic'
+                        variant="outlined"
+                        label="Title"
+                        value={title}
+                        onChange={handleChangeTitle}
+                    />
+                    <Grid container spacing={3}>
+                        <Grid item xs={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Severity</InputLabel>
+                                <Select
+                                    onChange={handleChangeSeverity}
+                                    inputProps={{
+                                        name: 'Severity',
+                                        id: 'severity',
+                                    }}
+                                >
+                                    <MenuItem value="high">high</MenuItem>
+                                    <MenuItem value="medium">medium</MenuItem>
+                                    <MenuItem value="low">low</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Assign To</InputLabel>
+                                <Select
+                                    onChange={handleChangeAssignee}
+                                    inputProps={{
+                                        name: 'Assignee',
+                                        id: 'assignee',
+                                    }}
+                                >
+                                    {teamMembers.map(tm => <MenuItem value={tm.id}>{tm.username}</MenuItem>)}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel>Project</InputLabel>
+                                <Select
+                                    onChange={handleChangeProject}
+                                    inputProps={{
+                                        name: 'Severity',
+                                        id: 'severity',
+                                    }}
+                                >
+                                    {projects.map(p => <MenuItem value={p.projectId}>{p.projectName}</MenuItem>)}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                classname={classes.points}
+                                id="standard-number"
+                                label="Points"
+                                type="number"
+                                value={points}
+                                onChange={handleChangePoints}
+                            />
+                        </Grid>
+                    </Grid>
                 </form>
             </DialogContent>
             <DialogActions>
+                <Button onClick={handleSave} color="primary" autoFocus>
+                    Save
+                </Button>
                 <Button onClick={handleClose} color="primary">
                     Close
-                </Button>
-            </DialogActions>
-            <DialogActions>
-                <Button onClick={handleSave} color="primary">
-                    Save
                 </Button>
             </DialogActions>
         </Dialog>

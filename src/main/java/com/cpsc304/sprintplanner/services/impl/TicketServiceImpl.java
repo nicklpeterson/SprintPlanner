@@ -42,7 +42,8 @@ public class TicketServiceImpl implements TicketService {
                     ticketDto.getSprintNumber(),
                     ticketDto.getDateIssue(),
                     ticketDto.getCreatorId(),
-                    ticketDto.getAssigneeId());
+                    ticketDto.getAssigneeId(),
+                    ticketDto.getPoints());
         } catch (Exception e) {
             throw new FailedToSaveTicketException(e.getMessage(), e);
         }
