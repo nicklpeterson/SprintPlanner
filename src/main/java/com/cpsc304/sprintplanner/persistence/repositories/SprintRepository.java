@@ -11,7 +11,11 @@ import java.util.UUID;
 
 @Repository
 public interface SprintRepository extends CrudRepository<Sprint, String> {
-    @Query(value="SELECT * FROM SPRINTS s, PROJECTS p WHERE s.belongsTo = p.projectId AND p.createdBy=:teamId", nativeQuery = true)
+    @Query(value="SELECT s.* " +
+            "FROM sprints s, projects p, team t " +
+            "WHERE s.belongsto = p.projectid " +
+            "and t.teamid = p.createdby " +
+            "and t.teamid = :teamId", nativeQuery = true)
     List<Sprint> getTeamSprints(@Param("teamId") UUID teamId);
 
     @Query(value="SELECT COUNT(DISTINCT t1.assigneeid) FROM TICKETS t1 WHERE t1.assigneeid IN " +
@@ -29,7 +33,6 @@ public interface SprintRepository extends CrudRepository<Sprint, String> {
             "    WHERE u2.userid = t2.assigneeid AND sprintnumber=:sprintNumber\n" +
             "    GROUP BY u2.userId)", nativeQuery = true)
     Integer getMaxPoints(@Param("sprintNumber") Integer sprintNumber);
-
 
 }
 

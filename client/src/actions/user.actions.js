@@ -11,7 +11,8 @@ export const registerUser = (email, username, password, organizationName, isMana
     }
     const headers = {"Content-Type" : "application/json"}
     return dispatch => {
-        axios.post(API_URL + "/users/signup", JSON.stringify(data), {headers})
+        // create() makes this request bypass the axios interceptor
+        axios.create().post(API_URL + "/users/signup", JSON.stringify(data), {headers})
             .then(res => {
                 const flags = {registrationSuccessFlag: true, registrationFailedFlag: false};
                 if (res.data.error) {
@@ -36,7 +37,6 @@ export const login = (username, password) => {
     return dispatch => {
         axios.post(API_URL + "/login", JSON.stringify(data), {headers})
             .then(res => {
-                console.log(res.headers);
                 localStorage.setItem('token', res.headers.authorization);
                 const flags = {loginSuccessFlag: true, loginFailedFlag: false};
                 if (res.data.error) {

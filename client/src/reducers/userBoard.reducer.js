@@ -5,7 +5,7 @@ const boardReducer = (state = initialState, action) => {
         state[action.userId] = {backlogTickets: [], pausedTickets: [], doneTickets: [], inProgressTickets: [], inReviewTickets: [], points: 0};
     }
 
-    // TODO: Refactor to swicth
+    // TODO: Refactor to switch
     if (action.type === 'GET_BACKLOG_TICKETS') {
         return {...state, [action.userId] : { ... state[action.userId], backlogTickets: action.state}};
     } else if (action.type === 'GET_DONE_TICKETS') {

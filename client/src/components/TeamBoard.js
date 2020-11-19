@@ -11,11 +11,9 @@ import {
     getAllTeamMembers,
     getNumOfUserWithTickets,
     getMaxPoints,
+    setSprint
 } from "../actions/userBoard.actions";
 import UserBoard from "./UserBoard";
-
-
-// TODO: MEMBERS WITH TICKETS IS WRONG!!!
 
 export default function TeamBoard({ teamId, teamName }) {
     const dispatch = useDispatch();
@@ -23,8 +21,7 @@ export default function TeamBoard({ teamId, teamName }) {
     const sprints = useSelector(state => state.board.sprints);
     const maxPoints = useSelector(state => state.board.maxPoints);
     const usersWithTickets = useSelector(state => state.board.usersWithTickets);
-    const [currentSprint, setCurrentSprint] = React.useState('');
-
+    const currentSprint = useSelector(state => state.sprint.sprintNumber);
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
@@ -41,7 +38,7 @@ export default function TeamBoard({ teamId, teamName }) {
     }, [teamId]);
 
     const handleChange = (event) => {
-        setCurrentSprint(event.target.value);
+        dispatch(setSprint(event.target.value));
     };
 
     const getMaxSumOfPoints = () => {
@@ -56,7 +53,6 @@ export default function TeamBoard({ teamId, teamName }) {
 
     return (
         <div style={{marginBottom: 100}}>
-            <Typography align="left" component="h4" variant="h4" gutterBottom={true}>Team {teamName}</Typography>
             <FormControl>
                 <InputLabel>Sprint Number</InputLabel>
                 <Select

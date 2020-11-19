@@ -122,4 +122,32 @@ public class TicketController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<Map<String, Object>> deleteTicket(@RequestParam UUID ticketId) {
+        log.info("Deleting ticket {}", ticketId.toString());
+        final Map<String, Object> response = new HashMap<>();
+        try {
+            ticketService.deleteTicket(ticketId);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("error", e);
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/new")
+    public ResponseEntity<Map<String, Object>> insertTicket(@RequestBody TicketDto ticketDto) {
+        log.info("Inserting New ticket {}", ticketDto.toString());
+        final Map<String, Object> response = new HashMap<>();
+        try {
+            ticketService.storeTicket(ticketDto);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("error", e);
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
 }

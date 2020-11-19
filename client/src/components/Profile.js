@@ -15,6 +15,8 @@ import IconButton from "@material-ui/core/IconButton";
 import {useDispatch, useSelector} from "react-redux";
 import {addSkill, addTeam, addToTeam, removeSkill} from "../actions/profile.actions";
 import axios from "axios";
+import NavBar from "./NavBar";
+import Redirect from "react-router-dom/es/Redirect";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -58,6 +60,7 @@ export default function Profile() {
     const [newTeam, setNewTeam] = React.useState('');
     const [newJoinTeam, setNewJoinTeam] = React.useState('');
     const [profilePic, setProfilePic] = React.useState('');
+    const [redirect, setRedirect] = React.useState(null);
     const profile = useSelector(state => state.profile);
 
     const createSkill = () => {
@@ -115,62 +118,155 @@ export default function Profile() {
             })
             .catch(err => {
                 console.error(err);
+                setRedirect('/');
             });
     }, []);
 
+    // Redirect if the user is not logged in
+    if (redirect) {
+        return <Redirect to={redirect}/>
+    }
+
+    // Wait until the user has loaded to display the profile page (in case the
+    if (!profile.username) {
+        return <div/>;
+    }
+
     return (
-        <Container component="main" maxWidth="sm" className="Profile">
-            <CssBaseline/>
-            <div className={classes.paper}>
-                <Avatar alt="profile pic" className={classes.large} src={profilePic}/>
-                <Typography variant="h3">
-                    {profile.username}
-                </Typography>
-                <Typography variant="h6">
-                    {profile.name}
-                </Typography>
-            </div>
-            <Card className={classes.profileDetails}>
-                <CardContent>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <Typography gutterBottom variant="h6">
-                                Tickets
-                            </Typography>
-                        </Grid>
-                        {profile.tickets.map((ticket) => {
-                            const severityClass = classes[ticket.severity]
-                            return (
-                                <Grid item>
-                                    <Card>
-                                        <CardContent className={severityClass}>
-                                            <Typography gutterBottom>
-                                                {ticket.ticketTitle + " (" + ticket.severity + ")"}
-                                            </Typography>
-                                            <Typography>
-                                                {"Status: " + ticket.status}
-                                            </Typography>
-                                            <Typography>
-                                                {"Date Issued: " + ticket.dateIssue}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            );
-                        })}
-                    </Grid>
-                </CardContent>
-            </Card>
-            {profile.manager ?
+        <React.Fragment>
+            <NavBar text={profile.username}/>
+            <Container component="main" maxWidth="sm" className="Profile">
+                <CssBaseline/>
+                <div className={classes.paper}>
+                    <Avatar alt="profile pic" className={classes.large} src={profilePic}/>
+                    <Typography variant="h3">
+                        {profile.username}
+                    </Typography>
+                    <Typography variant="h6">
+                        {profile.name}
+                    </Typography>
+                </div>
                 <Card className={classes.profileDetails}>
                     <CardContent>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <Typography gutterBottom variant="h6">
-                                    Teams Managed
+                                    Tickets
                                 </Typography>
                             </Grid>
-                            {profile.manages.map((team) => {
+                            {profile.tickets.map((ticket) => {
+                                const severityClass = classes[ticket.severity]
+                                return (
+                                    <Grid item>
+                                        <Card>
+                                            <CardContent className={severityClass}>
+                                                <Typography gutterBottom>
+                                                    {ticket.ticketTitle + " (" + ticket.severity + ")"}
+                                                </Typography>
+                                                <Typography>
+                                                    {"Status: " + ticket.status}
+                                                </Typography>
+                                                <Typography>
+                                                    {"Date Issued: " + ticket.dateIssue}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                );
+                            })}
+                        </Grid>
+                    </CardContent>
+                </Card>
+                {profile.manager ?
+                    <Card className={classes.profileDetails}>
+                        <CardContent>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12}>
+                                    <Typography gutterBottom variant="h6">
+                                        Teams Managed
+                                    </Typography>
+                                </Grid>
+                                {profile.manages.map((team) => {
+                                    return (
+                                        <Grid item>
+                                            <Card>
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h6">
+                                                        {team.organization.name}
+                                                    </Typography>
+                                                    <Typography gutterBottom>
+                                                        {team.name /* TODO: add team logo */}
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        Total sprint load: {team.sprintLoad}
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
+                            <form style={{paddingTop: 20}} className={classes.root} noValidate autoComplete="off"
+                                  onSubmit={createTeam}>
+                                <TextField
+                                    id="filled-basic"
+                                    label="Create a new team"
+                                    onChange={(event) => setNewTeam(event.target.value)}
+                                />
+                                <IconButton
+                                    type="button"
+                                    onClick={createTeam}
+                                >
+                                    <AddIcon/>
+                                </IconButton>
+                            </form>
+                        </CardContent>
+                    </Card>
+                    : <Card className={classes.profileDetails}>
+                        <CardContent>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12}>
+                                    <Typography gutterBottom variant="h6">
+                                        Skills
+                                    </Typography>
+                                </Grid>
+                                <Grid item className={classes.skills}>
+                                    {profile.skills.map((skill) => {
+                                        return (
+                                            <Chip key={skill.key} label={skill.description}
+                                                  onDelete={deleteSkill(skill)}
+                                                  color="primary"/>
+                                        );
+                                    })}
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <form className={classes.root} noValidate autoComplete="off" onSubmit={createSkill}>
+                                        <TextField
+                                            id="filled-basic"
+                                            label="Add a skill"
+                                            onChange={(event) => setNewChip(event.target.value)}
+                                        />
+                                        <IconButton
+                                            type="button"
+                                            onClick={createSkill}
+                                        >
+                                            <AddIcon/>
+                                        </IconButton>
+                                    </form>
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                }
+                <Card className={classes.profileDetails}>
+                    <CardContent>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <Typography gutterBottom variant="h6">
+                                    Teams Joined
+                                </Typography>
+                            </Grid>
+                            {profile.teams.map((team) => {
                                 return (
                                     <Grid item>
                                         <Card>
@@ -191,100 +287,22 @@ export default function Profile() {
                             })}
                         </Grid>
                         <form style={{paddingTop: 20}} className={classes.root} noValidate autoComplete="off"
-                              onSubmit={createTeam}>
+                              onSubmit={joinTeam}>
                             <TextField
                                 id="filled-basic"
-                                label="Create a new team"
-                                onChange={(event) => setNewTeam(event.target.value)}
+                                label="Join an existing team"
+                                onChange={(event) => setNewJoinTeam(event.target.value)}
                             />
                             <IconButton
                                 type="button"
-                                onClick={createTeam}
+                                onClick={joinTeam}
                             >
                                 <AddIcon/>
                             </IconButton>
                         </form>
                     </CardContent>
                 </Card>
-                : <Card className={classes.profileDetails}>
-                    <CardContent>
-                        <Grid container spacing={1}>
-                            <Grid item xs={12}>
-                                <Typography gutterBottom variant="h6">
-                                    Skills
-                                </Typography>
-                            </Grid>
-                            <Grid item className={classes.skills}>
-                                {profile.skills.map((skill) => {
-                                    return (
-                                        <Chip key={skill.key} label={skill.description} onDelete={deleteSkill(skill)}
-                                              color="primary"/>
-                                    );
-                                })}
-                            </Grid>
-                            <Grid item xs={12}>
-                                <form className={classes.root} noValidate autoComplete="off" onSubmit={createSkill}>
-                                    <TextField
-                                        id="filled-basic"
-                                        label="Add a skill"
-                                        onChange={(event) => setNewChip(event.target.value)}
-                                    />
-                                    <IconButton
-                                        type="button"
-                                        onClick={createSkill}
-                                    >
-                                        <AddIcon/>
-                                    </IconButton>
-                                </form>
-                            </Grid>
-                        </Grid>
-                    </CardContent>
-                </Card>
-            }
-            <Card className={classes.profileDetails}>
-                <CardContent>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <Typography gutterBottom variant="h6">
-                                Teams Joined
-                            </Typography>
-                        </Grid>
-                        {profile.teams.map((team) => {
-                            return (
-                                <Grid item>
-                                    <Card>
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h6">
-                                                {team.organization.name}
-                                            </Typography>
-                                            <Typography gutterBottom>
-                                                {team.name /* TODO: add team logo */}
-                                            </Typography>
-                                            <Typography variant="body2">
-                                                Total sprint load: {team.sprintLoad}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            );
-                        })}
-                    </Grid>
-                    <form style={{paddingTop: 20}} className={classes.root} noValidate autoComplete="off"
-                          onSubmit={joinTeam}>
-                        <TextField
-                            id="filled-basic"
-                            label="Join an existing team"
-                            onChange={(event) => setNewJoinTeam(event.target.value)}
-                        />
-                        <IconButton
-                            type="button"
-                            onClick={joinTeam}
-                        >
-                            <AddIcon/>
-                        </IconButton>
-                    </form>
-                </CardContent>
-            </Card>
-        </Container>
+            </Container>
+        </React.Fragment>
     );
 }
