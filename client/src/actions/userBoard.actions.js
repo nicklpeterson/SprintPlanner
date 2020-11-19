@@ -129,7 +129,7 @@ export const getAllTeams = (userId) => {
     const headers = {"Content-Type" : "application/json"};
 
     return dispatch => {
-        axios.get(`${API_URL}/board/getAllTeams/${userId}`, {headers})
+        axios.get(`${API_URL}/board/getAllTeams/${userId}/`, {headers})
             .then(res => {
                 console.log(res);
                 dispatch(updateAllTeams(res.data.teams));

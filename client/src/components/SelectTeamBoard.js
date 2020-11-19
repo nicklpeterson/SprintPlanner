@@ -20,6 +20,7 @@ export default function SelectTeamBoard() {
         const fetchAllTeams = () => {
             try {
                 const userId = getCurrentUserId();
+                console.log(orgId);
                 dispatch(getAllTeams(userId));
             } catch (e) {
                 console.log(e);
