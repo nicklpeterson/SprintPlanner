@@ -3,11 +3,15 @@ import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import {useDispatch, useSelector} from "react-redux";
-import {getAllSprints, getAllTeamMembers, getNumOfUserWithTickets, getAvgPoints} from "../actions/userBoard.actions";
+import {
+    getAllSprints,
+    getAllTeamMembers,
+    getNumOfUserWithTickets,
+    getMaxPoints,
+} from "../actions/userBoard.actions";
 import UserBoard from "./UserBoard";
 
 
@@ -18,7 +22,7 @@ export default function TeamBoard({ teamId, teamName }) {
     const dispatch = useDispatch();
     const teamMembers = useSelector(state => state.board.teamMembers);
     const sprints = useSelector(state => state.board.sprints);
-    const avgPoints = useSelector(state => state.board.avgPoints);
+    const maxPoints = useSelector(state => state.board.maxPoints);
     const usersWithTickets = useSelector(state => state.board.usersWithTickets);
     const [currentSprint, setCurrentSprint] = React.useState('');
 
@@ -40,9 +44,9 @@ export default function TeamBoard({ teamId, teamName }) {
         setCurrentSprint(event.target.value);
     };
 
-    const getAveragePoints = () => {
-        dispatch(getAvgPoints(currentSprint));
-        return avgPoints;
+    const getMaxSumOfPoints = () => {
+        dispatch(getMaxPoints(currentSprint));
+        return maxPoints;
     };
 
     const getNumberOfUsersWithTickets = () => {
@@ -68,7 +72,11 @@ export default function TeamBoard({ teamId, teamName }) {
             <Grid container direction="row">
                 {currentSprint &&
                 <Grid item>
+<<<<<<< Updated upstream
                     <Typography component="h6" variant="button">Average Number of Points: {getAveragePoints()}</Typography>
+=======
+                    <Typography component="h6" variant="button">Max Number of Points a User took: {getMaxSumOfPoints() ?? 0}</Typography>
+>>>>>>> Stashed changes
                 </Grid>}
                 {currentSprint &&
                 <Grid item>

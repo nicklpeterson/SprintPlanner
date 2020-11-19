@@ -122,12 +122,12 @@ public class BoardController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/getAvgPoints/{sprintNumber}", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> getAvgPoints(@PathVariable String sprintNumber) {
+    @GetMapping(path = "/getMaxPoints/{sprintNumber}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getMaxPoints(@PathVariable String sprintNumber) {
         final Map<String, Object> response = new HashMap<>();
 
         try {
-            Double sum = sprintService.getAvgPoints(Integer.parseInt(sprintNumber));
+            Integer sum = sprintService.getMaxPoints(Integer.parseInt(sprintNumber));
             response.put("sum", sum);
             response.put("success", true);
         } catch (NullPointerException e) {

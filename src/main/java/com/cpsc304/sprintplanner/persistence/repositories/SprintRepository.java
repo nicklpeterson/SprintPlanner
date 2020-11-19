@@ -19,8 +19,16 @@ public interface SprintRepository extends CrudRepository<Sprint, String> {
     @Query(value="SELECT COUNT(assigneeId) FROM TICKETS WHERE sprintnumber=:sprintNumber GROUP BY assigneeid HAVING COALESCE(SUM(points), 0) > 0", nativeQuery = true)
     Integer getNumOfUsersWithTickets(@Param("sprintNumber") Integer sprintNumber);
 
-    @Query(value="SELECT coalesce(AVG(points), 0) FROM TICKETS WHERE sprintnumber=:sprintNumber GROUP BY assigneeid", nativeQuery = true)
-    Double getAvgPoints(@Param("sprintNumber") Integer sprintNumber);
+    @Query(value="SELECT SUM(t.points)\n" +
+            "FROM tickets t, users u\n" +
+            "WHERE u.userid = t.assigneeid AND sprintnumber=:sprintNumber\n" +
+            "GROUP BY u.userid\n" +
+            "HAVING sum(t.points) >= ALL \n" +
+            "    (SELECT coalesce(SUM(t2.points), 0) \n" +
+            "    FROM tickets t2, users u2\n" +
+            "    WHERE u2.userid = t2.assigneeid AND sprintnumber=:sprintNumber\n" +
+            "    GROUP BY u2.userId)", nativeQuery = true)
+    Integer getMaxPoints(@Param("sprintNumber") Integer sprintNumber);
 
 
 }
