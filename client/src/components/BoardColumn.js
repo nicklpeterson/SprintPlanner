@@ -3,6 +3,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
+import Link from '@material-ui/core/Link';
 
 
 // followed the react-beautiful-dnd example to create the board:
@@ -48,7 +49,10 @@ export default function BoardColumn({ colName, items, colId }) {
                                              provided.draggableProps.style
                                          )}>
                                         <Grid container direction="column">
-                                            <Grid item><Typography component="overline" gutterBottom={true}> {item.ticketTitle} </Typography></Grid>
+                                            <Grid item><Typography component="overline" gutterBottom={true}>
+                                                <Link href={`/ticket/${item.ticketId}`} variant="body2">{item.ticketTitle} </Link>
+                                            </Typography>
+                                            </Grid>
                                             <Grid item align="right"><Chip size="small" label={item.points} /></Grid>
                                         </Grid>
                                     </div>
