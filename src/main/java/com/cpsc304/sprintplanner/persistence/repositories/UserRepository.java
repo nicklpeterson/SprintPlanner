@@ -14,6 +14,9 @@ public interface UserRepository extends CrudRepository<User, UUID> {
     @Query(value="SELECT * FROM USERS WHERE USERNAME=:username", nativeQuery=true)
     User findByUsername(@Param("username") String username);
 
+    @Query(value="SELECT username FROM USERS WHERE USERID=:userId", nativeQuery=true)
+    String getUsername(@Param("userId") UUID userId);
+
     @Query(value="SELECT * FROM USERS WHERE USERID=:userId", nativeQuery=true)
     User findByUserId(@Param("userId") UUID userId);
 
@@ -48,4 +51,9 @@ public interface UserRepository extends CrudRepository<User, UUID> {
             "SELECT PICTURE.img FROM PICTURE WHERE PICTURE.pictureid " +
             "= (SELECT displaypicture FROM USERS WHERE username = :username)", nativeQuery=true)
     byte[] getProfilePic(@Param("username") String username);
+
+    @Query(value="SELECT * FROM PROJECTS p1, USERS u, TEAM_MEMBERS tm WHERE p1.createdby = tm.teamid AND " +
+            "u.userid = tm.userid AND p1.projectid = (SELECT DISTINCT(t2.projectid) FROM TICKETS t2\n" +
+            "WHERE t2. ticketid =:ticketId)", nativeQuery=true)
+    List<User> getAvailableMembers(@Param("ticketId") UUID ticketId);
 }

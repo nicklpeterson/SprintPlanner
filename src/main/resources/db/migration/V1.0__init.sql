@@ -88,6 +88,7 @@ CREATE TABLE TICKETS (
                          creatorId UUID,
                          assigneeId UUID,
                          points INT,
+                         description VARCHAR,
                          FOREIGN KEY (projectId) REFERENCES PROJECTS(projectId),
                          FOREIGN KEY (creatorId) REFERENCES USERS(userId),
                          FOREIGN KEY (assigneeId) REFERENCES USERS(userId));
