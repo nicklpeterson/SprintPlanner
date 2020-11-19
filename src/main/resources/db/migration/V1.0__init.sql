@@ -86,7 +86,8 @@ CREATE TABLE TICKETS (
                          creatorId UUID,
                          assigneeId UUID,
                          points INT,
-                         FOREIGN KEY (projectId) REFERENCES PROJECTS(projectId) ON DELETE CASCADE,
+                         FOREIGN KEY (sprintNumber, projectId) REFERENCES SPRINTS(sprintNumber, belongsTo) ON DELETE CASCADE,
+                         FOREIGN KEY (projectId) REFERENCES PROJECTS(projectId),
                          FOREIGN KEY (creatorId) REFERENCES USERS(userId),
                          FOREIGN KEY (assigneeId) REFERENCES USERS(userId));
 
