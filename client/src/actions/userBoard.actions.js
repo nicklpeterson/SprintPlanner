@@ -109,16 +109,16 @@ export const getNumOfUserWithTickets = (sprintNumber) => {
 };
 
 
-export const getAvgPoints = (sprintNumber) => {
+export const getMaxPoints = (sprintNumber) => {
     const headers = {"Content-Type" : "application/json"};
 
     return dispatch => {
-        axios.get(`${API_URL}/board/getAvgPoints/${sprintNumber}`, {headers})
+        axios.get(`${API_URL}/board/getMaxPoints/${sprintNumber}`, {headers})
             .then(res => {
                 dispatch(updateUserPoints(res.data.sum));
             })
             .catch(err => {
-                console.log("Failed to get avg. points");
+                console.log("Failed to get max points");
                 console.log(err);
                 console.log(err.toString());
             });
@@ -151,7 +151,7 @@ export const updateAllTeams = (teams) => {
 
 export const updateUserPoints = (num) => {
     return {
-        type: 'GET_AVG_POINTS',
+        type: 'GET_MAX_POINTS',
         state: num
     }
 };

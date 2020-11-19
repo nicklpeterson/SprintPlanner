@@ -10,7 +10,7 @@ import {
     getAllSprints,
     getAllTeamMembers,
     getNumOfUserWithTickets,
-    getAvgPoints,
+    getMaxPoints,
 } from "../actions/userBoard.actions";
 import UserBoard from "./UserBoard";
 
@@ -21,7 +21,7 @@ export default function TeamBoard({ teamId, teamName }) {
     const dispatch = useDispatch();
     const teamMembers = useSelector(state => state.board.teamMembers);
     const sprints = useSelector(state => state.board.sprints);
-    const avgPoints = useSelector(state => state.board.avgPoints);
+    const maxPoints = useSelector(state => state.board.maxPoints);
     const usersWithTickets = useSelector(state => state.board.usersWithTickets);
     const [currentSprint, setCurrentSprint] = React.useState('');
 
@@ -44,9 +44,9 @@ export default function TeamBoard({ teamId, teamName }) {
         setCurrentSprint(event.target.value);
     };
 
-    const getAveragePoints = () => {
-        dispatch(getAvgPoints(currentSprint));
-        return avgPoints;
+    const getMaxSumOfPoints = () => {
+        dispatch(getMaxPoints(currentSprint));
+        return maxPoints ?? 0;
     };
 
     const getNumberOfUsersWithTickets = () => {
@@ -72,7 +72,7 @@ export default function TeamBoard({ teamId, teamName }) {
             <Grid container direction="row">
                 {currentSprint &&
                 <Grid item>
-                    <Typography component="h6" variant="button">Average Number of Points: {getAveragePoints() ?? 0}</Typography>
+                    <Typography component="h6" variant="button">Max Number of Points a User took: {getMaxSumOfPoints() ?? 0}</Typography>
                 </Grid>}
                 {currentSprint &&
                 <Grid item>

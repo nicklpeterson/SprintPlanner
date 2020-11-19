@@ -40,9 +40,9 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public Double getAvgPoints(Integer sprintNumber) throws Exception {
+    public Integer getMaxPoints(Integer sprintNumber) throws Exception {
         try {
-            return sprintRepository.getAvgPoints(sprintNumber);
+            return sprintRepository.getMaxPoints(sprintNumber);
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());
