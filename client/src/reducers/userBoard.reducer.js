@@ -1,4 +1,4 @@
-const initialState = { teamMembers: [], sprints: [], usersWithTickets: 0, avgPoints: 0, allTeams:[]};
+const initialState = { teamMembers: [], sprints: [], usersWithTickets: 0, maxPoints: 0, allTeams:[]};
 
 const boardReducer = (state = initialState, action) => {
     if (!!action.userId && !state[action.userId]) {
@@ -22,8 +22,8 @@ const boardReducer = (state = initialState, action) => {
         return {...state, sprints: action.state}
     } else if (action.type === 'GET_USERS_POINTS') {
         return {...state, [action.userId] : { ... state[action.userId], points: action.state}};
-    } else if (action.type === 'GET_AVG_POINTS') {
-        return {...state , avgPoints: action.state};
+    } else if (action.type === 'GET_MAX_POINTS') {
+        return {...state , maxPoints: action.state};
     } else if (action.type === 'GET_NUM_MEMBERS') {
         return {...state, usersWithTickets: action.state};
     } else if (action.type === 'GET_ALL_TEAMS') {

@@ -6,7 +6,9 @@ import com.cpsc304.sprintplanner.exceptions.FailedToFetchTickets;
 import com.cpsc304.sprintplanner.exceptions.FailedToSaveTicketException;
 import com.cpsc304.sprintplanner.exceptions.FailedToUpdateTicket;
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
+import com.cpsc304.sprintplanner.persistence.entities.User;
 import com.cpsc304.sprintplanner.persistence.repositories.TicketRepository;
+import com.cpsc304.sprintplanner.persistence.repositories.UserRepository;
 import com.cpsc304.sprintplanner.services.TicketService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<TicketDto> getAllTickets() {
@@ -89,6 +92,24 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public void updateTicketPoints(UUID ticketId, Integer points) throws FailedToUpdateTicket {
+        try {
+            ticketRepository.updateTicketPoints(points, ticketId);
+        } catch (Exception e) {
+            throw new FailedToUpdateTicket(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateTicketAssignee(UUID ticketId, UUID userId) throws FailedToUpdateTicket {
+        try {
+            ticketRepository.updateTicketAssignee(userId, ticketId);
+        } catch (Exception e) {
+            throw new FailedToUpdateTicket(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public Integer getUsersPoints(UUID userId, Integer sprintNumber) throws Exception {
         try {
             return ticketRepository.getUsersPoints(userId, sprintNumber);
@@ -103,6 +124,25 @@ public class TicketServiceImpl implements TicketService {
             ticketRepository.deleteTicketById(ticketId);
         } catch (Exception e) {
             throw new FailedToDeleteDataException(e.getMessage(), e);
+        }
+    }
+          
+    public Ticket getTicketById(UUID ticketId) throws FailedToFetchTickets {
+        try {
+            return ticketRepository.getTicketById(ticketId);
+        } catch (Exception e) {
+            throw new FailedToFetchTickets(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<User> getAvailableMembers(UUID ticketId) throws Exception {
+        try {
+            log.info(userRepository.getAvailableMembers(ticketId).toString());
+            return userRepository.getAvailableMembers(ticketId);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            throw new Exception(e.getMessage(), e);
         }
     }
 }

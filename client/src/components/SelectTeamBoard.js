@@ -16,9 +16,6 @@ import AddTicketDialog from "./AddTicketDialog";
 import {openTicketDialog} from "../actions/ticketDialog.actions";
 import * as JwtParser from "../util/JwtParser";
 
-
-// TODO: CREATE HOC TO PASS THE TEAM ID, BECAUSE IT'S POSSIBLE TO HAVE MULTIPLE TEAMS
-
 const useStyles = makeStyles((theme) => ({
     button: {
         margin: theme.spacing(1),

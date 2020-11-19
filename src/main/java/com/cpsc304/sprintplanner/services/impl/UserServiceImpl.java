@@ -73,6 +73,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getUsername(UUID userId) throws FailedToFindUserException {
+        try {
+            String user = userRepository.getUsername(userId);
+            return user;
+        } catch (Exception e) {
+            throw new FailedToFindUserException("Failed to find a user with that user id");
+        }
+    }
+
+    @Override
     public User getUserByUsername(String username) throws FailedToFindUserException {
         final User user = userRepository.findByUsername(username);
         if (user == null) {

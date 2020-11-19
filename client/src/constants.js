@@ -12,4 +12,12 @@ export const idMappedToStatus = {
     DONE: 'done'
 };
 
+export const statuses = {
+    backlog: 'backlog',
+    paused: 'paused',
+    inProgress: 'in progress',
+    inReview: 'in review',
+    done: 'done'
+};
+
 

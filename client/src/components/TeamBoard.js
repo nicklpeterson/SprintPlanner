@@ -6,23 +6,26 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import {useDispatch, useSelector} from "react-redux";
-import {getAllSprints, getAllTeamMembers, getNumOfUserWithTickets, getAvgPoints, setSprint} from "../actions/userBoard.actions";
+import {
+    getAllSprints,
+    getAllTeamMembers,
+    getNumOfUserWithTickets,
+    getMaxPoints,
+    setSprint
+} from "../actions/userBoard.actions";
 import UserBoard from "./UserBoard";
-
-
-// TODO: CREATE HOC TO PASS THE TEAM ID, BECAUSE IT'S POSSIBLE TO HAVE MULTIPLE TEAMS
-
 
 export default function TeamBoard({ teamId, teamName }) {
     const dispatch = useDispatch();
     const teamMembers = useSelector(state => state.board.teamMembers);
     const sprints = useSelector(state => state.board.sprints);
-    const avgPoints = useSelector(state => state.board.avgPoints);
+    const maxPoints = useSelector(state => state.board.maxPoints);
     const usersWithTickets = useSelector(state => state.board.usersWithTickets);
     const currentSprint = useSelector(state => state.sprint.sprintNumber);
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
+            setCurrentSprint("");
             try {
                 dispatch(getAllTeamMembers(teamId));
                 dispatch(getAllSprints(teamId));
@@ -32,15 +35,15 @@ export default function TeamBoard({ teamId, teamName }) {
             }
         };
         fetchTeamMembersAndSprints();
-    }, []);
+    }, [teamId]);
 
     const handleChange = (event) => {
         dispatch(setSprint(event.target.value));
     };
 
-    const getAveragePoints = () => {
-        dispatch(getAvgPoints(currentSprint));
-        return avgPoints;
+    const getMaxSumOfPoints = () => {
+        dispatch(getMaxPoints(currentSprint));
+        return maxPoints ?? 0;
     };
 
     const getNumberOfUsersWithTickets = () => {
@@ -65,15 +68,15 @@ export default function TeamBoard({ teamId, teamName }) {
             <Grid container direction="row">
                 {currentSprint &&
                 <Grid item>
-                    <Typography component="h6" variant="button">Average Number of Points: {getAveragePoints()}</Typography>
+                    <Typography component="h6" variant="button">Max Number of Points a User took: {getMaxSumOfPoints() ?? 0}</Typography>
                 </Grid>}
                 {currentSprint &&
                 <Grid item>
-                    <Typography style={{marginLeft: 30}} component="h6" variant="button">Number of Members with Tickets: {getNumberOfUsersWithTickets()} </Typography>
+                    <Typography style={{marginLeft: 30}} component="h6" variant="button">Number of Members with Tickets: {getNumberOfUsersWithTickets() ?? 0} </Typography>
                 </Grid>
                 }
             </Grid>
-            {currentSprint && teamMembers.map((tm) =>  <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />  )}
+            {currentSprint && teamMembers.map((tm) => <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />)}
         </div>
     )
 
