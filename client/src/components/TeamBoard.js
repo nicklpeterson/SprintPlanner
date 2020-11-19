@@ -46,7 +46,7 @@ export default function TeamBoard({ teamId, teamName }) {
 
     const getMaxSumOfPoints = () => {
         dispatch(getMaxPoints(currentSprint));
-        return maxPoints;
+        return maxPoints ?? 0;
     };
 
     const getNumberOfUsersWithTickets = () => {
@@ -72,11 +72,7 @@ export default function TeamBoard({ teamId, teamName }) {
             <Grid container direction="row">
                 {currentSprint &&
                 <Grid item>
-<<<<<<< Updated upstream
-                    <Typography component="h6" variant="button">Average Number of Points: {getAveragePoints()}</Typography>
-=======
                     <Typography component="h6" variant="button">Max Number of Points a User took: {getMaxSumOfPoints() ?? 0}</Typography>
->>>>>>> Stashed changes
                 </Grid>}
                 {currentSprint &&
                 <Grid item>
