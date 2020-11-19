@@ -33,4 +33,7 @@ public class User {
 
     @Column(name = "displaypicture")
     private UUID displayPicture;
+
+    @Column (name = "ismanager")
+    private boolean isManager;
 }

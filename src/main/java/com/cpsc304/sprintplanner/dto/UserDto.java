@@ -17,4 +17,5 @@ public class UserDto {
     private String organizationName;
     private UUID organizationUUID;
     private UUID displayPictureUUID;
+    private Boolean isManager;
 }

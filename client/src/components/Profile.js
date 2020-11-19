@@ -13,7 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from "@material-ui/core/IconButton";
 import {useDispatch, useSelector} from "react-redux";
-import {addSkill, removeSkill} from "../actions/profile.actions";
+import {addSkill, addTeam, addToTeam, removeSkill} from "../actions/profile.actions";
 import axios from "axios";
 import NavBar from "./NavBar";
 import Redirect from "react-router-dom/es/Redirect";
@@ -57,6 +57,8 @@ export default function Profile() {
     const dispatch = useDispatch();
 
     const [newChip, setNewChip] = React.useState('');
+    const [newTeam, setNewTeam] = React.useState('');
+    const [newJoinTeam, setNewJoinTeam] = React.useState('');
     const [profilePic, setProfilePic] = React.useState('');
     const [redirect, setRedirect] = React.useState(null);
     const profile = useSelector(state => state.profile);
@@ -64,6 +66,16 @@ export default function Profile() {
     const createSkill = () => {
         event.preventDefault();
         dispatch(addSkill(newChip));
+    }
+
+    const createTeam = () => {
+        event.preventDefault();
+        dispatch(addTeam(newTeam));
+    }
+
+    const joinTeam = () => {
+        event.preventDefault();
+        dispatch(addToTeam(newJoinTeam));
     }
 
     const deleteSkill = (deleteChip) => () => {
@@ -83,18 +95,25 @@ export default function Profile() {
         const headers = {"Content-Type": "application/json"}
         axios.get(API_URL + "/users/details", {headers})
             .then(res => {
-                dispatch({type: "GET_USER_DETAILS", payload: res.data.user})
-                return res
+                dispatch({type: "GET_USER_DETAILS", payload: res.data});
+                return res;
             })
             .then(res => {
                 axios.get(API_URL + "/users/profilepic/" + res.data.user.username, {headers})
                     .then(resolve => {
-                        setProfilePic("data:image/png;base64," + resolve.data.pic)
-                    })
+                        setProfilePic("data:image/png;base64," + resolve.data.pic);
+                    });
                 axios.get(API_URL + "/ticket/assigned/" + res.data.user.username, {headers})
                     .then(res => {
-                        dispatch({type: "GET_ASSIGNED_TICKETS", payload: res.data.tickets})
-                        return res
+                        dispatch({type: "GET_ASSIGNED_TICKETS", payload: res.data.tickets});
+                    });
+                axios.get(API_URL + "/team", {headers})
+                    .then(res => {
+                        dispatch({type: "GET_TEAMS", payload: res.data.teams});
+                    });
+                axios.get(API_URL + "/team/managed", {headers})
+                    .then(res => {
+                        dispatch({type: "GET_MANAGED_TEAMS", payload: res.data.teams});
                     })
             })
             .catch(err => {
@@ -158,38 +177,129 @@ export default function Profile() {
                         </Grid>
                     </CardContent>
                 </Card>
+                {profile.manager ?
+                    <Card className={classes.profileDetails}>
+                        <CardContent>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12}>
+                                    <Typography gutterBottom variant="h6">
+                                        Teams Managed
+                                    </Typography>
+                                </Grid>
+                                {profile.manages.map((team) => {
+                                    return (
+                                        <Grid item>
+                                            <Card>
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h6">
+                                                        {team.organization.name}
+                                                    </Typography>
+                                                    <Typography gutterBottom>
+                                                        {team.name /* TODO: add team logo */}
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        Total sprint load: {team.sprintLoad}
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
+                            <form style={{paddingTop: 20}} className={classes.root} noValidate autoComplete="off"
+                                  onSubmit={createTeam}>
+                                <TextField
+                                    id="filled-basic"
+                                    label="Create a new team"
+                                    onChange={(event) => setNewTeam(event.target.value)}
+                                />
+                                <IconButton
+                                    type="button"
+                                    onClick={createTeam}
+                                >
+                                    <AddIcon/>
+                                </IconButton>
+                            </form>
+                        </CardContent>
+                    </Card>
+                    : <Card className={classes.profileDetails}>
+                        <CardContent>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12}>
+                                    <Typography gutterBottom variant="h6">
+                                        Skills
+                                    </Typography>
+                                </Grid>
+                                <Grid item className={classes.skills}>
+                                    {profile.skills.map((skill) => {
+                                        return (
+                                            <Chip key={skill.key} label={skill.description}
+                                                  onDelete={deleteSkill(skill)}
+                                                  color="primary"/>
+                                        );
+                                    })}
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <form className={classes.root} noValidate autoComplete="off" onSubmit={createSkill}>
+                                        <TextField
+                                            id="filled-basic"
+                                            label="Add a skill"
+                                            onChange={(event) => setNewChip(event.target.value)}
+                                        />
+                                        <IconButton
+                                            type="button"
+                                            onClick={createSkill}
+                                        >
+                                            <AddIcon/>
+                                        </IconButton>
+                                    </form>
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                }
                 <Card className={classes.profileDetails}>
                     <CardContent>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <Typography gutterBottom variant="h6">
-                                    Skills
+                                    Teams Joined
                                 </Typography>
                             </Grid>
-                            <Grid item className={classes.skills}>
-                                {profile.skills.map((skill) => {
-                                    return (
-                                        <Chip key={skill.key} label={skill.description} onDelete={deleteSkill(skill)}
-                                              color="primary"/>
-                                    );
-                                })}
-                            </Grid>
-                            <Grid item xs={12}>
-                                <form className={classes.root} noValidate autoComplete="off" onSubmit={createSkill}>
-                                    <TextField
-                                        id="filled-basic"
-                                        label="Add a skill"
-                                        onChange={(event) => setNewChip(event.target.value)}
-                                    />
-                                    <IconButton
-                                        type="button"
-                                        onClick={createSkill}
-                                    >
-                                        <AddIcon/>
-                                    </IconButton>
-                                </form>
-                            </Grid>
+                            {profile.teams.map((team) => {
+                                return (
+                                    <Grid item>
+                                        <Card>
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h6">
+                                                    {team.organization.name}
+                                                </Typography>
+                                                <Typography gutterBottom>
+                                                    {team.name /* TODO: add team logo */}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    Total sprint load: {team.sprintLoad}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                );
+                            })}
                         </Grid>
+                        <form style={{paddingTop: 20}} className={classes.root} noValidate autoComplete="off"
+                              onSubmit={joinTeam}>
+                            <TextField
+                                id="filled-basic"
+                                label="Join an existing team"
+                                onChange={(event) => setNewJoinTeam(event.target.value)}
+                            />
+                            <IconButton
+                                type="button"
+                                onClick={joinTeam}
+                            >
+                                <AddIcon/>
+                            </IconButton>
+                        </form>
                     </CardContent>
                 </Card>
             </Container>
