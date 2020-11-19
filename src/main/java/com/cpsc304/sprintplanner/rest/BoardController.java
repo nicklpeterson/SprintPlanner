@@ -141,14 +141,12 @@ public class BoardController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/getAllTeams/{userId}/{orgId}", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> getAllTeams(@PathVariable UUID userId, @PathVariable UUID orgId) {
+    @GetMapping(path = "/getAllTeams/{userId}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getAllTeams(@PathVariable UUID userId) {
         final Map<String, Object> response = new HashMap<>();
 
         try {
-            List<Team> teams = teamService.getAllTeams(userId, orgId);
-            log.info(orgId.toString());
-            log.info(teams.toString());
+            List<Team> teams = teamService.getAllTeams(userId);
             response.put("teams", teams);
             response.put("success", true);
         } catch (Exception e) {

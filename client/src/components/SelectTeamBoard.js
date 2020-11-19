@@ -7,7 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import {useDispatch, useSelector} from "react-redux";
 import {getAllTeams} from "../actions/userBoard.actions";
 import TeamBoard from "./TeamBoard";
-import { getCurrentUserId, getCurrentOrg  } from "./utilities";
+import { getCurrentUserId  } from "./utilities";
 
 export default function SelectTeamBoard() {
     const dispatch = useDispatch();
@@ -20,9 +20,7 @@ export default function SelectTeamBoard() {
         const fetchAllTeams = () => {
             try {
                 const userId = getCurrentUserId();
-                const orgId = getCurrentOrg();
-                console.log(orgId);
-                dispatch(getAllTeams(userId, orgId));
+                dispatch(getAllTeams(userId));
             } catch (e) {
                 console.log(e);
                 console.log("Unable to load teams");

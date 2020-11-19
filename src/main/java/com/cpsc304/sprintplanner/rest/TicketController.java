@@ -2,6 +2,7 @@ package com.cpsc304.sprintplanner.rest;
 
 import com.cpsc304.sprintplanner.dto.TicketDto;
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
+import com.cpsc304.sprintplanner.persistence.entities.User;
 import com.cpsc304.sprintplanner.services.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,49 @@ public class TicketController {
             response.put("ticket", ticket);
             response.put("success", true);
         }catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/getAvailableMembers/{ticketId}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getAvailableMembers(@PathVariable String ticketId) {
+        final Map<String, Object> response = new HashMap<>();
+        try {
+            List<User> members = ticketService.getAvailableMembers(UUID.fromString(ticketId));
+            response.put("members", members);
+            response.put("success", true);
+        }catch (Exception e) {
+            log.info(e.toString());
+            response.put("error", e.getMessage());
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/updatePoints", consumes = "application/json")
+    public ResponseEntity<Map<String, Object>> updateTicketPoints(@RequestBody Ticket ticket, @RequestParam("points") String points) {
+        final Map<String, Object> response = new HashMap<>();
+
+        try {
+            ticketService.updateTicketPoints(ticket.getTicketId(), Integer.parseInt(points));
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("success", false);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/updateAssignee", consumes = "application/json")
+    public ResponseEntity<Map<String, Object>> updateTicketAssignee(@RequestBody Ticket ticket, @RequestParam("userId") UUID uuid) {
+        final Map<String, Object> response = new HashMap<>();
+
+        try {
+            ticketService.updateTicketAssignee(ticket.getTicketId(), uuid);
+            response.put("success", true);
+        } catch (Exception e) {
             response.put("error", e.getMessage());
             response.put("success", false);
         }

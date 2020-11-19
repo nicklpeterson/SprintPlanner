@@ -1,6 +1,7 @@
 package com.cpsc304.sprintplanner.persistence.repositories;
 
 import com.cpsc304.sprintplanner.persistence.entities.Ticket;
+import com.cpsc304.sprintplanner.persistence.entities.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +17,6 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Query(value="SELECT * FROM tickets", nativeQuery=true)
     Iterable<Ticket> selectAllTickets();
 
-    // TODO: REFACTOR TO INCLUDE THE PROJECT NAME AS WELL, WILL HAVE TO DO A JOIN
     @Query(value = "SELECT * FROM TICKETS t1 WHERE t1.assigneeId =:userId " +
             "AND NOT EXISTS (SELECT t2.assigneeId FROM TICKETS t2" +
             " WHERE NOT EXISTS (SELECT t3.assigneeId, t3.status, t3.sprintnumber FROM TICKETS t3 " +
@@ -36,4 +36,14 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Transactional
     @Query(value="UPDATE tickets SET STATUS=:newStatus WHERE ticketId=:ticketId", nativeQuery = true)
     void updateTicketProgressStatus(@Param("newStatus") String newStatus, @Param("ticketId")UUID ticketId);
+
+    @Modifying
+    @Transactional
+    @Query(value="UPDATE tickets SET assigneeid=:userId WHERE ticketId=:ticketId", nativeQuery = true)
+    void updateTicketAssignee(@Param("userId") UUID userId, @Param("ticketId")UUID ticketId);
+
+    @Modifying
+    @Transactional
+    @Query(value="UPDATE tickets SET points=:points WHERE ticketId=:ticketId", nativeQuery = true)
+    void updateTicketPoints(@Param("points") Integer points, @Param("ticketId")UUID ticketId);
 }
