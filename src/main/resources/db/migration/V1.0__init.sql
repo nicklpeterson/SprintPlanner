@@ -88,7 +88,6 @@ CREATE TABLE TICKETS (
                          points INT,
                          FOREIGN KEY (sprintNumber, projectId) REFERENCES SPRINTS(sprintNumber, belongsTo) ON DELETE CASCADE,
                          description VARCHAR,
-                         FOREIGN KEY (projectId) REFERENCES PROJECTS(projectId),
                          FOREIGN KEY (creatorId) REFERENCES USERS(userId),
                          FOREIGN KEY (assigneeId) REFERENCES USERS(userId));
 
@@ -317,7 +316,7 @@ DEFAULT,
 'Add the ability to add tickets',
 'high',
 'inProgress',
-(SELECT projectId FROM PROJECTS WHERE projectName= 'Project #1'),
+(SELECT projectId FROM PROJECTS WHERE projectName= 'UBC Project #1'),
 1,
 (SELECT TO_TIMESTAMP('11 13 20', 'MM-DD-YY')),
 (SELECT userid FROM users WHERE username = 'Kanye West'),

@@ -120,7 +120,7 @@ export default function TicketPage() {
             dispatch(getUsername(currentTicket.creatorId, false));
         }
     }
-    
+
 
     return (
         <Container style={{marginTop: 50, marginBottom: 100}}>
