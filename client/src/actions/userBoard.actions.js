@@ -63,7 +63,7 @@ export const getAllSprints = (teamId) => {
     return dispatch => {
         axios.get(`${API_URL}/board/getAllSprints/${teamId}`, {headers})
             .then(res => {
-                dispatch(getSprints(res.data.sprints));
+                dispatch(getSprints(res.data.tickets));
             })
             .catch(err => {
                 console.log("Failed to get sprints");
@@ -142,20 +142,6 @@ export const getAllTeams = (userId) => {
             });
     }
 };
-
-export const deleteSprint = sprint => {
-    const headers = {"Content-Type": "application/json"}
-
-    return dispatch => {
-        axios.delete(`${API_URL}/board/sprint/delete/${sprint.sprintNumber}/${sprint.belongsTo}`, {headers})
-            .then(res => {
-                dispatch(setSprint({}));
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    }
-}
 
 export const updateAllTeams = (teams) => {
     return {
@@ -245,10 +231,10 @@ export const updateTicketByProgress = (tickets, status, userId) => {
     }
 }
 
-export const setSprint = sprint => {
-    console.log(sprint);
+export const setSprint = sprintNumber => {
+    console.log(sprintNumber);
     return {
         type: 'SET_SPRINT',
-        sprint: sprint
+        sprintNumber: sprintNumber
     }
 }

@@ -1,6 +1,5 @@
 package com.cpsc304.sprintplanner.rest;
 
-import com.cpsc304.sprintplanner.dto.SprintDto;
 import com.cpsc304.sprintplanner.exceptions.FailedToFetchProjectsException;
 import com.cpsc304.sprintplanner.persistence.entities.Sprint;
 import com.cpsc304.sprintplanner.persistence.entities.Team;
@@ -78,7 +77,7 @@ public class BoardController {
 
         try {
             List<Sprint> sprints = sprintService.getAllSprints(teamId);
-            response.put("sprints", sprints);
+            response.put("tickets", sprints);
             response.put("success", true);
         } catch (Exception e) {
             response.put("error", e.getMessage());
@@ -162,20 +161,6 @@ public class BoardController {
         try {
             response.put("projects", projectService.getProjectsByUserId(userId));
         } catch(FailedToFetchProjectsException e) {
-            response.put("error", e.getMessage());
-            response.put("success", false);
-        }
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping(path= "/sprint/delete/{sprintNumber}/{projectId}", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> deleteSprint(@PathVariable Integer sprintNumber, @PathVariable UUID projectId) {
-
-        final Map<String, Object> response = new HashMap<>();
-        try {
-            sprintService.deleteSprint(sprintNumber, projectId);
-            response.put("success", true);
-        } catch(Exception e) {
             response.put("error", e.getMessage());
             response.put("success", false);
         }

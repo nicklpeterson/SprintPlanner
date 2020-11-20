@@ -25,6 +25,7 @@ export default function TeamBoard({ teamId, teamName }) {
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
+            setCurrentSprint("");
             try {
                 dispatch(getAllTeamMembers(teamId));
                 dispatch(getAllSprints(teamId));
@@ -37,7 +38,7 @@ export default function TeamBoard({ teamId, teamName }) {
     }, [teamId]);
 
     const handleChange = (event) => {
-        dispatch(setSprint(sprints.find(s => s.sprintNumber === event.target.value)));
+        dispatch(setSprint(event.target.value));
     };
 
     const getMaxSumOfPoints = () => {

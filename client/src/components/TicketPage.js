@@ -19,6 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { getTicketInfo, getUsername, updateAssignee, updatePoints, getMembersCanBeAssignedTo } from "../actions/ticket.actions";
 import { statuses} from "../constants";
 
+
 export default function TicketPage() {
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -241,6 +242,4 @@ export default function TicketPage() {
             </Snackbar>
         </Container>
     )
-
-
 }

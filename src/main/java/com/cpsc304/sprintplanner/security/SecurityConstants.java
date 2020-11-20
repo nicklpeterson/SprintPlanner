@@ -2,7 +2,7 @@ package com.cpsc304.sprintplanner.security;
 
 public class SecurityConstants {
     public static final String SECRET = "cpsc304SprintPlannersSuperSecretKey";
-    public static final long EXPIRATION_TIME = 2700000; // 45 minutes
+    public static final long EXPIRATION_TIME = 900000; // 15 minutes
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String SIGN_UP_URL = "/users/signup";
