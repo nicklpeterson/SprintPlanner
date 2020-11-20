@@ -19,9 +19,9 @@ const profileReducer = (state = initialState, action) => {
     } else if (action.type === 'JOIN_TEAM') {
         return {...state, teams: [...state.teams, action.payload.team]}
     } else if (action.type === 'GET_TEAMS') {
-        return {...state, teams: [...state.teams, ...action.payload]}
+        return {...state, teams: [...action.payload]}
     } else if (action.type === 'GET_MANAGED_TEAMS') {
-        return {...state, manages: [...state.manages, ...action.payload]}
+        return {...state, manages: [...action.payload]}
     }
     return state;
 };
