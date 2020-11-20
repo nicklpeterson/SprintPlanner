@@ -113,12 +113,13 @@ VALUES ('Kanye West',
         'fake@fake.com',
         '0f3e27ec-e93e-4a8e-8cbc-66f7ed8401b1',
         (SELECT orgId FROM organization o WHERE o.name = 'University of British Columbia'));
-INSERT INTO USERS (username, password, email, displayPicture, organization)
+INSERT INTO USERS (username, password, email, displayPicture, organization, isManager)
 VALUES ('Beyonce Knowles',
         '$2a$10$7hZeaGVr5pzM.CKkxG38i.kkLib2CLOA9hLpJPxNLRUSB6vbBx20m', /* Decoded Value = '123' */
         'fake@fake.com',
         '727ff3f0-2af8-4622-9345-cadb67e5a128',
-        (SELECT orgId FROM organization o WHERE o.name = 'University of British Columbia'));
+        (SELECT orgId FROM organization o WHERE o.name = 'University of British Columbia'),
+        TRUE);
 INSERT INTO USERS (username, password, email, organization)
 VALUES ('Jay Z',
         '$2a$10$7hZeaGVr5pzM.CKkxG38i.kkLib2CLOA9hLpJPxNLRUSB6vbBx20m', /* Decoded Value = '123' */
@@ -130,11 +131,12 @@ VALUES ('Rihanna',
         'fake@fake.com',
         (SELECT orgId FROM organization o WHERE o.name = 'University of British Columbia'));
 
-INSERT INTO USERS (username, password, email, organization)
+INSERT INTO USERS (username, password, email, organization, isManager)
 VALUES ('DMC',
         '$2a$10$7hZeaGVr5pzM.CKkxG38i.kkLib2CLOA9hLpJPxNLRUSB6vbBx20m', /* Decoded Value = '123' */
         'fake@fake.com',
-        (SELECT orgId FROM organization o WHERE o.name = 'Run DMC'));
+        (SELECT orgId FROM organization o WHERE o.name = 'Run DMC'),
+        TRUE);
 INSERT INTO USERS (username, password, email, organization)
 VALUES ('DJ Run',
         '$2a$10$7hZeaGVr5pzM.CKkxG38i.kkLib2CLOA9hLpJPxNLRUSB6vbBx20m', /* Decoded Value = '123' */
