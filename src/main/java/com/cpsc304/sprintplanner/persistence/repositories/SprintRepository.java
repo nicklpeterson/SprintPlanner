@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface SprintRepository extends CrudRepository<Sprint, String> {
+    // Selection
     @Query(value="SELECT s.* " +
             "FROM sprints s, projects p, team t " +
             "WHERE s.belongsto = p.projectid " +
@@ -20,11 +21,13 @@ public interface SprintRepository extends CrudRepository<Sprint, String> {
             "and t.teamid = :teamId", nativeQuery = true)
     List<Sprint> getTeamSprints(@Param("teamId") UUID teamId);
 
+    // Aggregation with Having
     @Query(value="SELECT COUNT(DISTINCT t1.assigneeid) FROM TICKETS t1 WHERE t1.assigneeid IN " +
             "(SELECT t2.assigneeid FROM TICKETS t2 WHERE t2.sprintnumber =:sprintNumber AND t2.sprintnumber = t1.sprintnumber " +
             "GROUP BY t2.assigneeid HAVING COALESCE(SUM(t2.points), 0) > 0)", nativeQuery = true)
     Integer getNumOfUsersWithTickets(@Param("sprintNumber") Integer sprintNumber);
 
+    // Nested Aggregation with Group By
     @Query(value="SELECT SUM(t.points)\n" +
             "FROM tickets t, users u\n" +
             "WHERE u.userid = t.assigneeid AND sprintnumber=:sprintNumber\n" +
@@ -36,6 +39,7 @@ public interface SprintRepository extends CrudRepository<Sprint, String> {
             "    GROUP BY u2.userId)", nativeQuery = true)
     Integer getMaxPoints(@Param("sprintNumber") Integer sprintNumber);
 
+    // Delete Operation
     @Transactional
     @Modifying
     @Query(value="DELETE FROM sprints WHERE sprintNumber = :sprintNumber AND belongsTo = :projectId", nativeQuery=true)
