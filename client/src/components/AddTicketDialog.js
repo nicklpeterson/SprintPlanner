@@ -118,10 +118,10 @@ export default function AddTicketDialog() {
             onClose={handleClose}
             aria-labelledby="max-width-dialog-title"
         >
-            <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle>
+            <DialogTitle id="max-width-dialog-title">Create a ticket</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    You can set my maximum width and whether to adapt or not.
+                    Fill in the following fields to create a ticket.
                 </DialogContentText>
                 <form className={classes.form} noValidate>
                     <TextField
