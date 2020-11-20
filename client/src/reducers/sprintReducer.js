@@ -1,7 +1,6 @@
-const sprintReducer = (state = {sprintNumber: null}, action) => {
-    console.log(action);
+const sprintReducer = (state = {}, action) => {
     if (action.type === 'SET_SPRINT') {
-        return {sprintNumber: action.sprintNumber}
+        return action.sprint;
     }
     return state;
 }

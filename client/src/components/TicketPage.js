@@ -18,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import { getTicketInfo, getUsername, updateAssignee, updatePoints, getMembersCanBeAssignedTo } from "../actions/ticket.actions";
 import { statuses} from "../constants";
+import Redirect from "react-router-dom/es/Redirect";
 
 
 export default function TicketPage() {
@@ -25,6 +26,7 @@ export default function TicketPage() {
     const dispatch = useDispatch();
     const currentTicket = useSelector(state => state.ticket);
     const canAssignTo = useSelector(state => state.ticket.canAssignTo);
+    const sprint = useSelector(state => state.sprint);
     const [shouldFetchUsernames, setShouldFetchUsernames] = React.useState(true);
     const [shouldUpdateAssignee, setShouldUpdateAssignee] = React.useState(false);
     const [shouldUpdatePoints, setShouldUpdatePoints] = React.useState(false);
@@ -117,6 +119,11 @@ export default function TicketPage() {
         if (!!currentTicket.creatorId) {
             dispatch(getUsername(currentTicket.creatorId, false));
         }
+    }
+
+    if (!sprint.number) {
+        console.log(sprint);
+        return <Redirect to={'/board'}/>;
     }
 
     return (

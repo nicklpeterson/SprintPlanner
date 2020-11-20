@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import {useDispatch, useSelector} from "react-redux";
-import {getAllTeams, setTeam} from "../actions/userBoard.actions";
+import {deleteSprint, getAllTeams, setTeam} from "../actions/userBoard.actions";
 import TeamBoard from "./TeamBoard";
 import NavBar from "./NavBar";
 import Button from "@material-ui/core/Button";
@@ -39,6 +39,7 @@ export default function SelectTeamBoard() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const allTeams = useSelector(state => state.board.allTeams);
+    const sprint = useSelector(state => state.sprint)
     const [team, setTeam] = React.useState('');
 
     useEffect(() => {
@@ -63,6 +64,12 @@ export default function SelectTeamBoard() {
         dispatch(openTicketDialog());
     }
 
+    const deleteCurrentSprint = () => {
+        if (sprint.sprintNumber) {
+            dispatch(deleteSprint(sprint));
+        }
+    }
+
     const navButtons = [
         <Button
             variant="contained"
@@ -78,6 +85,7 @@ export default function SelectTeamBoard() {
             color="secondary"
             className={classes.button}
             startIcon={<DeleteIcon />}
+            onClick = {deleteCurrentSprint}
         >
             Delete Sprint
         </Button>

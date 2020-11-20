@@ -1,5 +1,6 @@
 package com.cpsc304.sprintplanner.services.impl;
 
+import com.cpsc304.sprintplanner.dto.SprintDto;
 import com.cpsc304.sprintplanner.persistence.entities.Sprint;
 import com.cpsc304.sprintplanner.persistence.repositories.SprintRepository;
 import com.cpsc304.sprintplanner.services.SprintService;
@@ -46,6 +47,16 @@ public class SprintServiceImpl implements SprintService {
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());
+            throw new Exception(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void deleteSprint(int sprintNumber, UUID projectId) throws Exception {
+        try {
+            sprintRepository.deleteSprint(sprintNumber, projectId);
+        } catch (Exception e) {
+            log.error(e.getMessage());
             throw new Exception(e.getMessage(), e);
         }
     }
