@@ -1,9 +1,11 @@
 package com.cpsc304.sprintplanner.persistence.repositories;
 import com.cpsc304.sprintplanner.persistence.entities.Sprint;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +35,11 @@ public interface SprintRepository extends CrudRepository<Sprint, String> {
             "    WHERE u2.userid = t2.assigneeid AND sprintnumber=:sprintNumber\n" +
             "    GROUP BY u2.userId)", nativeQuery = true)
     Integer getMaxPoints(@Param("sprintNumber") Integer sprintNumber);
+
+    @Transactional
+    @Modifying
+    @Query(value="DELETE FROM sprints WHERE sprintNumber = :sprintNumber AND belongsTo = :projectId", nativeQuery=true)
+    void deleteSprint(@Param("sprintNumber") int SprintNumber, @Param("projectId") UUID projectId);
 
 }
 

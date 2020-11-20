@@ -110,8 +110,6 @@ export default function AddTicketDialog() {
         setPoints(event.target.value);
     }
 
-    console.log(teamMembers);
-
     return (
         <Dialog
             fullWidth={'md'}
