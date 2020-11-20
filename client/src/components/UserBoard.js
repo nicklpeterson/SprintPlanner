@@ -8,6 +8,7 @@ import {idMappedToStatus, BACKLOG, DONE, IN_REVIEW, IN_PROGRESS, PAUSED} from ".
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
+import Redirect from "react-router-dom/es/Redirect";
 
 
 // followed the react-beautiful-dnd example to create the board:
