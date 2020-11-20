@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, UUID> {
+    // Join
     @Query(value = "SELECT p.projectId as project_id, p.projectname as projectname, p.createdby as created_by FROM projects p, team t, team_members tm WHERE p.createdBy=t.teamId AND tm.teamId=t.teamId AND tm.userId=:userId", nativeQuery = true)
     List<Project> getAllProjectsByUserId(@Param("userId") UUID userId);
 }

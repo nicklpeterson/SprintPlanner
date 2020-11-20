@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface TeamMemberRepository extends CrudRepository<User, String> {
+    // Join
     @Query(value="SELECT * FROM team_members tm, users u WHERE tm.teamid = :tId AND tm.userid = u.userid", nativeQuery = true)
     List<User> getAllTeamMembers(@Param("tId") UUID tId);
 }
