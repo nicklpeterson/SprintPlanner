@@ -35,6 +35,9 @@ public class Sprint {
     @Column(name="belongsto")
     UUID belongsTo;
 
+    @Transient
+    String projectName;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

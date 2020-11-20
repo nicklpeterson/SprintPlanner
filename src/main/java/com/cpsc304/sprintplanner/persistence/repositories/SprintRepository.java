@@ -1,4 +1,5 @@
 package com.cpsc304.sprintplanner.persistence.repositories;
+
 import com.cpsc304.sprintplanner.persistence.entities.Sprint;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -7,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Tuple;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,12 +16,11 @@ import java.util.UUID;
 @Repository
 public interface SprintRepository extends CrudRepository<Sprint, String> {
     // Selection
-    @Query(value="SELECT s.* " +
-            "FROM sprints s, projects p, team t " +
+    @Query(value="SELECT s.sprintnumber, s.capacity, s.startdate, s.enddate, s.sprintload, CAST(s.belongsto AS VARCHAR), p.projectname " +
+            "FROM sprints s, projects p " +
             "WHERE s.belongsto = p.projectid " +
-            "and t.teamid = p.createdby " +
-            "and t.teamid = :teamId", nativeQuery = true)
-    List<Sprint> getTeamSprints(@Param("teamId") UUID teamId);
+            "and p.createdby = :teamId", nativeQuery = true)
+    List<Tuple> getTeamSprints(@Param("teamId") UUID teamId);
 
     // Aggregation with Having
     @Query(value="SELECT COUNT(DISTINCT t1.assigneeid) FROM TICKETS t1 WHERE t1.assigneeid IN " +

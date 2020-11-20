@@ -37,7 +37,7 @@ export default function TeamBoard({ teamId, teamName }) {
     }, [teamId]);
 
     const handleChange = (event) => {
-        dispatch(setSprint(sprints.find(s => s.sprintNumber === event.target.value)));
+        dispatch(setSprint(sprints.find(s => s.projectName + " - Sprint " + s.sprintNumber === event.target.value)));
     };
 
     const getMaxSumOfPoints = () => {
@@ -61,7 +61,7 @@ export default function TeamBoard({ teamId, teamName }) {
                         minWidth: 150,
                         alignContent: 'center', marginBottom: 30
                     }}>
-                    {sprints.map((sprint, index) => <MenuItem key={index} value={sprint.sprintNumber}>{sprint.sprintNumber}</MenuItem>)}
+                    {sprints.map((sprint, index) => <MenuItem key={index} value={sprint.projectName + " - Sprint " + sprint.sprintNumber}>{sprint.projectName + " - Sprint " + sprint.sprintNumber}</MenuItem>)}
                 </Select>
             </FormControl>
             <Grid container direction="row">
