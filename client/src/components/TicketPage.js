@@ -120,11 +120,7 @@ export default function TicketPage() {
             dispatch(getUsername(currentTicket.creatorId, false));
         }
     }
-
-    if (!sprint.number) {
-        console.log(sprint);
-        return <Redirect to={'/board'}/>;
-    }
+    
 
     return (
         <Container style={{marginTop: 50, marginBottom: 100}}>
