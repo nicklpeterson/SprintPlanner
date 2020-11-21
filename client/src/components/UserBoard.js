@@ -44,7 +44,7 @@ export default function UserBoard({userId, sprintId, projectId, username}) {
             }
         };
         fetchTickets();
-    }, [sprintId]);
+    }, [sprintId, projectId]);
 
     const move = (source, destination, droppableSource, droppableDestination, ticketId) => {
         const [removed] = source.splice(droppableSource.index, 1);
