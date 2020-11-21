@@ -296,7 +296,7 @@ VALUES (
 
 INSERT INTO sprints (sprintNumber, capacity, startDate, endDate, belongsTo, sprintLoad)
 VALUES (
-1,
+3,
 50,
 (SELECT TO_TIMESTAMP('11 21 20', 'MM-DD-YY')),
 (SELECT TO_TIMESTAMP('11 28 20', 'MM-DD-YY')),
@@ -305,7 +305,7 @@ VALUES (
 
 INSERT INTO sprints (sprintNumber, capacity, startDate, endDate, belongsTo, sprintLoad)
 VALUES (
-2,
+4,
 50,
 (SELECT TO_TIMESTAMP('11 21 20', 'MM-DD-YY')),
 (SELECT TO_TIMESTAMP('11 28 20', 'MM-DD-YY')),
