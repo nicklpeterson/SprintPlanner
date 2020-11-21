@@ -22,6 +22,7 @@ export default function TeamBoard({ teamId, teamName }) {
     const maxPoints = useSelector(state => state.board.maxPoints);
     const usersWithTickets = useSelector(state => state.board.usersWithTickets);
     const currentSprint = useSelector(state => state.sprint.sprintNumber);
+    const currentProject = useSelector(state => state.sprint.belongsTo);
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
@@ -37,16 +38,16 @@ export default function TeamBoard({ teamId, teamName }) {
     }, [teamId]);
 
     const handleChange = (event) => {
-        dispatch(setSprint(sprints.find(s => s.sprintNumber === event.target.value)));
+        dispatch(setSprint(sprints.find(s => s.projectName + " - Sprint " + s.sprintNumber === event.target.value)));
     };
 
     const getMaxSumOfPoints = () => {
-        dispatch(getMaxPoints(currentSprint));
+        dispatch(getMaxPoints(currentSprint, currentProject));
         return maxPoints ?? 0;
     };
 
     const getNumberOfUsersWithTickets = () => {
-        dispatch(getNumOfUserWithTickets(currentSprint));
+        dispatch(getNumOfUserWithTickets(currentSprint, currentProject));
         return usersWithTickets;
     };
 
@@ -61,7 +62,7 @@ export default function TeamBoard({ teamId, teamName }) {
                         minWidth: 150,
                         alignContent: 'center', marginBottom: 30
                     }}>
-                    {sprints.map((sprint, index) => <MenuItem key={index} value={sprint.sprintNumber}>{sprint.sprintNumber}</MenuItem>)}
+                    {sprints.map((sprint, index) => <MenuItem key={index} value={sprint.projectName + " - Sprint " + sprint.sprintNumber}>{sprint.projectName + " - Sprint " + sprint.sprintNumber}</MenuItem>)}
                 </Select>
             </FormControl>
             <Grid container direction="row">
@@ -75,7 +76,7 @@ export default function TeamBoard({ teamId, teamName }) {
                 </Grid>
                 }
             </Grid>
-            {currentSprint && teamMembers.map((tm) => <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />)}
+            {currentSprint && teamMembers.map((tm) => <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} projectId={currentProject} username={tm.username} />)}
         </div>
     )
 

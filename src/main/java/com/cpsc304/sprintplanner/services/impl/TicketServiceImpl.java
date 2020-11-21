@@ -63,9 +63,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> getAllTicketsByStatus(UUID userId, Integer sprintId, String status) throws FailedToFetchTickets {
+    public List<Ticket> getAllTicketsByStatus(UUID userId, UUID projectId, Integer sprintId, String status) throws FailedToFetchTickets {
         try {
-            return ticketRepository.findAllTicketsWithStatus(userId, sprintId, status);
+            return ticketRepository.findAllTicketsWithStatus(userId, projectId, sprintId, status);
         } catch (Exception e) {
             throw new FailedToFetchTickets(e.getMessage(), e);
         }
@@ -110,9 +110,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Integer getUsersPoints(UUID userId, Integer sprintNumber) throws Exception {
+    public Integer getUsersPoints(UUID userId, Integer sprintNumber, UUID projectId) throws Exception {
         try {
-            return ticketRepository.getUsersPoints(userId, sprintNumber);
+            return ticketRepository.getUsersPoints(userId, sprintNumber, projectId);
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
         }

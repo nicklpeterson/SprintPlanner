@@ -22,12 +22,12 @@ public interface TicketRepository extends CrudRepository<Ticket, String> {
     @Query(value = "SELECT * FROM TICKETS t1 WHERE t1.assigneeId =:userId " +
             "AND NOT EXISTS (SELECT t2.assigneeId FROM TICKETS t2" +
             " WHERE NOT EXISTS (SELECT t3.assigneeId, t3.status, t3.sprintnumber FROM TICKETS t3 " +
-            "WHERE t3.status =:status AND t3.ticketId = t1.ticketId AND sprintnumber =:sprintId))", nativeQuery=true)
-    List<Ticket> findAllTicketsWithStatus(@Param("userId") UUID userId, @Param("sprintId") Integer sprintId, @Param("status") String status);
+            "WHERE t3.status =:status AND t3.ticketId = t1.ticketId AND sprintnumber =:sprintId AND t3.projectid = :projectId))", nativeQuery=true)
+    List<Ticket> findAllTicketsWithStatus(@Param("userId") UUID userId, @Param("projectId") UUID projectId, @Param("sprintId") Integer sprintId, @Param("status") String status);
 
     // Selection
-    @Query(value="SELECT coalesce(SUM(points), 0) FROM tickets WHERE sprintnumber=:sprintId AND assigneeid=:userId", nativeQuery=true)
-    Integer getUsersPoints(@Param("userId") UUID userId, @Param("sprintId") Integer sprintId);
+    @Query(value="SELECT coalesce(SUM(points), 0) FROM tickets WHERE sprintnumber=:sprintId AND assigneeid=:userId AND projectid=:projectId", nativeQuery=true)
+    Integer getUsersPoints(@Param("userId") UUID userId, @Param("sprintId") Integer sprintId, @Param("projectId") UUID projectId);
 
     // Selection
     @Query(value = "SELECT * FROM TICKETS WHERE assigneeid = (SELECT userid FROM USERS WHERE username = :username)", nativeQuery=true)

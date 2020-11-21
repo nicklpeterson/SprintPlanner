@@ -1,6 +1,5 @@
 package com.cpsc304.sprintplanner.services.impl;
 
-import com.cpsc304.sprintplanner.dto.SprintDto;
 import com.cpsc304.sprintplanner.persistence.entities.Sprint;
 import com.cpsc304.sprintplanner.persistence.repositories.SprintRepository;
 import com.cpsc304.sprintplanner.services.SprintService;
@@ -8,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +23,20 @@ public class SprintServiceImpl implements SprintService {
     @Override
     public List<Sprint> getAllSprints(UUID teamId) throws Exception {
         try {
-            return sprintRepository.getTeamSprints(teamId);
+            List<Tuple> tuples = sprintRepository.getTeamSprints(teamId);
+            List<Sprint> sprints = new ArrayList<>();
+            for (Tuple tuple : tuples) {
+                sprints.add(new Sprint(
+                        (Integer) tuple.get("sprintnumber"),
+                        (Integer) tuple.get("capacity"),
+                        (Timestamp) tuple.get("startdate"),
+                        (Timestamp) tuple.get("enddate"),
+                        (Integer) tuple.get("sprintload"),
+                        UUID.fromString((String) tuple.get("belongsto")),
+                        (String) tuple.get("projectName")
+                ));
+            }
+            return sprints;
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());
@@ -30,9 +45,9 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public Integer getNumOfUsersWithTickets(Integer sprintNumber) throws Exception {
+    public Integer getNumOfUsersWithTickets(Integer sprintNumber, UUID projectId) throws Exception {
         try {
-            return sprintRepository.getNumOfUsersWithTickets(sprintNumber);
+            return sprintRepository.getNumOfUsersWithTickets(sprintNumber, projectId);
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());
@@ -41,9 +56,9 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public Integer getMaxPoints(Integer sprintNumber) throws Exception {
+    public Integer getMaxPoints(Integer sprintNumber, UUID projectId) throws Exception {
         try {
-            return sprintRepository.getMaxPoints(sprintNumber);
+            return sprintRepository.getMaxPoints(sprintNumber, projectId);
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());
