@@ -1,6 +1,5 @@
 package com.cpsc304.sprintplanner.rest;
 
-import com.cpsc304.sprintplanner.dto.SprintDto;
 import com.cpsc304.sprintplanner.exceptions.FailedToFetchProjectsException;
 import com.cpsc304.sprintplanner.persistence.entities.Sprint;
 import com.cpsc304.sprintplanner.persistence.entities.Team;
@@ -29,11 +28,11 @@ public class BoardController {
     private final TeamService teamService;
     private final ProjectService projectService;
 
-    @GetMapping(path = "/getStatus/{userId}/{sprintId}/{status}", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> getAllOrganizations(@PathVariable UUID userId, @PathVariable String status, @PathVariable String sprintId) {
+    @GetMapping(path = "/getStatus/{userId}/{projectId}/{sprintId}/{status}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getAllOrganizations(@PathVariable UUID userId, @PathVariable String status, @PathVariable UUID projectId, @PathVariable String sprintId) {
         final Map<String, Object> response = new HashMap<>();
         try {
-            List<Ticket> orgs = ticketService.getAllTicketsByStatus(userId, Integer.parseInt(sprintId), status);
+            List<Ticket> orgs = ticketService.getAllTicketsByStatus(userId, projectId, Integer.parseInt(sprintId), status);
             response.put("tickets", orgs);
             response.put("success", true);
         } catch (Exception e) {

@@ -15,7 +15,7 @@ public interface TicketService {
     List<TicketDto> getAllTickets();
     void storeTicket(TicketDto ticketDto) throws FailedToSaveTicketException;
     List<Ticket> getAllTicketsByUserName(String username) throws FailedToFetchTickets;
-    List<Ticket> getAllTicketsByStatus(UUID userId, Integer sprintId, String status) throws FailedToFetchTickets;
+    List<Ticket> getAllTicketsByStatus(UUID userId, UUID projectId, Integer sprintId, String status) throws FailedToFetchTickets;
     void updateTicketStatus(UUID ticketId, String newStatus) throws FailedToUpdateTicket;
     void updateTicketPoints(UUID ticketId, Integer points) throws FailedToUpdateTicket;
     void updateTicketAssignee(UUID ticketId, UUID userId) throws FailedToUpdateTicket;

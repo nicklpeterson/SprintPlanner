@@ -22,6 +22,7 @@ export default function TeamBoard({ teamId, teamName }) {
     const maxPoints = useSelector(state => state.board.maxPoints);
     const usersWithTickets = useSelector(state => state.board.usersWithTickets);
     const currentSprint = useSelector(state => state.sprint.sprintNumber);
+    const currentProject = useSelector(state => state.sprint.belongsTo);
 
     useEffect(() => {
         const fetchTeamMembersAndSprints = () => {
@@ -75,7 +76,7 @@ export default function TeamBoard({ teamId, teamName }) {
                 </Grid>
                 }
             </Grid>
-            {currentSprint && teamMembers.map((tm) => <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} username={tm.username} />)}
+            {currentSprint && teamMembers.map((tm) => <UserBoard key={tm.id} userId={tm.id} sprintId={currentSprint} projectId={currentProject} username={tm.username} />)}
         </div>
     )
 

@@ -15,7 +15,7 @@ import Redirect from "react-router-dom/es/Redirect";
 // https://codesandbox.io/s/ql08j35j3q?file=/index.js
 
 // I moved up the groupby query for points to the team user board in order for it to have more significance
-export default function UserBoard({userId, sprintId, username}) {
+export default function UserBoard({userId, sprintId, projectId, username}) {
     const dispatch = useDispatch();
     const backlogItems = useSelector(state => state.board[userId]?.backlogTickets);
     const pausedItems = useSelector(state =>state.board[userId]?.pausedTickets);
@@ -30,11 +30,11 @@ export default function UserBoard({userId, sprintId, username}) {
     useEffect(() => {
         const fetchTickets = () => {
             try {
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.BACKLOG));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.PAUSED));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.IN_PROGRESS));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.IN_REVIEW));
-                dispatch(getTicketsByProgress(userId, sprintId, idMappedToStatus.DONE));
+                dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.BACKLOG));
+                dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.PAUSED));
+                dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.IN_PROGRESS));
+                dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.IN_REVIEW));
+                dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.DONE));
                 dispatch(getTotalPointsForUser(userId, sprintId));
 
             } catch (e) {

@@ -63,9 +63,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> getAllTicketsByStatus(UUID userId, Integer sprintId, String status) throws FailedToFetchTickets {
+    public List<Ticket> getAllTicketsByStatus(UUID userId, UUID projectId, Integer sprintId, String status) throws FailedToFetchTickets {
         try {
-            return ticketRepository.findAllTicketsWithStatus(userId, sprintId, status);
+            return ticketRepository.findAllTicketsWithStatus(userId, projectId, sprintId, status);
         } catch (Exception e) {
             throw new FailedToFetchTickets(e.getMessage(), e);
         }

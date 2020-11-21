@@ -23,11 +23,11 @@ export const updateProgressStatus = (ticketId, newStatus) => {
     }
 };
 
-export const getTicketsByProgress = (userId, sprintId, status) => {
+export const getTicketsByProgress = (userId, sprintId, projectId, status) => {
     const headers = {"Content-Type" : "application/json"};
 
     return dispatch => {
-        axios.get(`${API_URL}/board/getStatus/${userId}/${sprintId}/${status}`, {headers})
+        axios.get(`${API_URL}/board/getStatus/${userId}/${projectId}/${sprintId}/${status}`, {headers})
             .then(res => {
                 dispatch(updateTicketByProgress(res.data.tickets, status, userId));
             })

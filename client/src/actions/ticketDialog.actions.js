@@ -11,7 +11,7 @@ export const saveTicket = (data) => {
         axios.post(API_URL + "/ticket/new", JSON.stringify(data), {headers})
             .then(res => {
                 console.log(res);
-                dispatch(getTicketsByProgress(data.assigneeId, data.sprintNumber, idMappedToStatus.BACKLOG));
+                dispatch(getTicketsByProgress(data.assigneeId, data.sprintNumber, data.projectId, idMappedToStatus.BACKLOG));
             })
             .catch(err => {
                 console.error(err);
