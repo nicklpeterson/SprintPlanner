@@ -35,7 +35,7 @@ export default function UserBoard({userId, sprintId, projectId, username}) {
                 dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.IN_PROGRESS));
                 dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.IN_REVIEW));
                 dispatch(getTicketsByProgress(userId, sprintId, projectId, idMappedToStatus.DONE));
-                dispatch(getTotalPointsForUser(userId, sprintId));
+                dispatch(getTotalPointsForUser(userId, sprintId, projectId));
 
             } catch (e) {
                 setHasError(true);

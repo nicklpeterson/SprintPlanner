@@ -42,12 +42,12 @@ export default function TeamBoard({ teamId, teamName }) {
     };
 
     const getMaxSumOfPoints = () => {
-        dispatch(getMaxPoints(currentSprint));
+        dispatch(getMaxPoints(currentSprint, currentProject));
         return maxPoints ?? 0;
     };
 
     const getNumberOfUsersWithTickets = () => {
-        dispatch(getNumOfUserWithTickets(currentSprint));
+        dispatch(getNumOfUserWithTickets(currentSprint, currentProject));
         return usersWithTickets;
     };
 

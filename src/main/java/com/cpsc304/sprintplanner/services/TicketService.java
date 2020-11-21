@@ -19,7 +19,7 @@ public interface TicketService {
     void updateTicketStatus(UUID ticketId, String newStatus) throws FailedToUpdateTicket;
     void updateTicketPoints(UUID ticketId, Integer points) throws FailedToUpdateTicket;
     void updateTicketAssignee(UUID ticketId, UUID userId) throws FailedToUpdateTicket;
-    Integer getUsersPoints(UUID userId, Integer sprintNumber) throws Exception;
+    Integer getUsersPoints(UUID userId, Integer sprintNumber, UUID projectId) throws Exception;
     void deleteTicket(UUID ticketId) throws FailedToDeleteDataException;
     Ticket getTicketById(UUID ticketId) throws FailedToFetchTickets;
     List<User> getAvailableMembers(UUID ticketId) throws Exception;

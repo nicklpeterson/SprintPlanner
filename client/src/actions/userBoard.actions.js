@@ -75,11 +75,11 @@ export const getAllSprints = (teamId) => {
 
 
 
-export const getTotalPointsForUser = (userId, sprintNumber) => {
+export const getTotalPointsForUser = (userId, sprintNumber, projectId) => {
     const headers = {"Content-Type" : "application/json"};
 
     return dispatch => {
-        axios.get(`${API_URL}/board/getTotalPointsForUser/${userId}/${sprintNumber}`, {headers})
+        axios.get(`${API_URL}/board/getTotalPointsForUser/${userId}/${sprintNumber}/${projectId}`, {headers})
             .then(res => {
                 dispatch(getUserPoints(res.data.sum, userId));
             })
@@ -92,11 +92,11 @@ export const getTotalPointsForUser = (userId, sprintNumber) => {
 };
 
 
-export const getNumOfUserWithTickets = (sprintNumber) => {
+export const getNumOfUserWithTickets = (sprintNumber, projectId) => {
     const headers = {"Content-Type" : "application/json"};
 
     return dispatch => {
-        axios.get(`${API_URL}/board/getNumOfUsersWithTickets/${sprintNumber}`, {headers})
+        axios.get(`${API_URL}/board/getNumOfUsersWithTickets/${sprintNumber}/${projectId}`, {headers})
             .then(res => {
                 dispatch(updateNumOfUsers(res.data.sum));
             })
@@ -109,11 +109,11 @@ export const getNumOfUserWithTickets = (sprintNumber) => {
 };
 
 
-export const getMaxPoints = (sprintNumber) => {
+export const getMaxPoints = (sprintNumber, projectId) => {
     const headers = {"Content-Type" : "application/json"};
 
     return dispatch => {
-        axios.get(`${API_URL}/board/getMaxPoints/${sprintNumber}`, {headers})
+        axios.get(`${API_URL}/board/getMaxPoints/${sprintNumber}/${projectId}`, {headers})
             .then(res => {
                 dispatch(updateUserPoints(res.data.sum));
             })

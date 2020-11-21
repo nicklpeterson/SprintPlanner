@@ -86,12 +86,12 @@ public class BoardController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/getTotalPointsForUser/{userId}/{sprintNumber}", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> getUserPoints(@PathVariable UUID userId, @PathVariable String sprintNumber) {
+    @GetMapping(path = "/getTotalPointsForUser/{userId}/{sprintNumber}/{projectId}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getUserPoints(@PathVariable UUID userId, @PathVariable String sprintNumber, @PathVariable UUID projectId) {
         final Map<String, Object> response = new HashMap<>();
 
         try {
-            Integer sum = ticketService.getUsersPoints(userId, Integer.parseInt(sprintNumber));
+            Integer sum = ticketService.getUsersPoints(userId, Integer.parseInt(sprintNumber), projectId);
             response.put("sum", sum);
             response.put("success", true);
         } catch (NullPointerException e) {
@@ -106,12 +106,11 @@ public class BoardController {
     }
 
 
-    @GetMapping(path = "/getNumOfUsersWithTickets/{sprintNumber}", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> getNumOfUsersWithTickets(@PathVariable String sprintNumber) {
+    @GetMapping(path = "/getNumOfUsersWithTickets/{sprintNumber}/{projectId}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getNumOfUsersWithTickets(@PathVariable String sprintNumber, @PathVariable UUID projectId) {
         final Map<String, Object> response = new HashMap<>();
-
         try {
-            Integer sum = sprintService.getNumOfUsersWithTickets(Integer.parseInt(sprintNumber));
+            Integer sum = sprintService.getNumOfUsersWithTickets(Integer.parseInt(sprintNumber), projectId);
             response.put("sum", sum);
             response.put("success", true);
         } catch (Exception e) {
@@ -121,12 +120,12 @@ public class BoardController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path = "/getMaxPoints/{sprintNumber}", produces = "application/json")
-    public ResponseEntity<Map<String, Object>> getMaxPoints(@PathVariable String sprintNumber) {
+    @GetMapping(path = "/getMaxPoints/{sprintNumber}/{projectId}", produces = "application/json")
+    public ResponseEntity<Map<String, Object>> getMaxPoints(@PathVariable String sprintNumber, @PathVariable UUID projectId) {
         final Map<String, Object> response = new HashMap<>();
 
         try {
-            Integer sum = sprintService.getMaxPoints(Integer.parseInt(sprintNumber));
+            Integer sum = sprintService.getMaxPoints(Integer.parseInt(sprintNumber), projectId);
             response.put("sum", sum);
             response.put("success", true);
         } catch (NullPointerException e) {

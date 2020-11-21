@@ -45,9 +45,9 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public Integer getNumOfUsersWithTickets(Integer sprintNumber) throws Exception {
+    public Integer getNumOfUsersWithTickets(Integer sprintNumber, UUID projectId) throws Exception {
         try {
-            return sprintRepository.getNumOfUsersWithTickets(sprintNumber);
+            return sprintRepository.getNumOfUsersWithTickets(sprintNumber, projectId);
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());
@@ -56,9 +56,9 @@ public class SprintServiceImpl implements SprintService {
     }
 
     @Override
-    public Integer getMaxPoints(Integer sprintNumber) throws Exception {
+    public Integer getMaxPoints(Integer sprintNumber, UUID projectId) throws Exception {
         try {
-            return sprintRepository.getMaxPoints(sprintNumber);
+            return sprintRepository.getMaxPoints(sprintNumber, projectId);
         } catch (Exception e) {
             log.info(e.getMessage());
             log.info(e.toString());

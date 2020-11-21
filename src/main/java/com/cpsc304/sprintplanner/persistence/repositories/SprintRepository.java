@@ -24,21 +24,21 @@ public interface SprintRepository extends CrudRepository<Sprint, String> {
 
     // Aggregation with Having
     @Query(value="SELECT COUNT(DISTINCT t1.assigneeid) FROM TICKETS t1 WHERE t1.assigneeid IN " +
-            "(SELECT t2.assigneeid FROM TICKETS t2 WHERE t2.sprintnumber =:sprintNumber AND t2.sprintnumber = t1.sprintnumber " +
+            "(SELECT t2.assigneeid FROM TICKETS t2 WHERE t2.sprintnumber =:sprintNumber AND t2.sprintnumber = t1.sprintnumber AND t2.projectid = :projectId " +
             "GROUP BY t2.assigneeid HAVING COALESCE(SUM(t2.points), 0) > 0)", nativeQuery = true)
-    Integer getNumOfUsersWithTickets(@Param("sprintNumber") Integer sprintNumber);
+    Integer getNumOfUsersWithTickets(@Param("sprintNumber") Integer sprintNumber, @Param("projectId") UUID projectId);
 
     // Nested Aggregation with Group By
     @Query(value="SELECT SUM(t.points)\n" +
             "FROM tickets t, users u\n" +
-            "WHERE u.userid = t.assigneeid AND sprintnumber=:sprintNumber\n" +
+            "WHERE u.userid = t.assigneeid AND sprintnumber=:sprintNumber AND projectid = :projectId\n" +
             "GROUP BY u.userid\n" +
             "HAVING sum(t.points) >= ALL \n" +
             "    (SELECT coalesce(SUM(t2.points), 0) \n" +
             "    FROM tickets t2, users u2\n" +
-            "    WHERE u2.userid = t2.assigneeid AND sprintnumber=:sprintNumber\n" +
+            "    WHERE u2.userid = t2.assigneeid AND sprintnumber=:sprintNumber AND t2.projectid = :projectId\n" +
             "    GROUP BY u2.userId)", nativeQuery = true)
-    Integer getMaxPoints(@Param("sprintNumber") Integer sprintNumber);
+    Integer getMaxPoints(@Param("sprintNumber") Integer sprintNumber, @Param("projectId") UUID projectId);
 
     // Delete Operation
     @Transactional

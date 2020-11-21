@@ -110,9 +110,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Integer getUsersPoints(UUID userId, Integer sprintNumber) throws Exception {
+    public Integer getUsersPoints(UUID userId, Integer sprintNumber, UUID projectId) throws Exception {
         try {
-            return ticketRepository.getUsersPoints(userId, sprintNumber);
+            return ticketRepository.getUsersPoints(userId, sprintNumber, projectId);
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
         }
